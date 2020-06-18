@@ -1,0 +1,50 @@
+<po-page-default [p-title]="page.title" [p-actions]="page.actions">
+
+    <po-divider p-label="Cabeçalho"></po-divider>
+
+    <form [formGroup]="osAddForm" class="po-row">
+        <po-input class="po-sm-6 po-md-3 po-lg-3" p-label="Nome Cliente" formControlName="nomeCliente"></po-input>
+        <po-datepicker class="po-sm-6 po-md-3 po-lg-2" p-label="Data Entrada" formControlName="entrada" p-readonly="true"></po-datepicker>
+        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="CPF / CNPJ" formControlName="cpfCnpj"></po-input>
+        <po-input class="po-sm-6 po-md-3 po-lg-1" p-label="DDD" formControlName="ddd"></po-input>
+        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Telefone" formControlName="telefone"></po-input>
+        <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Veículo" [p-options]="selects.veiculos" formControlName="idVeiculo"></po-select>
+        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Responsável" formControlName="idUsuario" p-readonly="true"></po-input>
+        <po-textarea class="po-sm-12 po-md-12 po-lg-12" p-label="Observações" formControlName="observacoes"></po-textarea>
+        <po-datepicker class="po-sm-6 po-md-3 po-lg-2" *ngIf="controls.isFinalizado.value == true" p-label="Data Saída" formControlName="saida"></po-datepicker>
+    </form>
+
+
+    <div>
+
+        <po-divider p-label="Mão de Obra"></po-divider>
+        <form [formGroup]="maoObraForm" class="po-row">
+            <po-select class="po-sm-6 po-md-4 po-lg-4" p-label="Mão De Obra" [p-options]="selects.maoDeObra" formControlName="idMaoDeObra"></po-select>
+            <po-number class="po-sm-6 po-md-4 po-lg-4" p-label="Qtd Mão De Obra" formControlName="qtd"></po-number>
+            <po-button class="po-sm-12 po-md-4 po-lg-4 po-mt-4" p-label="Adicionar" p-icon="po-icon po-icon-ok" [p-disabled]="maoObraForm.invalid" (click)="addMaoObra(maoObraForm.value)"></po-button>
+
+        </form>
+        <po-table
+            p-striped="true"
+            [p-columns]="tableMao.columns"
+            [p-items]="tableMao.items"></po-table>
+        <po-info class="po-mt-2" p-label="Valor Total Mão de Obra" p-orientation="horizontal" p-value="{{0 | currency:'BRL' }}"></po-info>
+
+    </div>
+
+    <div>
+        <po-divider p-label="Peças"></po-divider>
+        <form [formGroup]="pecasForm" class="po-row">
+            <po-select class="po-sm-6 po-md-4 po-lg-4" p-label="Peças" [p-options]="selects.pecas" formControlName="idPecas"></po-select>
+            <po-number class="po-sm-6 po-md-4 po-lg-4" p-label="Qtd Mão De Obra" formControlName="qtd"></po-number>
+            <po-button class="po-sm-12 po-md-4 po-lg-4 po-mt-4" p-label="Adicionar" p-icon="po-icon po-icon-ok" [p-disabled]="pecasForm.invalid" (click)="addPeca(pecasForm.value)"></po-button>
+        </form>
+        <po-table
+            p-striped="true"
+            [p-columns]="tablePeca.columns"
+            [p-items]="tablePeca.items"></po-table>
+        <po-info class="po-mt-2" p-label="Valor Peças" p-orientation="horizontal" p-value="{{0 | currency:'BRL' }}"></po-info>
+    </div>
+
+
+</po-page-default>
