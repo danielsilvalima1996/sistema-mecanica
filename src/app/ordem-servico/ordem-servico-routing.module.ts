@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { OrdemServicoListComponent } from './ordem-servico-list/ordem-servico-list.component';
 
 const routes: Routes = [
-    { path: '', component: OrdemServicoListComponent }
+    { path: 'list', component: OrdemServicoListComponent }
 ]
 
 @NgModule({

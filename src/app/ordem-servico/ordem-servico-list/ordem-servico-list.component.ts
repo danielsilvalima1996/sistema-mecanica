@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PoPageDefault } from '@po-ui/ng-components';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-ordem-servico-list',
@@ -7,7 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdemServicoListComponent implements OnInit {
 
-  constructor() { }
+  public page: PoPageDefault = {
+    title: 'Ordens de Serviço',
+    actions: [
+      { label: 'Adicionar', action: () => { } },
+      { label: 'Visualizar', action: () => { } },
+      { label: 'Editar', action: () => { } },
+    ]
+  }
+
+  public osForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
   }
