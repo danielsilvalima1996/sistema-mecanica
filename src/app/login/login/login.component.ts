@@ -31,6 +31,10 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
+  efetuarLogin() {
+    console.log("caiu aqui")
+  }
+
   tratarErro(error){
 
     this.loading = false;
