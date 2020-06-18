@@ -25,6 +25,10 @@ export class OrdemServicoListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.osForm = this.fb.group({
+      
+    })
+
   }
 
 }
