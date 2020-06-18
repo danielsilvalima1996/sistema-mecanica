@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { PoModule } from '@po-ui/ng-components';
 import { RouterModule } from '@angular/router';
 import { LoginModule } from './login/login.module';
+import { OrdemServicoModule } from './ordem-servico/ordem-servico.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { LoginModule } from './login/login.module';
     AppRoutingModule,
     PoModule,
     LoginModule,
+    OrdemServicoModule,
     RouterModule.forRoot([])
   ],
   providers: [],
