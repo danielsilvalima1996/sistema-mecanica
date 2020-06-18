@@ -125,5 +125,8 @@
       }
     }
   },
-  "defaultProject": "sistema-mecanica"
+  "defaultProject": "sistema-mecanica",
+  "cli": {
+    "analytics": false
+  }
 }
