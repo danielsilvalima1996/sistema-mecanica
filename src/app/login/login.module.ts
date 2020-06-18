@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { LoginRoutingModule } from './login-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PoLoadingModule, PoButtonModule, PoFieldModule, PoPageModule } from '@po-ui/ng-components';
 
 
 
@@ -10,9 +11,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     declarations: [LoginComponent],
     imports: [
         CommonModule,
-        ReactiveFormsModule,
+        LoginRoutingModule,
+        PoPageModule,
+        PoFieldModule,
         FormsModule,
-        LoginRoutingModule
+        ReactiveFormsModule,
+        PoButtonModule,
+        PoLoadingModule
     ]
 })
 export class LoginModule { }
