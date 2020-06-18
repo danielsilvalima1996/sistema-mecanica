@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   efetuarLogin() {
-    console.log("caiu aqui")
+    console.log("foi")
   }
 
   tratarErro(error){
