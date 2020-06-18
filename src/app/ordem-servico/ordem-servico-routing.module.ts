@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OrdemServicoListComponent } from './ordem-servico-list/ordem-servico-list.component';
 
+
 const routes: Routes = [
-    { path: 'list', component: OrdemServicoListComponent }
-]
+  { path: '', component: OrdemServicoListComponent }
+];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class OrdemServicoModule { }
+export class OrdemServicoRoutingModule { }
