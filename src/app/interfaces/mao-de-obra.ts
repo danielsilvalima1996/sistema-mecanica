@@ -10,3 +10,10 @@ export interface OsMaoDeObraRetorno {
     valorUnitario: number,
     active: boolean
 }
+
+export interface MaoDeObra {
+    id: number,
+    descricao: string,
+    valorUnitario: string,
+    active: boolean,
+}

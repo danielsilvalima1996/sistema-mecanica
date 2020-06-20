@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PoPageDefault, PoTableColumn, PoNotificationService, PoSelectOption } from '@po-ui/ng-components';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-ordem-servico-list',
@@ -61,63 +63,15 @@ export class OrdemServicoListComponent implements OnInit {
       { label: 'Total Serviço', property: 'totalServico', type: 'currency', format: 'BRL' },
       { label: 'Responsável', property: 'idUsuario' },
     ],
-    items: [
-      {
-        isFinalizado: true,
-        id: 1,
-        entrada: '2020-03-01',
-        nomeCompleto: 'Daniel Lima',
-        cpfCnpj: '12345678998',
-        ddd: '11',
-        telefone: '986284900',
-        idVeiculo: 'Parati',
-        saida: '2020-03-06',
-        observacoes: 'parcelado em 20 vezes',
-        totalMaoDeObra: 138.99,
-        totalPecas: 250,
-        totalServico: 388.99,
-        idUsuario: 'Marcos'
-      },
-      {
-        isFinalizado: false,
-        id: 2,
-        entrada: '2020-06-15',
-        nomeCompleto: 'Alison Keuver',
-        cpfCnpj: '98765432199',
-        ddd: '11',
-        telefone: '977519963',
-        idVeiculo: 'Fox',
-        saida: '',
-        observacoes: '',
-        totalMaoDeObra: 0,
-        totalPecas: 0,
-        totalServico: 0,
-        idUsuario: 'Darlan'
-      },
-      {
-        isFinalizado: true,
-        id: 3,
-        entrada: '2020-06-01',
-        nomeCompleto: 'Cristian Coelho',
-        cpfCnpj: '65412397866',
-        ddd: '11',
-        telefone: '956477780',
-        idVeiculo: 'Celta',
-        saida: '2020-06-02',
-        observacoes: 'Pago a vista',
-        totalMaoDeObra: 250,
-        totalPecas: 500,
-        totalServico: 750,
-        idUsuario: 'Vanessa'
-      },
-    ]
+    items: []
   }
 
   constructor(
     private fb: FormBuilder,
     private notificationService: PoNotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private osService: OrdensServicosService
   ) { }
 
   ngOnInit(): void {
@@ -134,7 +88,14 @@ export class OrdemServicoListComponent implements OnInit {
   }
 
   public buscar(form) {
-    console.log(form);
+    this.osService
+      .findAll().subscribe((data) => {
+        this.table.items = data;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.error);
+        // this.notificationService.error('Error ao dados');
+      })
   }
 
   public selected(event) {
