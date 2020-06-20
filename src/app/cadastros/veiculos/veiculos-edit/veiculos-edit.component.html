@@ -1,12 +1,12 @@
 <po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
 
-    <form [formGroup]="pecasForm">
+    <form [formGroup]="veiculosForm">
 
         <div class="po-row">
             <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Marca" p-required="true" formControlName="marca"></po-input>
             <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Modelo" p-required="true" formControlName="modelo"></po-input>
-            <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
-            <po-number class="po-md-2" [p-disabled]="disabledFields" p-label="Valor Unitário" p-required="true" formControlName="valorUnitario"></po-number>
+            <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Ano Veículo" p-required="true" formControlName="anoVeiculo"></po-input>
+            <po-number class="po-md-2" [p-disabled]="disabledFields" p-label="Tipo Combustível" p-required="true" formControlName="tipoCombustivel"></po-number>
             <po-select class="po-md-2" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
         </div>
     </form>

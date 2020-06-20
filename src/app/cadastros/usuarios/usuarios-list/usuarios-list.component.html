@@ -1,9 +1,9 @@
 <po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
 
     <div class="po-row">
-        <po-input class="po-md-2" p-label='Codigo' p-clean="true" [(ngModel)]="filtros.codigo"></po-input>
-        <po-input class="po-md-2" p-label='Marca' p-clean="true" [(ngModel)]="filtros.marca"></po-input>
-        <po-input class="po-md-3" p-label='Descrição' p-clean="true" [(ngModel)]="filtros.descricao"></po-input>
+        <po-input class="po-md-2" p-label='Codigo' p-clean="true" [(ngModel)]="filtros.id"></po-input>
+        <po-input class="po-md-2" p-label='E-mail' p-clean="true" [(ngModel)]="filtros.email"></po-input>
+        <po-input class="po-md-2" p-label='Nome Completo' p-clean="true" [(ngModel)]="filtros.nomeCompleto"></po-input>
         <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="''"></po-button>
 
     </div>

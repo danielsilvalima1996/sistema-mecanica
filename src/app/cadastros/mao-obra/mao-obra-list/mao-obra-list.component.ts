@@ -1,35 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { PoPageDefault, PoBreadcrumb, PoBreadcrumbItem, PoTableColumn, PoNotificationService } from '@po-ui/ng-components';
-import { ActivatedRoute, Router } from '@angular/router';
+import { PoNotificationService, PoTableColumn, PoBreadcrumbItem, PoPageDefault, PoBreadcrumb } from '@po-ui/ng-components';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-pecas-list',
-  templateUrl: './pecas-list.component.html',
-  styleUrls: ['./pecas-list.component.css']
+  selector: 'app-mao-obra-list',
+  templateUrl: './mao-obra-list.component.html',
+  styleUrls: ['./mao-obra-list.component.css']
 })
-export class PecasListComponent implements OnInit {
+export class MaoObraListComponent implements OnInit {
 
   public page: PoPageDefault = {
-    title: 'Cadastro de Peças',
+    title: 'Cadastro de Mão de Obra',
     breadcrumb: <PoBreadcrumb>{
       items: <PoBreadcrumbItem[]>[
         { label: 'Home' },
         { label: 'Cadastros' },
-        { label: 'Peças' }
+        { label: 'Mão de Obra' }
       ]
     },
     actions: [
-      { label: 'Adicionar', url: 'cadastro/pecas/add' },
-      { label: 'Visualizar', action: () => { this.viewPeca() } },
-      { label: 'Editar', action: () => { this.editarPeca() } },
+      { label: 'Adicionar', url: 'cadastro/mao-obra/add' },
+      { label: 'Visualizar', action: () => { this.viewMaoObra() } },
+      { label: 'Editar', action: () => { this.editarMaoObra() } },
     ]
   }
 
   table = {
     columns: <PoTableColumn[]>[
       { property: 'id', label: 'ID', width: '10%' },
-      { property: 'marca', label: 'Marca', width: '15%' },
-      { property: 'modelo', label: 'Modelo', width: '20%' },
       { property: 'descricao', label: 'Descrição', width: '30%' },
       { property: 'valorUnitario', label: 'Valor Unitário', width: '15%', type: 'currency', format: 'BRL' },
       { property: 'active', label: 'Ativo', width: '10%', type: 'boolean' }
@@ -41,7 +39,6 @@ export class PecasListComponent implements OnInit {
 
   filtros: any = {
     codigo: '',
-    marca: '',
     descricao: ''
   }
 
@@ -55,7 +52,7 @@ export class PecasListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getPecas();
+    this.getMaoObra();
   }
 
   getSelected(event) {
@@ -68,55 +65,47 @@ export class PecasListComponent implements OnInit {
     this.itemSelecionado = ''
   }
 
-  getPecas() {
+  getMaoObra() {
 
     this.table.items = [
       {
         "id": 1,
-        "marca": "Pirelli",
-        "modelo": "Pneu Aro 14 ",
-        "descricao": "Pneu Aro 14 175/70R14 Pirelli Cinturato P1",
-        "valorUnitario": 279.90,
+        "descricao": "Martelinho de Ouro",
+        "valorUnitario": 140.00,
         "active":true
       }, {
         "id": 2,
-        "marca": "Lampada",
-        "modelo": "Lampada",
-        "descricao": "Lampada 14w",
-        "valorUnitario": 20.90,
+        "descricao": "Serviço de Ajuste em Vidraças",
+        "valorUnitario": 91.00,
         "active":true
       },
       {
         "id": 3,
-        "marca": "Pirelli",
-        "modelo": "Pneu Aro 17 ",
-        "descricao": "Pneu Aro 17 175/70R14 Pirelli Cinturato P1",
-        "valorUnitario": 379.90,
+        "descricao": "Serviço de Motor Completo 8v",
+        "valorUnitario": 1200.00,
         "active":false
       },
       {
         "id": 4,
-        "marca": "Vipal",
-        "modelo": "Rmb-01",
-        "descricao": "Remendo para Pneu",
-        "valorUnitario": 0.50,
+        "descricao": "Serviço de Motor Completo 16v",
+        "valorUnitario": 1700.00,
         "active":true
       }
     ]
   }
 
-  private editarPeca() {
+  private editarMaoObra() {
     if (this.itemSelecionado == null || this.itemSelecionado == '') {
-      this.notificationService.warning('Selecione uma peça para editar!');
+      this.notificationService.warning('Selecione uma mao de obra para editar!');
       return;
     } else {
       this.router.navigate(['edit', this.itemSelecionado], { relativeTo: this.route });
     }
   }
 
-  private viewPeca() {
+  private viewMaoObra() {
     if (this.itemSelecionado == null || this.itemSelecionado == '') {
-      this.notificationService.warning('Selecione uma peça para visualizar!');
+      this.notificationService.warning('Selecione uma mao de obra para visualizar!');
       return;
     } else {
       this.router.navigate(['view', this.itemSelecionado], { relativeTo: this.route });
