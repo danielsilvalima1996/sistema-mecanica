@@ -1,14 +1,15 @@
 <po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
 
+    <form [formGroup]="maoObraForm">
+
     <div class="po-row">
-        <po-input class="po-md-2" p-label='Codigo' p-clean="true" [(ngModel)]="filtros.codigo"></po-input>
-        <po-input class="po-md-3" p-label='Descrição' p-clean="true" [(ngModel)]="filtros.descricao"></po-input>
-        <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="''"></po-button>
+        <po-input class="po-md-2" p-label='Codigo' p-clean="true" formControlName="codigo"></po-input>
+        <po-input class="po-md-3" p-label='Descrição' p-clean="true" formControlName="descricao"></po-input>
+        <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="filterByDescricao()"></po-button>
 
     </div>
 
-
-
+    </form>
 
     <po-table [p-columns]="table.columns" [p-items]="table.items" [p-loading]="table.loading" [p-height]="table.height"
         p-sort="true" p-striped="true" (p-selected)="getSelected($event)" (p-unselected)="getUnSelected()"
