@@ -28,4 +28,8 @@ export class OrdensServicosService {
   public alterOs(os: OrdensServicos): Observable<OrdensServicos> {
     return this.http.put(`${this.relativeLink}`, os) as Observable<OrdensServicos>;
   }
+
+  public finalizarOs(os: OrdensServicos): Observable<OrdensServicos> {
+    return this.http.put(`${this.relativeLink}/finalizar`, os) as Observable<OrdensServicos>;
+  }
 }

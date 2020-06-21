@@ -28,10 +28,18 @@ export class OrdemServicoAddComponent implements OnInit {
 
   public selects = {
     veiculos: <Array<PoSelectOption>>[],
-    maoDeObra: <Array<PoSelectOption>>[]
+    maoDeObra: <Array<PoSelectOption>>[],
+    tipoPessoa: <Array<PoSelectOption>>[
+      { label: 'CNPJ', value: 'j' },
+      { label: 'CPF', value: 'f' }
+    ]
   }
 
+  public mask: string = '999.999.999-99';
+
   public loading: boolean = false;
+
+  public labelPessoa: string = 'CPF';
 
   constructor(
     private fb: FormBuilder,
@@ -50,14 +58,26 @@ export class OrdemServicoAddComponent implements OnInit {
       cpfCnpj: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
       ddd: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
       telefone: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
-      observacoes: ['', [Validators.required]],
+      observacoes: ['', []],
       idVeiculo: ['', [Validators.required]],
       idUsuario: [1, []],
+      tipoPessoa: ['f', [Validators.required]]
     })
 
     this.osAddForm.valueChanges
       .subscribe((_) => {
         this.page.actions[0].disabled = this.osAddForm.invalid;
+      })
+
+    this.controls['tipoPessoa'].valueChanges
+      .subscribe((data: string) => {
+        if (data == 'j') {
+          this.mask = '99.999.999/9999-99';
+          this.labelPessoa = 'CNPJ';
+        } else {
+          this.labelPessoa = 'CPF';
+          this.mask = '999.999.999-99';
+        }
       })
 
   }
@@ -95,7 +115,7 @@ export class OrdemServicoAddComponent implements OnInit {
     this.osService.createOs(os)
       .subscribe((data) => {
         this.notificationService.success('Salvo com sucesso');
-        this.router.navigate(['ordem-servico/edit', 1]);
+        this.router.navigate(['ordem-servico/edit', data.id]);
         this.loading = false;
       },
         (error: HttpErrorResponse) => {

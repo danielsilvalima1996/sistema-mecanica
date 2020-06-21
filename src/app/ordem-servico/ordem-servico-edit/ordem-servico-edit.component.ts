@@ -18,7 +18,8 @@ export class OrdemServicoEditComponent implements OnInit {
   public page: PoPageDefault = {
     title: 'Nova OS',
     actions: [
-      { label: 'Salvar', action: () => { this.salvar() }, disabled: true },
+      { label: 'Atualizar', action: () => { this.alterar() }, disabled: true },
+      { label: 'Finalizar Serviço', action: () => { this.finalizarServico() }, type: 'danger' },
       { label: 'Voltar', action: () => { this.dialogVoltar() } }
     ]
   }
@@ -54,12 +55,20 @@ export class OrdemServicoEditComponent implements OnInit {
   public selects = {
     veiculos: <Array<PoSelectOption>>[],
     maoDeObra: <Array<PoSelectOption>>[],
-    pecas: <Array<PoSelectOption>>[]
+    pecas: <Array<PoSelectOption>>[],
+    tipoPessoa: <Array<PoSelectOption>>[
+      { label: 'CNPJ', value: 'j' },
+      { label: 'CPF', value: 'f' }
+    ]
   }
 
   public loading: boolean = true;
 
   private osGet: OrdensServicos;
+
+  public mask: string = '999.999.999-99';
+
+  public labelPessoa: string = 'CPF';
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +92,8 @@ export class OrdemServicoEditComponent implements OnInit {
     } else {
       this.tipoRelatorio = 'view';
       this.page.title = `Visualizar OS ${this.id}`;
+      // this.page.actions[0].disabled = true;
+      this.page.actions[1].disabled = true;
     }
 
     this.osAddForm = this.fb.group({
@@ -93,7 +104,7 @@ export class OrdemServicoEditComponent implements OnInit {
       cpfCnpj: ['', []],
       ddd: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
       telefone: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
-      observacoes: ['', [Validators.required]],
+      observacoes: ['', []],
       idVeiculo: ['', []],
       idOsMaoDeObra: ['', []],
       totalMaoDeObra: ['', []],
@@ -101,12 +112,26 @@ export class OrdemServicoEditComponent implements OnInit {
       totalPecas: ['', []],
       totalServico: ['', []],
       idUsuario: ['', []],
-      isFinalizado: []
+      isFinalizado: [],
+      tipoPessoa: ['f', [Validators.required]]
     })
 
     this.osAddForm.valueChanges.subscribe((_) => {
-      this.page.actions[0].disabled = this.osAddForm.invalid
+      if (this.tipoRelatorio != 'view') {
+        this.page.actions[0].disabled = this.osAddForm.invalid
+      }
     })
+
+    this.controls['tipoPessoa'].valueChanges
+      .subscribe((data: string) => {
+        if (data == 'j') {
+          this.mask = '99.999.999/9999-99';
+          this.labelPessoa = 'CNPJ';
+        } else {
+          this.labelPessoa = 'CPF';
+          this.mask = '999.999.999-99';
+        }
+      })
 
     this.maoObraForm = this.fb.group({
       qtd: ['', [Validators.required]],
@@ -160,18 +185,24 @@ export class OrdemServicoEditComponent implements OnInit {
     })
   }
 
-  private salvar() {
+  private alterar() {
+    this.loading = true;
     this.osGet.ddd = this.controls['ddd'].value,
-    this.osGet.telefone = this.controls['telefone'].value,
-    this.osGet.observacoes = this.controls['observacoes'].value
+      this.osGet.telefone = this.controls['telefone'].value,
+      this.osGet.observacoes = this.controls['observacoes'].value
 
-    this.osService.alterOs(this.osGet).subscribe((data) => {
-      
-    })
+    this.osService.alterOs(this.osGet)
+      .subscribe((data) => {
+        this.notificationService.success('OS ' + this.osGet.id + ' atualizada com sucesso!');
+        this.findById(this.osGet.id);
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          console.log('Error ao atualizar OS ' + this.osGet.id, error.error);
+          this.notificationService.success('Error ao atualizar OS ' + this.osGet.id);
+          this.loading = false;
+        })
 
-    console.log(this.osAddForm.value);
-    this.notificationService.success('Salvo com sucesso');
-    this.router.navigate(['ordem-servico/edit', 1]);
   }
 
   private findById(id: number) {
@@ -181,7 +212,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.osGet = data;
         this.controls['id'].setValue(data.id);
         this.controls['entrada'].setValue(new Date(data.entrada));
-        this.controls['saida'].setValue(data.saida);
+        this.controls['saida'].setValue(new Date(data.saida));
         this.controls['nomeCliente'].setValue(data.nomeCliente);
         this.controls['cpfCnpj'].setValue(data.cpfCnpj);
         this.controls['ddd'].setValue(data.ddd);
@@ -198,8 +229,9 @@ export class OrdemServicoEditComponent implements OnInit {
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
+          console.log('Error ao carregar: ', error.error);
+          this.notificationService.error('Error ao carregar OS ' + id);
           this.loading = false;
-          this.notificationService.error('Error ao carregar OS ' + id)
         })
   }
 
@@ -219,15 +251,35 @@ export class OrdemServicoEditComponent implements OnInit {
   }
 
   private listarVeiculos() {
-    this.veiculoService.findAll().subscribe((data) => {
-      data.map((item) => {
-        this.selects.veiculos.push({ label: `${item.marca} - ${item.modelo}`, value: item.id });
-      })
-    },
-      (error: HttpErrorResponse) => {
-        console.log('Error veiculos: ', error.error);
-        this.notificationService.error('Error ao listar veiculos.')
-      })
+    this.loading = true;
+    this.veiculoService.findAll()
+      .subscribe((data) => {
+        data.map((item) => {
+          this.selects.veiculos.push({ label: `${item.marca} - ${item.modelo}`, value: item.id });
+        });
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          console.log('Error veiculos: ', error.error);
+          this.notificationService.error('Error ao listar veiculos.');
+          this.loading = false;
+        })
+  }
+
+  private finalizarServico() {
+    this.loading = true;
+    this.osGet.isFinalizado = true;
+    this.osService.alterOs(this.osGet)
+      .subscribe((data) => {
+        this.notificationService.success('OS ' + this.osGet.id + ' atualizada com sucesso!');
+        this.router.navigate(['/ordem-servico/view', data.id]);
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          console.log('Error ao carregar: ', error.error);
+          this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
+          this.loading = false;
+        })
   }
 
 }
