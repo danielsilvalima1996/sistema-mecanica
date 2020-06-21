@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { OrdemServicoRoutingModule } from './ordem-servico-routing.module';
-import { PoPageModule, PoButtonModule, PoFieldModule, PoTableModule, PoDividerModule, PoInfoModule } from '@po-ui/ng-components';
+import { PoPageModule, PoButtonModule, PoFieldModule, PoTableModule, PoDividerModule, PoInfoModule, PoLoadingModule } from '@po-ui/ng-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrdemServicoListComponent } from './ordem-servico-list/ordem-servico-list.component';
 import { OrdemServicoEditComponent } from './ordem-servico-edit/ordem-servico-edit.component';
@@ -22,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     PoTableModule,
     PoDividerModule,
-    PoInfoModule
+    PoInfoModule,
+    PoLoadingModule
   ]
 })
 export class OrdemServicoModule { }
