@@ -1,6 +1,12 @@
-export interface Login {
-    token: string,
-    email: string,
+export interface LoginRetorno {
+    avatar: string,
     id: number,
-    userName: string
+    email: string,
+    token: string,
+    username: string
+}
+
+export interface LoginEnvio {
+    username: string,
+    password: string
 }

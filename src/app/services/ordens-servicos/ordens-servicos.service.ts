@@ -18,10 +18,10 @@ export class OrdensServicosService {
   }
 
   public findById(id: number): Observable<OrdensServicos> {
-    return this.http.get(`${this.relativeLink}?id=${id}`) as Observable<OrdensServicos>;
+    return this.http.get(`${this.relativeLink}/${id}`) as Observable<OrdensServicos>;
   }
 
-  public createOs(os: OrdensServicos): Observable<OrdensServicos> {
+  public createOs(os: OrdensServicosAdd): Observable<OrdensServicos> {
     return this.http.post(`${this.relativeLink}`, os) as Observable<OrdensServicos>;
   }
 

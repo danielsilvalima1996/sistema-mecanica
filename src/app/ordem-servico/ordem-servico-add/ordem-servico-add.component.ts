@@ -28,14 +28,7 @@ export class OrdemServicoAddComponent implements OnInit {
 
   public selects = {
     veiculos: <Array<PoSelectOption>>[],
-    maoDeObra: <Array<PoSelectOption>>[
-      { label: 'Lavagem', value: 0 },
-      { label: 'Troca de óleo', value: 1 },
-      { label: 'Troca de escapamento', value: 2 },
-      { label: 'Alinhamento', value: 3 },
-      { label: 'Balanceamento', value: 4 },
-      { label: 'Troca de pneus', value: 5 }
-    ]
+    maoDeObra: <Array<PoSelectOption>>[]
   }
 
   public loading: boolean = false;
@@ -83,7 +76,7 @@ export class OrdemServicoAddComponent implements OnInit {
 
   private salvar() {
     this.loading = true;
-    let os: any = {
+    let os: OrdensServicosAdd = {
       nomeCliente: this.controls['nomeCliente'].value,
       cpfCnpj: this.controls['cpfCnpj'].value,
       ddd: this.controls['ddd'].value,

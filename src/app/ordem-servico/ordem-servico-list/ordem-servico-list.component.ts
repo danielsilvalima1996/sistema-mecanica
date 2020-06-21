@@ -55,13 +55,13 @@ export class OrdemServicoListComponent implements OnInit {
       { label: 'CPF / CNPJ', property: 'cpfCnpj' },
       { label: 'DDD', property: 'ddd' },
       { label: 'Telefone', property: 'telefone' },
-      { label: 'Veiculo', property: 'idVeiculo.id' },
+      { label: 'Veiculo', property: 'idVeiculo.modelo' },
       { label: 'Data Saída', property: 'saida', type: 'date', format: 'dd/MM/yyyy' },
       { label: 'Observações', property: 'observacoes' },
       { label: 'Total Mão de Obra', property: 'totalOsMaoDeObra', type: 'currency', format: 'BRL' },
       { label: 'Total Peças', property: 'totalOsPecas', type: 'currency', format: 'BRL' },
       { label: 'Total Serviço', property: 'totalServico', type: 'currency', format: 'BRL' },
-      { label: 'Responsável', property: 'idUsuario' },
+      { label: 'Responsável', property: 'idUsuario.userName' },
     ],
     items: []
   }
