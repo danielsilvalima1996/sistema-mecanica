@@ -7,6 +7,8 @@ import { PoModule } from '@po-ui/ng-components';
 import { RouterModule } from '@angular/router';
 import { LoginModule } from './login/login.module';
 import { OrdemServicoModule } from './ordem-servico/ordem-servico.module';
+import { InterceptorService } from './authentication/interceptor/interceptor.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,13 +16,20 @@ import { OrdemServicoModule } from './ordem-servico/ordem-servico.module';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     PoModule,
     LoginModule,
     OrdemServicoModule,
     RouterModule.forRoot([])
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

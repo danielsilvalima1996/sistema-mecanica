@@ -1,0 +1,13 @@
+<po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
+
+    <form [formGroup]="usuariosForm">
+
+        <div class="po-row">
+            <po-input class="po-md-3" [p-disabled]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="nomeCompleto"></po-input>
+            <po-email class="po-md-3" [p-disabled]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
+            <po-password class="po-md-3" [p-disabled]="disabledFields" formControlName="password"  p-label="Senha"></po-password>
+            <po-select class="po-md-3" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+        </div>
+    </form>
+
+</po-page-default>

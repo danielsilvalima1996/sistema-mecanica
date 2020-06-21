@@ -1,5 +1,24 @@
 <po-page-default [p-title]="page.title" [p-actions]="page.actions">
-    <!--<form [formGroup]="osForm" class="po-row">
 
-    </form>-->
+    <form [formGroup]="osForm" class="po-row">
+        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Código" formControlName="id"></po-input>
+        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Nome Completo" formControlName="nomeCompleto"></po-input>
+        <po-input class="po-sm-12 po-md-3 po-lg-4" p-label="Observações" formControlName="observacoes"></po-input>
+        <po-button class="po-sm-12 po-md-3 po-lg-2 po-mt-4" p-label="Buscar" (click)="buscar(osForm.value)"></po-button>
+    </form>
+
+    <po-table 
+        p-single-select
+        p-selectable
+        p-striped="true"
+        [p-columns]="table.columns" 
+        [p-items]="table.items"
+        (p-selected)="selected($event)"
+        (p-unselected)="unSelected($event)"></po-table>
+
+    <po-loading-overlay *ngIf="loading"
+        p-screen-lock="true"
+        p-text="Carregando">
+    </po-loading-overlay>
+
 </po-page-default>

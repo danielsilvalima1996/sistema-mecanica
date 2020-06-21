@@ -1,0 +1,19 @@
+<po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
+
+    <form [formGroup]="maoObraForm">
+
+        <div class="po-row">
+            <po-input class="po-md-2" [p-disabled]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
+            <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
+            <po-number class="po-md-2" [p-disabled]="disabledFields" p-label="Valor Unitário" p-required="true" formControlName="valorUnitario"></po-number>
+            <po-select class="po-md-2" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+        </div>
+    </form>
+
+    <po-loading-overlay *ngIf="loading"
+    p-screen-lock="true"
+    p-text="Carregando">
+</po-loading-overlay>
+
+
+</po-page-default>

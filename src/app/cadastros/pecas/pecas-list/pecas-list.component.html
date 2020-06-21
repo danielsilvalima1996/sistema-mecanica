@@ -1,1 +1,19 @@
-<p>pecas-list works!</p>
+<po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
+
+    <div class="po-row">
+        <po-input class="po-md-2" p-label='Codigo' p-clean="true" [(ngModel)]="filtros.codigo"></po-input>
+        <po-input class="po-md-2" p-label='Marca' p-clean="true" [(ngModel)]="filtros.marca"></po-input>
+        <po-input class="po-md-3" p-label='Descrição' p-clean="true" [(ngModel)]="filtros.descricao"></po-input>
+        <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="''"></po-button>
+
+    </div>
+
+
+
+
+    <po-table [p-columns]="table.columns" [p-items]="table.items" [p-loading]="table.loading" [p-height]="table.height"
+        p-sort="true" p-striped="true" (p-selected)="getSelected($event)" (p-unselected)="getUnSelected()"
+        p-hide-text-overflow="true" p-checkbox="true" p-single-select="true">
+    </po-table>
+
+</po-page-default>

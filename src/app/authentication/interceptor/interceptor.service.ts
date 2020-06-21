@@ -21,15 +21,12 @@ export class InterceptorService implements HttpInterceptor {
         //     })
         // }
 
-
-        let token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc2wxNTAyMTk5NkBnbWFpbC5jb20iLCJleHAiOjE1OTI0NTQ0NTksImlhdCI6MTU5MjQzNjQ1OX0.nPg_6h6AhQlFgNjb7q15AsDkpJ42yCbvA917cgyN4BqitWBwh0lHxI2A4DZiSnTmYdwNN1y89e1BlxmZAb2lJg'
+        let token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc2wxNTAyMTk5NkBnbWFpbC5jb20iLCJleHAiOjE1OTU2MzE3NjMsImlhdCI6MTU5Mjc1MTc2M30.uuKVjYNvToGIOcXBS8YOVlA0A2INOfATbEjEC78eXkhZDxOKXHWNZO4WDWcugwm0HaGH61Xp-GPp0Jwso_10CA'
         request = request.clone({
             setHeaders: {
                 Authorization: `Bearer ${token}`
             }
         })
-
-
 
         return next.handle(request);
     }
