@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { OrdensServicos } from 'src/app/interfaces/ordens-servicos.model';
+import { OrdensServicos, OrdensServicosAdd } from 'src/app/interfaces/ordens-servicos.model';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -21,7 +21,7 @@ export class OrdensServicosService {
     return this.http.get(`${this.relativeLink}?id=${id}`) as Observable<OrdensServicos>;
   }
 
-  public createOs(os: OrdensServicos): Observable<OrdensServicos> {
+  public createOs(os: OrdensServicosAdd): Observable<OrdensServicos> {
     return this.http.post(`${this.relativeLink}`, os) as Observable<OrdensServicos>;
   }
 

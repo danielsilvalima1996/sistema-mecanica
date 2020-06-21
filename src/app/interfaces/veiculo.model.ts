@@ -1,8 +1,8 @@
 export interface Veiculo {
-    id: 1,
+    id: number,
     marca: string,
     modelo: string,
-    ano: 1999,
+    ano: number,
     tipoCombustivel: string,
     active: boolean
 }

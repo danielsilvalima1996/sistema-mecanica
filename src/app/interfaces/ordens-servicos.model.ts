@@ -21,3 +21,17 @@ export interface OrdensServicos {
     idUsuario: Users | null,
     isFinalizado: boolean
 }
+
+export interface OrdensServicosAdd {
+    nomeCliente: string,
+    cpfCnpj: string,
+    ddd: string,
+    telefone: string,
+    observacoes: string,
+    idVeiculo: {
+        id: number
+    }
+    idUsuario: {
+        id: number
+    }
+}
