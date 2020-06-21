@@ -100,7 +100,8 @@ export class OrdemServicoEditComponent implements OnInit {
       idOsPecas: ['', []],
       totalPecas: ['', []],
       totalServico: ['', []],
-      idUsuario: ['', []]
+      idUsuario: ['', []],
+      isFinalizado: []
     })
 
     this.osAddForm.valueChanges.subscribe((_) => {
@@ -160,13 +161,13 @@ export class OrdemServicoEditComponent implements OnInit {
   }
 
   private salvar() {
-    // this.osGet.ddd = this.controls['ddd'].value,
-    // this.osGet.telefone = this.controls['telefone'].value,
-    // this.osGet.observacoes = this.controls['observacoes'].value
+    this.osGet.ddd = this.controls['ddd'].value,
+    this.osGet.telefone = this.controls['telefone'].value,
+    this.osGet.observacoes = this.controls['observacoes'].value
 
-    // this.osService.alterOs(this.osGet).subscribe((data) => {
+    this.osService.alterOs(this.osGet).subscribe((data) => {
       
-    // })
+    })
 
     console.log(this.osAddForm.value);
     this.notificationService.success('Salvo com sucesso');
@@ -186,13 +187,13 @@ export class OrdemServicoEditComponent implements OnInit {
         this.controls['ddd'].setValue(data.ddd);
         this.controls['telefone'].setValue(data.telefone);
         this.controls['observacoes'].setValue(data.observacoes);
-        this.controls['idVeiculo'].setValue(data.idVeiculo.id);
+        this.controls['idVeiculo'].setValue(data.idVeiculo.id ? data.idVeiculo.id : null);
         this.controls['idOsMaoDeObra'].setValue(data.idOsMaoDeObra);
         this.controls['totalMaoDeObra'].setValue(data.totalOsMaoDeObra);
         this.controls['idOsPecas'].setValue(data.idOsPecas);
         this.controls['totalPecas'].setValue(data.totalOsPecas);
         this.controls['totalServico'].setValue(data.totalServico);
-        this.controls['idUsuario'].setValue(data.idUsuario.userName);
+        this.controls['idUsuario'].setValue(data.idUsuario.userName ? data.idUsuario.userName : '');
         this.controls['isFinalizado'].setValue(data.isFinalizado);
         this.loading = false;
       },
