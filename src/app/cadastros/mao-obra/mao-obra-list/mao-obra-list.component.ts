@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PoNotificationService, PoTableColumn, PoBreadcrumbItem, PoPageDefault, PoBreadcrumb } from '@po-ui/ng-components';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MaoObraService } from 'src/app/services/mao-obra/mao-obra.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MaoDeObra } from 'src/app/interfaces/mao-de-obra';
 
 @Component({
   selector: 'app-mao-obra-list',
@@ -42,13 +45,14 @@ export class MaoObraListComponent implements OnInit {
     descricao: ''
   }
 
-
   private itemSelecionado: string = '';
+  public loading: boolean
 
   constructor(
     private notificationService: PoNotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private maoObraService: MaoObraService
   ) { }
 
   ngOnInit(): void {
@@ -66,32 +70,17 @@ export class MaoObraListComponent implements OnInit {
   }
 
   getMaoObra() {
-
-    this.table.items = [
-      {
-        "id": 1,
-        "descricao": "Martelinho de Ouro",
-        "valorUnitario": 140.00,
-        "active":true
-      }, {
-        "id": 2,
-        "descricao": "Serviço de Ajuste em Vidraças",
-        "valorUnitario": 91.00,
-        "active":true
+    this.loading = true;
+    this.maoObraService.findAll()
+      .subscribe((data) => {
+        this.table.items = data;
+        this.loading = false;
       },
-      {
-        "id": 3,
-        "descricao": "Serviço de Motor Completo 8v",
-        "valorUnitario": 1200.00,
-        "active":false
-      },
-      {
-        "id": 4,
-        "descricao": "Serviço de Motor Completo 16v",
-        "valorUnitario": 1700.00,
-        "active":true
-      }
-    ]
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.loading = false;
+          this.notificationService.error('Error ao obter dados');
+        })
   }
 
   private editarMaoObra() {

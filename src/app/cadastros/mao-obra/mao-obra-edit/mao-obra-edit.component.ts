@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { PoDialogService, PoSelectOption, PoPageDefault, PoBreadcrumb, PoBreadcrumbItem } from '@po-ui/ng-components';
+import { Router, ParamMap, ActivatedRoute } from '@angular/router';
+import { PoDialogService, PoSelectOption, PoPageDefault, PoBreadcrumb, PoBreadcrumbItem, PoNotificationService } from '@po-ui/ng-components';
+import { MaoObraService } from 'src/app/services/mao-obra/mao-obra.service';
+import { MaoDeObra } from 'src/app/interfaces/mao-de-obra';
 
 @Component({
   selector: 'app-mao-obra-edit',
@@ -19,33 +21,37 @@ export class MaoObraEditComponent implements OnInit {
   }
 
   maoObraForm: FormGroup = this.fb.group({
-    id: ['', [Validators.required]],
+    id: ['',[]],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
-    active: [1, [Validators.required]]
+    active: [true, [Validators.required]]
   })
 
 
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
-      { label: 'Ativo', value: 1 },
-      { label: 'Inativo', value: 2 }]
+      { label: 'Ativo', value: 'true' },
+      { label: 'Inativo', value: 'false' }]
   }
 
-
-
+  public disabledId: boolean = false;
   public disabledFields: boolean = false;
-  private route
+  private id: string = '';
+  private loading: boolean
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private dialog: PoDialogService
+    private dialog: PoDialogService,
+    private route: ActivatedRoute,
+    private maoObraService: MaoObraService,
+    private notificationService: PoNotificationService
   ) { }
 
   ngOnInit(): void {
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Mão de Obra';
+      this.disabledId = true;
       this.page.breadcrumb.items = [
         { label: 'Home' },
         { label: 'Cadastros' },
@@ -53,11 +59,12 @@ export class MaoObraEditComponent implements OnInit {
         { label: 'Adicionar Mão de Obra' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { } },
+          { label: 'Salvar', action: () => { this.cadastrarMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ]
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Mão de Obra';
+      this.disabledId = true;
       this.page.breadcrumb.items = [
         { label: 'Home' },
         { label: 'Cadastros' },
@@ -65,11 +72,18 @@ export class MaoObraEditComponent implements OnInit {
         { label: 'Editar Mão de Obra' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { } },
+          { label: 'Salvar', action: () => { this.alterMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
+        ];
+
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        console.log(paramMap);
+        this.id = paramMap.get('id');
+      })
+      this.getDetailById(this.id);
     } else {
       this.page.title = 'Visualizar Mão de Obra';
+      this.disabledId = true;
       this.disabledFields = true;
       this.page.breadcrumb.items = [
         { label: 'Home' },
@@ -81,6 +95,56 @@ export class MaoObraEditComponent implements OnInit {
           { label: 'Salvar', disabled: true },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ]
+    }
+  }
+
+  getDetailById(id) {
+    this.maoObraService
+      .findById(id)
+      .subscribe((data) => {
+        this.maoObraForm.setValue(data)
+      })
+  }
+
+  alterMaoObra(maoObra: MaoDeObra) {
+    this.loading = true;
+    if (this.maoObraForm.invalid) {
+      this.notificationService.warning('Formulário Inválido!');
+      this.loading = false;
+      return;
+    } else {
+      this.maoObraService
+        .alterMaoDeObra(maoObra)
+        .subscribe((data) => {
+          this.notificationService.success('Mão de obra alterada com sucesso!');
+          this.router.navigate(['cadastro/mao-obra/']);
+          this.loading = false;
+        },
+          (error: any) => {
+            this.notificationService.error('Erro ao salvar mão de obra!');
+            this.loading = false;
+          })
+    }
+  }
+
+  cadastrarMaoObra(maoObra: MaoDeObra) {
+    this.loading = true;
+    if (this.maoObraForm.invalid) {
+      this.notificationService.warning('Formulário Inválido!');
+      this.loading = false;
+      return;
+    } else {
+      this.maoObraService
+        .createMaoDeObra(maoObra)
+        .subscribe((data) => {
+          this.notificationService.success('Mão de obra cadastrada com sucesso!');
+          this.router.navigate(['cadastro/mao-obra/']);
+          this.loading = false;
+        },
+          (error: any) => {
+            this.notificationService.error('Erro ao salvar mão de obra!');
+            this.loading = false;
+          })
     }
   }
 

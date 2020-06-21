@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PecasListComponent } from './pecas/pecas-list/pecas-list.component';
 import { PecasEditComponent } from './pecas/pecas-edit/pecas-edit.component';
 import { CadastrosRoutingModule } from './cadastros-routing.module';
-import { PoPageModule, PoButtonModule, PoFieldModule, PoTableModule } from '@po-ui/ng-components';
+import { PoPageModule, PoButtonModule, PoFieldModule, PoTableModule, PoLoadingModule } from '@po-ui/ng-components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaoObraListComponent } from './mao-obra/mao-obra-list/mao-obra-list.component';
 import { MaoObraEditComponent } from './mao-obra/mao-obra-edit/mao-obra-edit.component';
@@ -23,7 +23,8 @@ import { UsuariosEditComponent } from './usuarios/usuarios-edit/usuarios-edit.co
     PoFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    PoTableModule
+    PoTableModule,
+    PoLoadingModule
   ]
 })
 export class CadastrosModule { }

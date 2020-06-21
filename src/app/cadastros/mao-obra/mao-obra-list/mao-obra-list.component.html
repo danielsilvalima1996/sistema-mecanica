@@ -15,4 +15,10 @@
         p-hide-text-overflow="true" p-checkbox="true" p-single-select="true">
     </po-table>
 
+    <po-loading-overlay *ngIf="loading"
+    p-screen-lock="true"
+    p-text="Carregando">
+</po-loading-overlay>
+
+
 </po-page-default>
