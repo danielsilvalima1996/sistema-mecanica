@@ -29,4 +29,8 @@ export class MaoObraService {
     return this.http.put(`${this.relativeLink}/atualizar`, maoObra) as Observable<MaoDeObra>;
   }
 
+  public filterByDescricao(descricao: any) {
+    return this.http.get(`${this.relativeLink}/descricao?descricao=${descricao}`)
+  }
+
 }
