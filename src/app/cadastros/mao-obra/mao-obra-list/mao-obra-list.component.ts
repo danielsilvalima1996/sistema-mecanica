@@ -3,7 +3,7 @@ import { PoNotificationService, PoTableColumn, PoBreadcrumbItem, PoPageDefault, 
 import { Router, ActivatedRoute } from '@angular/router';
 import { MaoObraService } from 'src/app/services/mao-obra/mao-obra.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MaoDeObra } from 'src/app/interfaces/mao-de-obra';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-mao-obra-list',
@@ -40,29 +40,37 @@ export class MaoObraListComponent implements OnInit {
     loading: false
   }
 
-  filtros: any = {
+  filtros = {
     codigo: '',
     descricao: ''
   }
 
+  maoObraForm: FormGroup = this.fb.group({
+    codigo: ['',[]],
+    descricao: ['', [Validators.required]]
+  })
+
   private itemSelecionado: string = '';
-  public loading: boolean
+  public loading: boolean;
 
   constructor(
     private notificationService: PoNotificationService,
     private router: Router,
     private route: ActivatedRoute,
-    private maoObraService: MaoObraService
+    private maoObraService: MaoObraService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.getMaoObra();
   }
 
+  get controls() {
+    return this.maoObraForm.controls;
+  }
+
   getSelected(event) {
     this.itemSelecionado = event.id
-    console.log(this.itemSelecionado);
-
   }
 
   getUnSelected() {
@@ -99,6 +107,14 @@ export class MaoObraListComponent implements OnInit {
     } else {
       this.router.navigate(['view', this.itemSelecionado], { relativeTo: this.route });
     }
+  }
+
+  public filterByDescricao() {
+    this.maoObraService
+      .filterByDescricao(this.controls.descricao.value)
+      .subscribe((data:any) => {
+        this.table.items = data;
+      })
   }
 
 

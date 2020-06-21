@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PoNotificationService, PoTableColumn, PoBreadcrumbItem, PoBreadcrumb, PoPageDefault } from '@po-ui/ng-components';
+import { VeiculoService } from 'src/app/services/veiculo/veiculo.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-veiculos-list',
@@ -30,7 +33,7 @@ export class VeiculosListComponent implements OnInit {
       { property: 'id', label: 'Codigo', width: '10%' },
       { property: 'marca', label: 'Marca', width: '20%' },
       { property: 'modelo', label: 'Modelo', width: '20%' },
-      { property: 'anoVeiculo', label: 'Ano Veículo', width: '15%' },
+      { property: 'ano', label: 'Ano Veículo', width: '15%' },
       { property: 'tipoCombustivel', label: 'Tipo Combustível', width: '25%' },
       { property: 'active', label: 'Ativo', width: '10%', type: 'boolean' }
     ],
@@ -39,24 +42,38 @@ export class VeiculosListComponent implements OnInit {
     loading: false
   }
 
-  filtros: any = {
+  filtros: {
     id: '',
     marca: '',
-    modelo:'',
-    anoVeiculo: ''
+    modelo: '',
+    ano: ''
   }
+
+  veiculosForm: FormGroup = this.fb.group({
+    id: ['', []],
+    marca: ['', [Validators.required]],
+    modelo: ['', [Validators.required]],
+    ano: ['', [Validators.required]]
+  })
 
 
   private itemSelecionado: string = '';
+  public loading: boolean
 
   constructor(
     private notificationService: PoNotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private veiculosService: VeiculoService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.getVeiculos();
+  }
+
+  get controls() {
+    return this.veiculosForm.controls;
   }
 
   getSelected(event) {
@@ -70,40 +87,17 @@ export class VeiculosListComponent implements OnInit {
   }
 
   getVeiculos() {
-
-    this.table.items = [
-      {
-        "id": 1,
-        "marca": "Volkswagen",
-        "modelo": "G5",
-        "anoVeiculo": "2010",
-        "tipoCombustivel": 'Gasolina',
-        "active":true
-      }, {
-        "id": 2,
-        "marca": "Ford",
-        "modelo": "Ka",
-        "anoVeiculo": "2018",
-        "tipoCombustivel": 'Flex',
-        "active":true
+    this.loading = true;
+    this.veiculosService.findAll()
+      .subscribe((data) => {
+        this.table.items = data;
+        this.loading = false;
       },
-      {
-        "id": 3,
-        "marca": "Hyundai",
-        "modelo": "Hb20 ",
-        "anoVeiculo": "2010",
-        "tipoCombustivel": 'Flex',
-        "active":false
-      },
-      {
-        "id": 4,
-        "marca": "Fiat",
-        "modelo": "Mille",
-        "anoVeiculo": "2010",
-        "tipoCombustivel": 'Flex',
-        "active":true
-      }
-    ]
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.loading = false;
+          this.notificationService.error('Error ao obter dados');
+        })
   }
 
   private editarVeiculo() {
@@ -123,6 +117,38 @@ export class VeiculosListComponent implements OnInit {
       this.router.navigate(['view', this.itemSelecionado], { relativeTo: this.route });
     }
   }
+
+  getFiltro() {
+    this.loading = true;
+    let obj = {
+      idVeiculo: this.controls.id.value,
+      ano: this.controls.ano.value,
+      marcaVeiculo: this.controls.marca.value,
+      modeloVeiculo: this.controls.modelo.value,
+    }
+    this.veiculosService
+      .buscaFiltro(this.getParameters(obj)).
+      subscribe((data) => {
+        this.table.items = data
+        this.loading = false;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.error);
+        this.table.items = [];
+        this.loading = false;
+        this.notificationService.error('Error ao obter dados');
+      })
+  }
+
+  getParameters(json) {
+    return Object.keys(json).map((key) => {
+      if (json[key] === undefined || json[key] === null) {
+        json[key] = '';
+      }
+      return `${key}=${json[key]}`;
+    }).join('&');
+  }
+
 
 
 }
