@@ -24,14 +24,14 @@ export class MaoObraEditComponent implements OnInit {
     id: ['',[]],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
-    active: [true, [Validators.required]]
+    active: ['', [Validators.required]]
   })
 
 
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
       { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: 'false' }]
+      { label: 'Inativo', value: false }]
   }
 
   public disabledId: boolean = false;
@@ -77,7 +77,6 @@ export class MaoObraEditComponent implements OnInit {
         ];
 
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
-        console.log(paramMap);
         this.id = paramMap.get('id');
       })
       this.getDetailById(this.id);
@@ -94,7 +93,11 @@ export class MaoObraEditComponent implements OnInit {
         this.page.actions = [
           { label: 'Salvar', disabled: true },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
+        ];
+        this.route.paramMap.subscribe((paramMap: ParamMap) => {
+          this.id = paramMap.get('id');
+        })
+        this.getDetailById(this.id);
     }
   }
 
@@ -102,6 +105,8 @@ export class MaoObraEditComponent implements OnInit {
     this.maoObraService
       .findById(id)
       .subscribe((data) => {
+        console.log(data);
+        
         this.maoObraForm.setValue(data)
       })
   }
