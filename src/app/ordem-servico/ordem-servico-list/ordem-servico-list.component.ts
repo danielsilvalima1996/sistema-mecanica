@@ -3,7 +3,7 @@ import { PoPageDefault, PoTableColumn, PoNotificationService, PoSelectOption } f
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-ordem-servico-list',
@@ -51,20 +51,22 @@ export class OrdemServicoListComponent implements OnInit {
         ]
       },
       { label: 'Data Entrada', property: 'entrada', type: 'date', format: 'dd/MM/yyyy' },
-      { label: 'Nome Cliente', property: 'nomeCompleto' },
+      { label: 'Nome Cliente', property: 'nomeCliente' },
       { label: 'CPF / CNPJ', property: 'cpfCnpj' },
       { label: 'DDD', property: 'ddd' },
       { label: 'Telefone', property: 'telefone' },
-      { label: 'Veiculo', property: 'idVeiculo' },
+      { label: 'Veiculo', property: 'idVeiculo.id' },
       { label: 'Data Saída', property: 'saida', type: 'date', format: 'dd/MM/yyyy' },
       { label: 'Observações', property: 'observacoes' },
-      { label: 'Total Mão de Obra', property: 'totalMaoDeObra', type: 'currency', format: 'BRL' },
-      { label: 'Total Peças', property: 'totalPecas', type: 'currency', format: 'BRL' },
+      { label: 'Total Mão de Obra', property: 'totalOsMaoDeObra', type: 'currency', format: 'BRL' },
+      { label: 'Total Peças', property: 'totalOsPecas', type: 'currency', format: 'BRL' },
       { label: 'Total Serviço', property: 'totalServico', type: 'currency', format: 'BRL' },
       { label: 'Responsável', property: 'idUsuario' },
     ],
     items: []
   }
+
+  public loading: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -81,21 +83,26 @@ export class OrdemServicoListComponent implements OnInit {
       observacoes: [[]],
     })
 
+    this.buscar();
+
   }
 
   public get controls() {
     return this.osForm.controls;
   }
 
-  public buscar(form) {
+  public buscar(form?) {
+    this.loading = true;
     this.osService
       .findAll().subscribe((data) => {
         this.table.items = data;
+        this.loading = false;
       },
-      (error: HttpErrorResponse) => {
-        console.log(error.error);
-        // this.notificationService.error('Error ao dados');
-      })
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.loading = false;
+          this.notificationService.error('Error ao obter dados');
+        })
   }
 
   public selected(event) {

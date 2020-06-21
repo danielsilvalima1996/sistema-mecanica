@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrdemServicoListComponent } from './ordem-servico-list/ordem-servico-list.component';
 import { OrdemServicoEditComponent } from './ordem-servico-edit/ordem-servico-edit.component';
 import { OrdemServicoAddComponent } from './ordem-servico-add/ordem-servico-add.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({

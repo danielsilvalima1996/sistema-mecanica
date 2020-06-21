@@ -16,4 +16,9 @@
         (p-selected)="selected($event)"
         (p-unselected)="unSelected($event)"></po-table>
 
+    <po-loading-overlay *ngIf="loading"
+        p-screen-lock="true"
+        p-text="Carregando">
+    </po-loading-overlay>
+
 </po-page-default>

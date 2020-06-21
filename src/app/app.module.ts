@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { LoginModule } from './login/login.module';
 import { OrdemServicoModule } from './ordem-servico/ordem-servico.module';
 import { InterceptorService } from './authentication/interceptor/interceptor.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,6 +16,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     PoModule,
     LoginModule,
