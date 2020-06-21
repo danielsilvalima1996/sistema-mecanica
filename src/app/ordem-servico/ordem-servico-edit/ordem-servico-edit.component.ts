@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { OsMaoDeObraEnvio } from 'src/app/interfaces/mao-de-obra';
-import { OsPecasEnvio } from 'src/app/interfaces/pecas';
 
 @Component({
   selector: 'app-ordem-servico-edit',
@@ -126,7 +124,7 @@ export class OrdemServicoEditComponent implements OnInit {
   }
 
   public addMaoObra(event) {
-    let obj: OsMaoDeObraEnvio = {
+    let obj = {
       idMaoDeObra: event['id'],
       idOrdensServico: this.id,
       qtd: event['qtd']
@@ -137,7 +135,7 @@ export class OrdemServicoEditComponent implements OnInit {
   }
 
   public addPeca(event) {
-    let obj: OsPecasEnvio = {
+    let obj = {
       idOrdensServico: this.id,
       idPecas: event['id'],
       qtd: event['qtd']

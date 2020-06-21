@@ -21,7 +21,7 @@ export class OrdensServicosService {
     return this.http.get(`${this.relativeLink}?id=${id}`) as Observable<OrdensServicos>;
   }
 
-  public createOs(os: OrdensServicosAdd): Observable<OrdensServicos> {
+  public createOs(os: OrdensServicos): Observable<OrdensServicos> {
     return this.http.post(`${this.relativeLink}`, os) as Observable<OrdensServicos>;
   }
 

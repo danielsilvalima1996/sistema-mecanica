@@ -37,7 +37,7 @@ export class MaoObraEditComponent implements OnInit {
   public disabledId: boolean = false;
   public disabledFields: boolean = false;
   private id: string = '';
-  private loading: boolean
+  public loading: boolean
 
   constructor(
     private fb: FormBuilder,

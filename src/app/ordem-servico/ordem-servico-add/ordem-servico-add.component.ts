@@ -3,7 +3,7 @@ import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService }
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { OrdensServicosAdd } from 'src/app/interfaces/ordens-servicos.model';
+import { OrdensServicosAdd, OrdensServicos } from 'src/app/interfaces/ordens-servicos.model';
 import { VeiculoService } from 'src/app/services/veiculo/veiculo.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
@@ -83,18 +83,19 @@ export class OrdemServicoAddComponent implements OnInit {
 
   private salvar() {
     this.loading = true;
-    let os: OrdensServicosAdd = {
+    let os: any = {
       nomeCliente: this.controls['nomeCliente'].value,
       cpfCnpj: this.controls['cpfCnpj'].value,
       ddd: this.controls['ddd'].value,
       telefone: this.controls['telefone'].value,
       observacoes: this.controls['observacoes'].value,
       idVeiculo: {
-        id: this.controls['idVeiculo'].value
+        id: this.controls['idVeiculo'].value,
       },
       idUsuario: {
         id: this.controls['idUsuario'].value
       }
+
     }
     console.log(os, 'id usuario chumbado');
 
