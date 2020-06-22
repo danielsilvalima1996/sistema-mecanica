@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginRoutingModule } from './login-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PoLoadingModule, PoButtonModule, PoFieldModule, PoPageModule } from '@po-ui/ng-components';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -15,6 +16,7 @@ import { PoLoadingModule, PoButtonModule, PoFieldModule, PoPageModule } from '@p
         PoPageModule,
         PoFieldModule,
         FormsModule,
+        HttpClientModule,
         ReactiveFormsModule,
         PoButtonModule,
         PoLoadingModule
