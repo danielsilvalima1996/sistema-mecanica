@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
       console.log("logado")
     }, (error) => {
-      console.log(error)
+      this.tratarErro(error);
       this.loginService.setIsLogged$(false);
       this.notificationService.error('Acesso Negado!');
     });
