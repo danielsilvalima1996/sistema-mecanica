@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PoPageDefault, PoBreadcrumb, PoBreadcrumbItem, PoDialogService, PoSelectOption } from '@po-ui/ng-components';
+import { PoPageDefault, PoBreadcrumb, PoBreadcrumbItem, PoDialogService, PoSelectOption, PoNotificationService } from '@po-ui/ng-components';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
+import { PecasService } from 'src/app/services/pecas/pecas.service';
+import { Pecas } from 'src/app/interfaces/pecas';
 
 @Component({
   selector: 'app-pecas-edit',
@@ -20,30 +22,36 @@ export class PecasEditComponent implements OnInit {
   }
 
   pecasForm: FormGroup = this.fb.group({
+    id:['',[]],
     marca: ['', [Validators.required]],
     modelo: ['', [Validators.required]],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
-    active: [1, [Validators.required]]
+    active: [, [Validators.required]]
   })
 
 
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
-      { label: 'Ativo', value: 1 },
-      { label: 'Inativo', value: 2 }]
+      { label: 'Ativo', value: 'true' },
+      { label: 'Inativo', value: false }]
   }
 
 
 
+  public disabledId: boolean = false;
   public disabledFields: boolean = false;
-  private route
+  public loading: boolean;
+  public id: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private location: Location,
-    private dialog: PoDialogService
+    private dialog: PoDialogService,
+    private pecasService: PecasService,
+    private route: ActivatedRoute,
+    private notificationService: PoNotificationService
   ) { }
 
   ngOnInit(): void {
@@ -56,9 +64,10 @@ export class PecasEditComponent implements OnInit {
         { label: 'Adicionar Peça' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { } },
+          { label: 'Salvar', action: () => {this.cadastrarPecas(this.pecasForm.value)} },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
+        ];
+        this.disabledId = true;
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Peça';
       this.page.breadcrumb.items = [
@@ -68,9 +77,14 @@ export class PecasEditComponent implements OnInit {
         { label: 'Editar Peça' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { } },
+          { label: 'Salvar', action: () => { this.alterPeca() } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
+        ];
+        this.route.paramMap.subscribe((paramMap: ParamMap) => {
+          this.id = paramMap.get('id');
+        })
+        this.getDetailById(this.id);
+        this.disabledId = true;
     } else {
       this.page.title = 'Visualizar Peça';
       this.disabledFields = true;
@@ -83,7 +97,76 @@ export class PecasEditComponent implements OnInit {
         this.page.actions = [
           { label: 'Salvar', disabled: true },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
+        ];
+        this.route.paramMap.subscribe((paramMap: ParamMap) => {
+          this.id = paramMap.get('id');
+        })
+        this.getDetailById(this.id);
+    }
+  }
+
+  get controls() {
+    return this.pecasForm.controls;
+  }
+
+
+  getDetailById(id) {
+    this.pecasService
+      .findById(id)
+      .subscribe((data) => {
+        console.log(data);
+        
+        this.pecasForm.setValue(data)
+      })
+  }
+
+  alterPeca(parameters?: any) {
+    this.loading = true;
+    if (this.pecasForm.invalid) {
+      this.notificationService.warning('Formulário Inválido!');
+      this.loading = false;
+      return;
+    } else {
+
+      let obj = {
+        marca: this.controls.marca.value,
+        modelo: this.controls.modelo.value,
+        descricao: this.controls.descricao.value,
+        valorUnitario: this.controls.valorUnitario.value,
+        active: this.controls.active.value
+      }
+      this.pecasService
+        .alterPecas(this.id, obj)
+        .subscribe((data) => {
+          this.notificationService.success('Peça alterada com sucesso!');
+          this.router.navigate(['cadastro/pecas/']);
+          this.loading = false;
+        },
+          (error: any) => {
+            this.notificationService.error('Erro ao salvar peça!');
+            this.loading = false;
+          })
+    }
+  }
+
+  cadastrarPecas(pecas: Pecas) {
+    this.loading = true;
+    if (this.pecasForm.invalid) {
+      this.notificationService.warning('Formulário Inválido!');
+      this.loading = false;
+      return;
+    } else {
+      this.pecasService
+        .createPecas(pecas)
+        .subscribe((data) => {
+          this.notificationService.success('Peça cadastrada com sucesso!');
+          this.router.navigate(['cadastro/pecas/']);
+          this.loading = false;
+        },
+          (error: any) => {
+            this.notificationService.error('Erro ao salvar peça!');
+            this.loading = false;
+          })
     }
   }
 
