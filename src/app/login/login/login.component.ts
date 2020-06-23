@@ -16,29 +16,30 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   isSubmited = false;
-  
-  constructor(private formBuilder : FormBuilder,
-              private loginService : LoginService,
-              private router : Router,
-              private notificationService: PoNotificationService) { }
+
+  constructor(private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private router: Router,
+    private notificationService: PoNotificationService) { }
 
   ngOnInit(): void {
     this.criarFormulario();
     this.getIsLogged();
     console.log("ok")
   }
+  
 
-  getIsLogged() {
-    this.loginService.getIsLogged$.subscribe((data) => {
-      if(data) {
-        this.router.navigate(['./ordem-servico/ordem-servico.module']);
-      }
-    })
-  }
+   getIsLogged() {
+     this.loginService.getIsLogged$.subscribe((data) => {
+       if (data) {
+         this.router.navigate(['/ordem-servico']);
+       }
+     })
+   }
 
   criarFormulario() {
     this.loginForm = this.formBuilder.group({
-      email : ['',[Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -48,49 +49,52 @@ export class LoginComponent implements OnInit {
   }
 
   efetuarLogin() {
-
+    this.loading = true;
     console.log(this.loginForm)
-    if(this.loginForm.invalid) {
-      return;
+    if (this.loginForm.invalid) {
+      this.notificationService.warning('Formulário Inválido. Por favor tente novamente!')
+      this.loading = false;
     }
 
-  
-    this.loginService.login(this.loginForm.value).subscribe((data : LoginRetorno) => {
-      const jwtToken = `Bearer ${data.token}`;
-      sessionStorage.setItem('token', jwtToken);
+    this.loginService
+      .login(this.loginForm.value)
+      .subscribe((data: LoginRetorno) => {
+        const jwtToken = `Bearer ${data.token}`;
+        sessionStorage.setItem('token', jwtToken);
 
-      const userInformation : LoginRetorno = data;
-      sessionStorage.setItem('user', JSON.stringify(userInformation));
+        const userInformation: LoginRetorno = data;
+        sessionStorage.setItem('user', JSON.stringify(userInformation));
 
-      this.loginService.setUserInformation$(userInformation);
+        this.loginService.setUserInformation$(userInformation);
 
-      this.loginService.setIsLogged$(true);
-
-      console.log("logado")
-    }, (error) => {
-      this.tratarErro(error);
-      this.loginService.setIsLogged$(false);
-      this.notificationService.error('Acesso Negado!');
-    });
+        this.loginService.setIsLogged$(true);
+        this.loading = false;
+        console.log("logado")
+      }, (error) => {
+        this.tratarErro(error);
+        this.loginService.setIsLogged$(false);
+        this.notificationService.error('Acesso Negado!');
+        this.loading = false;
+      });
   }
 
-  tratarErro(error){
+  tratarErro(error) {
 
     this.loading = false;
     this.isSubmited = false;
 
-    if(error.status == 404){
+    if (error.status == 404) {
       this.notificationService.error('Email não cadastrado!');
       return;
-    
-    } else if(error.status == 401){
+
+    } else if (error.status == 401) {
       this.notificationService.error('Senha Inválida!');
       return;
-    
+
     } else {
-      console.log("Erro nao esperado ao logar: "+ error);
+      console.log("Erro nao esperado ao logar: " + error);
       this.notificationService.error('Ocorreu um erro não esperado. Por favor contate o suporte.');
     }
-   
+
   }
 }

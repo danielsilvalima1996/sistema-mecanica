@@ -1,7 +1,12 @@
 <div class="form">
-    <form class="po-form" [formGroup]="loginForm">
-        <po-email class="po-md-12" formControlName="email" p-label="E-mail"></po-email>
+    <form class="po-form" (keyup.enter)="efetuarLogin()" [formGroup]="loginForm">
+        <po-email class="po-md-12" formControlName="username" p-label="E-mail"></po-email>
         <po-password class="po-md-12" formControlName="password"  p-label="Senha"></po-password>
         <po-button class="po-md-12 po-mt-2" type="submit" p-disabled="isSubmited" (p-click)="efetuarLogin()" p-label="Entrar" ></po-button>
     </form>
 </div>
+
+<po-loading-overlay
+    *ngIf="loading"
+    p-text="Logando" >
+</po-loading-overlay>
