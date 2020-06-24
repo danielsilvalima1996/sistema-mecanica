@@ -24,14 +24,14 @@ export class MaoObraEditComponent implements OnInit {
     id: ['',[]],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
-    active: ['', [Validators.required]]
+    active: ['', []]
   })
 
 
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
       { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: 'false' }]
+      { label: 'Inativo', value: false }]
   }
 
   public disabledId: boolean = false;

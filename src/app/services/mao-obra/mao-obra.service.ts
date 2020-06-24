@@ -18,7 +18,7 @@ export class MaoObraService {
   }
 
   public findById(id: any): Observable<MaoDeObra> {
-    return this.http.get(`${this.relativeLink}?id=${id}`) as Observable<MaoDeObra>;
+    return this.http.get(`${this.relativeLink}/${id}`) as Observable<MaoDeObra>;
   }
 
   public createMaoDeObra(maoObra: MaoDeObra): Observable<MaoDeObra> {
