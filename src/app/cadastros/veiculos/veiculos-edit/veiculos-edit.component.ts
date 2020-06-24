@@ -33,7 +33,7 @@ export class VeiculosEditComponent implements OnInit {
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
       { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: false }]
+      { label: 'Inativo', value: 'false' }]
   }
 
 
@@ -53,6 +53,9 @@ export class VeiculosEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.veiculosForm.valueChanges.subscribe((_) => {
+      this.page.actions[0].disabled = this.veiculosForm.invalid;
+    })
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Veículo';
       this.page.breadcrumb.items = [
@@ -62,7 +65,7 @@ export class VeiculosEditComponent implements OnInit {
         { label: 'Adicionar Veículo' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { this.cadastrarVeiculo(this.veiculosForm.value) } },
+          { label: 'Salvar',disabled:true, action: () => { this.cadastrarVeiculo(this.veiculosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
       this.disabledId = true;
@@ -75,7 +78,7 @@ export class VeiculosEditComponent implements OnInit {
         { label: 'Editar Veículo' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { this.alterVeiculo() } },
+          { label: 'Salvar',disabled:true, action: () => { this.alterVeiculo() } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ]
 

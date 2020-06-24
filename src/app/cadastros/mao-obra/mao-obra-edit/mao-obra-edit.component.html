@@ -5,7 +5,17 @@
         <div class="po-row">
             <po-input class="po-md-2" [p-disabled]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
             <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
-            <po-number class="po-md-2" [p-disabled]="disabledFields" p-label="Valor Unitário" p-required="true" formControlName="valorUnitario"></po-number>
+            <po-decimal
+            class="po-md-2"
+            formControlName="valorUnitario"
+            p-decimals-length="2"
+            p-icon="po-icon-finance"
+            p-label="Valor Unitário"
+            p-required
+            [p-disabled]="disabledFields"
+            p-thousand-maxlength="13"
+          >
+          </po-decimal>
             <po-select class="po-md-2" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
         </div>
     </form>

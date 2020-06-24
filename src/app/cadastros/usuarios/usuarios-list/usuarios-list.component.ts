@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PoNotificationService, PoTableColumn, PoBreadcrumbItem, PoPageDefault, PoBreadcrumb } from '@po-ui/ng-components';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
+import { Users } from 'src/app/interfaces/users.model';
 
 @Component({
   selector: 'app-usuarios-list',
@@ -29,7 +31,7 @@ export class UsuariosListComponent implements OnInit {
     columns: <PoTableColumn[]>[
       { property: 'id', label: 'Código', width: '25%' },
       { property: 'email', label: 'E-mail', width: '25%' },
-      { property: 'nomeCompleto', label: 'Nome Completo', width: '25%' },
+      { property: 'userName', label: 'Nome de Usuário', width: '25%' },
       { property: 'active', label: 'Ativo', width: '25%', type: 'boolean' }
     ],
     items: [],
@@ -40,7 +42,7 @@ export class UsuariosListComponent implements OnInit {
   filtros: any = {
     id: '',
     email: '',
-    nomeCompleto:'',
+    nomeCompleto: '',
   }
 
 
@@ -49,7 +51,8 @@ export class UsuariosListComponent implements OnInit {
   constructor(
     private notificationService: PoNotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private usuariosService: UsuariosService
   ) { }
 
   ngOnInit(): void {
@@ -58,8 +61,6 @@ export class UsuariosListComponent implements OnInit {
 
   getSelected(event) {
     this.itemSelecionado = event.id
-    console.log(this.itemSelecionado);
-
   }
 
   getUnSelected() {
@@ -68,31 +69,11 @@ export class UsuariosListComponent implements OnInit {
 
   getUsuarios() {
 
-    this.table.items = [
-      {
-        "id": 1,
-        "nomeCompleto": "Alison Keuver da Silva",
-        "email": "alison.keuver@gmail.com",
-        "active":true
-      },     {
-        "id": 2,
-        "nomeCompleto": "Daniel Lima",
-        "email": "daniel.lima@gmail.com",
-        "active":true
-      },
-      {
-        "id": 3,
-        "nomeCompleto": "Cristian Coelho",
-        "email": "cristian.coelho@gmail.com",
-        "active":true
-      },
-      {
-        "id": 4,
-        "nomeCompleto": "João da Silva",
-        "email": "joao.silva@gmail.com",
-        "active":true
-      }
-    ]
+    this.usuariosService
+      .findAll()
+      .subscribe((data: any) => {
+        this.table.items = data
+      })
   }
 
   private editarUsuario() {

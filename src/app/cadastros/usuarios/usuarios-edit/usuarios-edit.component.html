@@ -3,11 +3,17 @@
     <form [formGroup]="usuariosForm">
 
         <div class="po-row">
-            <po-input class="po-md-3" [p-disabled]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="nomeCompleto"></po-input>
+            <po-input class="po-md-1" [p-disabled]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
+            <po-input class="po-md-3" [p-disabled]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="userName"></po-input>
             <po-email class="po-md-3" [p-disabled]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
             <po-password class="po-md-3" [p-disabled]="disabledFields" formControlName="password"  p-label="Senha"></po-password>
-            <po-select class="po-md-3" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-select class="po-md-2" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
         </div>
     </form>
+
+    <po-loading-overlay *ngIf="loading"
+    p-screen-lock="true"
+    p-text="Carregando">
+</po-loading-overlay>
 
 </po-page-default>

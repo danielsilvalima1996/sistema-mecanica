@@ -31,7 +31,7 @@ export class MaoObraEditComponent implements OnInit {
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
       { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: false }]
+      { label: 'Inativo', value: 'false' }]
   }
 
   public disabledId: boolean = false;
@@ -49,6 +49,10 @@ export class MaoObraEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.maoObraForm.valueChanges.subscribe((_) => {
+      this.page.actions[0].disabled = this.maoObraForm.invalid;
+    })
+
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Mão de Obra';
       this.disabledId = true;
@@ -59,7 +63,7 @@ export class MaoObraEditComponent implements OnInit {
         { label: 'Adicionar Mão de Obra' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { this.cadastrarMaoObra(this.maoObraForm.value) } },
+          { label: 'Salvar',disabled:true, action: () => { this.cadastrarMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ]
     } else if (this.router.url.indexOf('edit') != -1) {
@@ -72,7 +76,7 @@ export class MaoObraEditComponent implements OnInit {
         { label: 'Editar Mão de Obra' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { this.alterMaoObra(this.maoObraForm.value) } },
+          { label: 'Salvar',disabled:true, action: () => { this.alterMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
 

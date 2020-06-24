@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 
-import { PoMenuItem, PoDialogService, PoNotificationService } from '@po-ui/ng-components';
+import { PoMenuItem, PoDialogService, PoNotificationService, PoToolbarProfile, PoToolbarAction } from '@po-ui/ng-components';
 import { LoginService } from './services/authentication/login/login.service';
 import { Router } from '@angular/router';
+import { Users } from './interfaces/users.model';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,17 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   logged: boolean = false;
+  profile: PoToolbarProfile;
+
+  profileActions: Array<PoToolbarAction> = [
+    {
+      label: 'Sair',
+      icon: 'po-icon po-icon-exit',
+      separator: true,
+      type: 'danger',
+      action: () => this.confirmeLogout()
+    }
+  ]
 
   menus: Array<PoMenuItem> = [
     {
@@ -22,8 +34,7 @@ export class AppComponent {
         { label: 'Veículos', icon: 'po-icon po-icon-menu', shortLabel: '', link: '/cadastro/veiculos' }
       ]
     },
-    { label: 'Ordem Serviço', icon: 'po-icon po-icon-truck', shortLabel: 'OS', link: '/ordem-servico' },
-    { label: 'Logout', icon: 'po-icon po-icon-exit', shortLabel: 'Sair', link:'/logout' }
+    { label: 'Ordem Serviço', icon: 'po-icon po-icon-truck', shortLabel: 'OS', link: '/ordem-servico' }
   ];
 
   constructor(
@@ -37,29 +48,28 @@ export class AppComponent {
     this.loginService.getIsLogged$
       .subscribe((data) => {
         if (data) {
-          console.log(data);
-
-          //this.getProfile();
+          this.getProfile();
           this.logged = data;
-
-          this.menus = [
-            {
-              label: 'Cadastros', icon: 'po-icon po-icon-edit', shortLabel: 'Cadastros', subItems: [
-                { label: 'Mão de Obra', icon: 'po-icon po-icon-menu', shortLabel: '', link: '/cadastro/mao-obra' },
-                { label: 'Peças', icon: 'po-icon po-icon-menu', shortLabel: '', link: '/cadastro/pecas' },
-                { label: 'Usuários', icon: 'po-icon po-icon-menu', shortLabel: '', link: '/cadastro/usuarios' },
-                { label: 'Veículos', icon: 'po-icon po-icon-menu', shortLabel: '', link: '/cadastro/veiculos' }
-              ]
-            },
-            { label: 'Ordem Serviço', icon: 'po-icon po-icon-truck', shortLabel: 'OS', link: '/ordem-servico' },
-            { label: 'Logout', icon: 'po-icon po-icon-exit', shortLabel: 'Sair', action:()=>{this.confirmeLogout()}},
-          ];
         } else {
           this.logged = data;
           this.router.navigate(['']);
         }
       })
   }
+
+  getProfile() {
+    let user: Users;
+    this.loginService.getUserInformation$.
+      subscribe((data) => {
+        let profile = {
+          title: data.username,
+          subtitle: data.email,
+          avatar: 'https://api.adorable.io/avatars/400/a98c283e370d84402555a93095ecc264.png'
+        }
+        this.profile = profile;
+      })
+  }
+
 
   confirmeLogout() {
     this.dialogService.confirm({

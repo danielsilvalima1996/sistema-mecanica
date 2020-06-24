@@ -34,7 +34,7 @@ export class PecasEditComponent implements OnInit {
   selects = {
     ativoOptions: <Array<PoSelectOption>>[
       { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: false }]
+      { label: 'Inativo', value: 'false' }]
   }
 
 
@@ -55,6 +55,10 @@ export class PecasEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.pecasForm.valueChanges.subscribe((_) => {
+      this.page.actions[0].disabled = this.pecasForm.invalid;
+    })
+
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Peça';
       this.page.breadcrumb.items = [
@@ -64,7 +68,7 @@ export class PecasEditComponent implements OnInit {
         { label: 'Adicionar Peça' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => {this.cadastrarPecas(this.pecasForm.value)} },
+          { label: 'Salvar',disabled:true, action: () => {this.cadastrarPecas(this.pecasForm.value)} },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
         this.disabledId = true;
@@ -77,7 +81,7 @@ export class PecasEditComponent implements OnInit {
         { label: 'Editar Peça' }
       ],
         this.page.actions = [
-          { label: 'Salvar', action: () => { this.alterPeca() } },
+          { label: 'Salvar',disabled:true, action: () => { this.alterPeca() } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
