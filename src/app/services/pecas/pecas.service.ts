@@ -29,12 +29,8 @@ export class PecasService {
     return this.http.put(`${this.relativeLink}/atualizar-peca/${id}`, maoObra) as Observable<Pecas>;
   }
 
-  public findByMarca(marca: string): Observable<Pecas> {
-    return this.http.get(`${this.relativeLink}/buscar-peca-marca/${marca}`) as Observable<Pecas>;
-  }
-
-  public findByDescricao(decricao: string): Observable<Pecas> {
-    return this.http.get(`${this.relativeLink}/buscar-peca-decricao/${decricao}`) as Observable<Pecas>;
+  public buscaFiltro(parameters?:any){
+    return this.http.get(`${this.relativeLink}/buscar-peca-por-filtros?${parameters}`) as Observable<Array<Pecas>>;
   }
 
 
