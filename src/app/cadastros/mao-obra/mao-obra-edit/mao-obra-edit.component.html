@@ -3,8 +3,8 @@
     <form [formGroup]="maoObraForm">
 
         <div class="po-row">
-            <po-input class="po-md-2" [p-disabled]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
-            <po-input class="po-md-2" [p-disabled]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
+            <po-input class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
+            <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
             <po-decimal
             class="po-md-2"
             formControlName="valorUnitario"
@@ -12,11 +12,11 @@
             p-icon="po-icon-finance"
             p-label="Valor Unitário"
             p-required
-            [p-disabled]="disabledFields"
+            [p-readonly]="disabledFields"
             p-thousand-maxlength="13"
           >
           </po-decimal>
-            <po-select class="po-md-2" [p-disabled]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-select class="po-md-2" [p-readonly]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
         </div>
     </form>
 

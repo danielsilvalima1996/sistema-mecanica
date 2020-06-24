@@ -4,6 +4,7 @@ import { PoNotificationService, PoTableColumn, PoBreadcrumbItem, PoBreadcrumb, P
 import { VeiculoService } from 'src/app/services/veiculo/veiculo.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { UtilService } from 'src/app/services/utils/util.service';
 
 @Component({
   selector: 'app-veiculos-list',
@@ -23,8 +24,8 @@ export class VeiculosListComponent implements OnInit {
     },
     actions: [
       { label: 'Adicionar', url: 'cadastro/veiculos/add' },
-      { label: 'Visualizar', action: () => { this.viewVeiculo() } },
       { label: 'Editar', action: () => { this.editarVeiculo() } },
+      { label: 'Visualizar', action: () => { this.viewVeiculo() } }
     ]
   }
 
@@ -51,9 +52,9 @@ export class VeiculosListComponent implements OnInit {
 
   veiculosForm: FormGroup = this.fb.group({
     id: ['', []],
-    marca: ['', [Validators.required]],
-    modelo: ['', [Validators.required]],
-    ano: ['', [Validators.required]]
+    marca: ['', []],
+    modelo: ['', []],
+    ano: ['', []]
   })
 
 
@@ -65,7 +66,8 @@ export class VeiculosListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private veiculosService: VeiculoService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private utilService: UtilService
   ) { }
 
   ngOnInit(): void {
@@ -122,12 +124,12 @@ export class VeiculosListComponent implements OnInit {
     this.loading = true;
     let obj = {
       idVeiculo: this.controls.id.value,
-      ano: this.controls.ano.value,
+      anoVeiculo: this.controls.ano.value,
       marcaVeiculo: this.controls.marca.value,
       modeloVeiculo: this.controls.modelo.value,
     }
     this.veiculosService
-      .buscaFiltro(this.getParameters(obj)).
+      .buscaFiltro(this.utilService.getParameters(obj)).
       subscribe((data) => {
         this.table.items = data
         this.loading = false;
@@ -140,14 +142,7 @@ export class VeiculosListComponent implements OnInit {
       })
   }
 
-  getParameters(json) {
-    return Object.keys(json).map((key) => {
-      if (json[key] === undefined || json[key] === null) {
-        json[key] = '';
-      }
-      return `${key}=${json[key]}`;
-    }).join('&');
-  }
+
 
 
 

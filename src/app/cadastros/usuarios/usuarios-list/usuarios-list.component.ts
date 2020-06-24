@@ -22,8 +22,8 @@ export class UsuariosListComponent implements OnInit {
     },
     actions: [
       { label: 'Adicionar', url: 'cadastro/usuarios/add' },
-      { label: 'Visualizar', action: () => { this.viewUsuario() } },
       { label: 'Editar', action: () => { this.editarUsuario() } },
+      { label: 'Visualizar', action: () => { this.viewUsuario() } }
     ]
   }
 

@@ -55,10 +55,6 @@ export class PecasEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.pecasForm.valueChanges.subscribe((_) => {
-      this.page.actions[0].disabled = this.pecasForm.invalid;
-    })
-
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Peça';
       this.page.breadcrumb.items = [
@@ -71,6 +67,9 @@ export class PecasEditComponent implements OnInit {
           { label: 'Salvar',disabled:true, action: () => {this.cadastrarPecas(this.pecasForm.value)} },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
+        this.pecasForm.valueChanges.subscribe((_) => {
+          this.page.actions[0].disabled = this.pecasForm.invalid;
+        })
         this.disabledId = true;
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Peça';
@@ -86,8 +85,11 @@ export class PecasEditComponent implements OnInit {
         ];
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
           this.id = paramMap.get('id');
-        })
+        });
         this.getDetailById(this.id);
+        this.pecasForm.valueChanges.subscribe((_) => {
+          this.page.actions[0].disabled = this.pecasForm.invalid;
+        })
         this.disabledId = true;
     } else {
       this.page.title = 'Visualizar Peça';

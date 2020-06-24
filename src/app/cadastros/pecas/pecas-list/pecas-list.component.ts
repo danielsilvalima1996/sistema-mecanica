@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PecasService } from 'src/app/services/pecas/pecas.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UtilService } from 'src/app/services/utils/util.service';
 
 @Component({
   selector: 'app-pecas-list',
@@ -23,8 +24,8 @@ export class PecasListComponent implements OnInit {
     },
     actions: [
       { label: 'Adicionar', url: 'cadastro/pecas/add' },
-      { label: 'Visualizar', action: () => { this.viewPeca() } },
       { label: 'Editar', action: () => { this.editarPeca() } },
+      { label: 'Visualizar', action: () => { this.viewPeca() } }
     ]
   }
 
@@ -43,11 +44,11 @@ export class PecasListComponent implements OnInit {
   }
 
   pecasForm: FormGroup = this.fb.group({
-    id: ['', []],
-    marca: ['', [Validators.required]],
-    descricao: ['', [Validators.required]],
+    idPeca: ['', []],
+    marcaPeca: ['', []],
+    descricaoPeca: ['', []],
+    modeloPeca: ['', []],
   })
-
 
   private itemSelecionado: string = '';
   public loading: boolean;
@@ -57,7 +58,8 @@ export class PecasListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private pecasService: PecasService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private utilService: UtilService
   ) { }
 
   ngOnInit(): void {
@@ -109,9 +111,15 @@ export class PecasListComponent implements OnInit {
 
   getFiltro() {
     this.loading = true;
+    let obj = {
+      idPeca: this.controls.idPeca.value,
+      descricaoPeca: this.controls.descricaoPeca.value,
+      marcaPeca: this.controls.marcaPeca.value,
+      modeloPeca: this.controls.modeloPeca.value,
+    }
     this.pecasService
-      .findByMarca(this.controls.marca.value).
-      subscribe((data:any) => {
+      .buscaFiltro(this.utilService.getParameters(obj)).
+      subscribe((data) => {
         this.table.items = data
         this.loading = false;
       },
@@ -122,6 +130,5 @@ export class PecasListComponent implements OnInit {
         this.notificationService.error('Error ao obter dados');
       })
   }
-
 
 }

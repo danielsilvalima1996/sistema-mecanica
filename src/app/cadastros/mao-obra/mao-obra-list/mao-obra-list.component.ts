@@ -23,8 +23,8 @@ export class MaoObraListComponent implements OnInit {
     },
     actions: [
       { label: 'Adicionar', url: 'cadastro/mao-obra/add' },
-      { label: 'Visualizar', action: () => { this.viewMaoObra() } },
       { label: 'Editar', action: () => { this.editarMaoObra() } },
+      { label: 'Visualizar', action: () => { this.viewMaoObra() } }
     ]
   }
 

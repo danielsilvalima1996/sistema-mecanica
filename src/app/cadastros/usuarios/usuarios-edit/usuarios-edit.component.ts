@@ -51,11 +51,6 @@ export class UsuariosEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    this.usuariosForm.valueChanges.subscribe((_) => {
-      this.page.actions[0].disabled = this.usuariosForm.invalid;
-    })
-
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Usuário';
       this.page.breadcrumb.items = [
@@ -68,6 +63,9 @@ export class UsuariosEditComponent implements OnInit {
           { label: 'Salvar',disabled: true, action: () => { this.cadastrarUsuario(this.usuariosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
+        this.usuariosForm.valueChanges.subscribe((_) => {
+          this.page.actions[0].disabled = this.usuariosForm.invalid;
+        });
         this.disabledId = true;
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Usuário';
@@ -85,6 +83,9 @@ export class UsuariosEditComponent implements OnInit {
           this.id = paramMap.get('id');
         })
         this.getDetailById(this.id);
+        this.usuariosForm.valueChanges.subscribe((_) => {
+          this.page.actions[0].disabled = this.usuariosForm.invalid;
+        });
         this.disabledId = true;
     } else {
       this.page.title = 'Visualizar Usuário';

@@ -53,9 +53,6 @@ export class VeiculosEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.veiculosForm.valueChanges.subscribe((_) => {
-      this.page.actions[0].disabled = this.veiculosForm.invalid;
-    })
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Veículo';
       this.page.breadcrumb.items = [
@@ -69,6 +66,9 @@ export class VeiculosEditComponent implements OnInit {
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
       this.disabledId = true;
+      this.veiculosForm.valueChanges.subscribe((_) => {
+        this.page.actions[0].disabled = this.veiculosForm.invalid;
+      });
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Veículo';
       this.page.breadcrumb.items = [
@@ -80,8 +80,10 @@ export class VeiculosEditComponent implements OnInit {
         this.page.actions = [
           { label: 'Salvar',disabled:true, action: () => { this.alterVeiculo() } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
-
+        ];
+        this.veiculosForm.valueChanges.subscribe((_) => {
+          this.page.actions[0].disabled = this.veiculosForm.invalid;
+        });
       this.disabledId = true;
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         this.id = paramMap.get('id');

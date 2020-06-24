@@ -49,10 +49,6 @@ export class MaoObraEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.maoObraForm.valueChanges.subscribe((_) => {
-      this.page.actions[0].disabled = this.maoObraForm.invalid;
-    })
-
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Mão de Obra';
       this.disabledId = true;
@@ -65,7 +61,10 @@ export class MaoObraEditComponent implements OnInit {
         this.page.actions = [
           { label: 'Salvar',disabled:true, action: () => { this.cadastrarMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
-        ]
+        ];
+        this.maoObraForm.valueChanges.subscribe((_) => {
+          this.page.actions[0].disabled = this.maoObraForm.invalid;
+        });
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Mão de Obra';
       this.disabledId = true;
@@ -84,6 +83,9 @@ export class MaoObraEditComponent implements OnInit {
         this.id = paramMap.get('id');
       })
       this.getDetailById(this.id);
+      this.maoObraForm.valueChanges.subscribe((_) => {
+        this.page.actions[0].disabled = this.maoObraForm.invalid;
+      });
     } else {
       this.page.title = 'Visualizar Mão de Obra';
       this.disabledId = true;
@@ -109,8 +111,6 @@ export class MaoObraEditComponent implements OnInit {
     this.maoObraService
       .findById(id)
       .subscribe((data) => {
-        console.log(data);
-        
         this.maoObraForm.setValue(data)
       })
   }
