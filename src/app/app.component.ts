@@ -64,7 +64,7 @@ export class AppComponent {
         let profile = {
           title: data.username,
           subtitle: data.email,
-          avatar: 'https://api.adorable.io/avatars/400/a98c283e370d84402555a93095ecc264.png'
+          avatar: data.avatar
         }
         this.profile = profile;
       })
