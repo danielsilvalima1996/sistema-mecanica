@@ -25,4 +25,8 @@ export class UsuariosService {
     return this.http.post(`${this.relativeLink}`, users) as Observable<Users>;
   }
 
+  public alterUser(users: Users): Observable<Users> {
+    return this.http.put(`${this.relativeLink}`, users) as Observable<Users>;
+  }
+
 }

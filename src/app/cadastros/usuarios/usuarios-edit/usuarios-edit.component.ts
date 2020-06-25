@@ -76,7 +76,7 @@ export class UsuariosEditComponent implements OnInit {
         { label: 'Editar Usuário' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled: true, action: () => { this.salvar() } },
+          { label: 'Salvar',disabled: true, action: () => { this.alterUsuario(this.usuariosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -114,6 +114,28 @@ export class UsuariosEditComponent implements OnInit {
         this.usuariosForm.setValue(data)
       })
   }
+
+  alterUsuario(usuario: Users) {
+    this.loading = true;
+    if (this.usuariosForm.invalid) {
+      this.notificationService.warning('Formulário Inválido!');
+      this.loading = false;
+      return;
+    } else {
+      this.usuariosService
+        .alterUser(usuario)
+        .subscribe((data) => {
+          this.notificationService.success('Usuário alterado com sucesso!');
+          this.router.navigate(['cadastro/usuarios/']);
+          this.loading = false;
+        },
+          (error: any) => {
+            this.notificationService.error('Erro ao salvar usuário!');
+            this.loading = false;
+          })
+    }
+  }
+
 
   cadastrarUsuario(users: Users) {
     this.loading = true;
