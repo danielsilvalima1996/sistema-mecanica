@@ -7,6 +7,8 @@ import { OrdensServicosAdd, OrdensServicos } from 'src/app/interfaces/ordens-ser
 import { VeiculoService } from 'src/app/services/veiculo/veiculo.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
+import { LoginService } from 'src/app/services/authentication/login/login.service';
+import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-ordem-servico-add',
@@ -32,7 +34,8 @@ export class OrdemServicoAddComponent implements OnInit {
     tipoPessoa: <Array<PoSelectOption>>[
       { label: 'CNPJ', value: 'j' },
       { label: 'CPF', value: 'f' }
-    ]
+    ],
+    usuarios: <Array<PoSelectOption>>[]
   }
 
   public mask: string = '999.999.999-99';
@@ -47,11 +50,14 @@ export class OrdemServicoAddComponent implements OnInit {
     private notificationService: PoNotificationService,
     private router: Router,
     private veiculoService: VeiculoService,
-    private osService: OrdensServicosService
+    private osService: OrdensServicosService,
+    private loginService: LoginService,
+    private usuariosService: UsuariosService
   ) { }
 
   ngOnInit(): void {
     this.listarVeiculos();
+    this.listarUsuarios();
 
     this.osAddForm = this.fb.group({
       nomeCliente: ['', [Validators.required]],
@@ -60,8 +66,12 @@ export class OrdemServicoAddComponent implements OnInit {
       telefone: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
       observacoes: ['', []],
       idVeiculo: ['', [Validators.required]],
-      idUsuario: [1, []],
+      idUsuario: ['', []],
       tipoPessoa: ['f', [Validators.required]]
+    })
+
+    this.loginService.getUserInformation$.subscribe((data) => {
+      this.controls['idUsuario'].setValue(data.id);
     })
 
     this.osAddForm.valueChanges
@@ -135,6 +145,18 @@ export class OrdemServicoAddComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.log('Error veiculos: ', error.error);
         this.notificationService.error('Error ao listar veiculos.')
+      })
+  }
+
+  private listarUsuarios() {
+    this.usuariosService.findByActive(true).subscribe((data) => {
+      data.map((item) => {
+        this.selects.usuarios.push({ label: item.userName, value: item.id });
+      })
+    },
+      (error: HttpErrorResponse) => {
+        console.log('Error veiculos: ', error.error);
+        this.notificationService.error('Error ao listar usuários.')
       })
   }
 

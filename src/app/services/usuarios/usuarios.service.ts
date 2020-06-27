@@ -17,6 +17,10 @@ export class UsuariosService {
     return this.http.get(`${this.relativeLink}/all`) as Observable<Array<Users>>;
   }
 
+  public findByActive(active: boolean): Observable<Array<Users>> {
+    return this.http.get(`${this.relativeLink}/active?active=${active}`) as Observable<Array<Users>>;
+  }
+
   public findById(id: any): Observable<Users> {
     return this.http.get(`${this.relativeLink}/${id}`) as Observable<Users>;
   }
