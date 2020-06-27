@@ -1,13 +1,16 @@
 <po-page-default [p-title]="page.title" [p-actions]="page.actions" [p-breadcrumb]="page.breadcrumb">
 
-    <div class="po-row">
-        <po-input class="po-md-2" p-label='Codigo' p-clean="true" [(ngModel)]="filtros.id"></po-input>
-        <po-input class="po-md-2" p-label='E-mail' p-clean="true" [(ngModel)]="filtros.email"></po-input>
-        <po-input class="po-md-2" p-label='Nome Completo' p-clean="true" [(ngModel)]="filtros.nomeCompleto"></po-input>
-        <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="''"></po-button>
+    <form (keyup.enter)="getFiltro()" [formGroup]="usuariosForm">
 
-    </div>
-
+        <div class="po-row">
+            <po-input class="po-md-2" p-label='Codigo' p-clean="true" formControlName="id"></po-input>
+            <po-input class="po-md-2" p-label='E-mail' p-clean="true" formControlName="email"></po-input>
+            <po-input class="po-md-2" p-label='Nome de Usuário' p-clean="true" formControlName="userName"></po-input>
+            <po-select class="po-md-2" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="getFiltro()"></po-button>
+        </div>
+    
+        </form>
 
 
 
@@ -15,5 +18,10 @@
         p-sort="true" p-striped="true" (p-selected)="getSelected($event)" (p-unselected)="getUnSelected()"
         p-hide-text-overflow="true" p-checkbox="true" p-single-select="true">
     </po-table>
+
+    <po-loading-overlay *ngIf="loading"
+    p-screen-lock="true"
+    p-text="Carregando">
+</po-loading-overlay>
 
 </po-page-default>

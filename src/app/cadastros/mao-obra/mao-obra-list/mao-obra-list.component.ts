@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MaoObraService } from 'src/app/services/mao-obra/mao-obra.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { UtilService } from 'src/app/services/utils/util.service';
 
 @Component({
   selector: 'app-mao-obra-list',
@@ -40,15 +41,17 @@ export class MaoObraListComponent implements OnInit {
     loading: false
   }
 
-  filtros = {
-    codigo: '',
-    descricao: ''
-  }
-
   maoObraForm: FormGroup = this.fb.group({
-    codigo: ['',[]],
-    descricao: ['', [Validators.required]]
+    id: ['',[]],
+    descricao: ['', []],
+    active:['']
   })
+
+  selects = {
+    ativoOptions: <Array<any>>[
+      { label: 'Ativo', value: true },
+      { label: 'Inativo', value: false }]
+  }
 
   private itemSelecionado: string = '';
   public loading: boolean;
@@ -58,7 +61,8 @@ export class MaoObraListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private maoObraService: MaoObraService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private utilService: UtilService
   ) { }
 
   ngOnInit(): void {
@@ -109,13 +113,27 @@ export class MaoObraListComponent implements OnInit {
     }
   }
 
-  public filterByDescricao() {
+  getFiltro() {
+    this.loading = true;
+    let obj = {
+      id: this.controls.id.value,
+      descricao: this.controls.descricao.value,
+      active:this.controls.active.value
+    }
     this.maoObraService
-      .filterByDescricao(this.controls.descricao.value)
-      .subscribe((data:any) => {
-        this.table.items = data;
+      .buscaFiltro(this.utilService.getParameters(obj)).
+      subscribe((data) => {
+        this.table.items = data
+        this.loading = false;
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.error);
+        this.table.items = [];
+        this.loading = false;
+        this.notificationService.error(error.error['message']);
       })
   }
+
 
 
 }

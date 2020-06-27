@@ -21,7 +21,7 @@ export class MaoObraEditComponent implements OnInit {
   }
 
   maoObraForm: FormGroup = this.fb.group({
-    id: ['',[]],
+    id: ['', []],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
     active: ['', []]
@@ -29,8 +29,8 @@ export class MaoObraEditComponent implements OnInit {
 
 
   selects = {
-    ativoOptions: <Array<PoSelectOption>>[
-      { label: 'Ativo', value: 'true' },
+    ativoOptions: <Array<any>>[
+      { label: 'Ativo', value: true },
       { label: 'Inativo', value: false }]
   }
 
@@ -59,12 +59,15 @@ export class MaoObraEditComponent implements OnInit {
         { label: 'Adicionar Mão de Obra' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled:true, action: () => { this.cadastrarMaoObra(this.maoObraForm.value) } },
+          { label: 'Salvar', disabled: true, action: () => { this.cadastrarMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.maoObraForm.valueChanges.subscribe((_) => {
-          this.page.actions[0].disabled = this.maoObraForm.invalid;
-        });
+      this.maoObraForm.valueChanges.subscribe((_) => {
+        console.log(_);
+        console.log(this.maoObraForm.invalid);
+
+        this.page.actions[0].disabled = this.maoObraForm.invalid;
+      });
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Mão de Obra';
       this.disabledId = true;
@@ -75,7 +78,7 @@ export class MaoObraEditComponent implements OnInit {
         { label: 'Editar Mão de Obra' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled:true, action: () => { this.alterMaoObra(this.maoObraForm.value) } },
+          { label: 'Salvar', disabled: true, action: () => { this.alterMaoObra(this.maoObraForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
 
@@ -100,10 +103,10 @@ export class MaoObraEditComponent implements OnInit {
           { label: 'Salvar', disabled: true },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-          this.id = paramMap.get('id');
-        })
-        this.getDetailById(this.id);
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        this.id = paramMap.get('id');
+      })
+      this.getDetailById(this.id);
     }
   }
 

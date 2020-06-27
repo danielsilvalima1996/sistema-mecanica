@@ -43,13 +43,6 @@ export class VeiculosListComponent implements OnInit {
     loading: false
   }
 
-  filtros: {
-    id: '',
-    marca: '',
-    modelo: '',
-    ano: ''
-  }
-
   veiculosForm: FormGroup = this.fb.group({
     id: ['', []],
     marca: ['', []],

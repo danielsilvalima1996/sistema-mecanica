@@ -33,4 +33,8 @@ export class MaoObraService {
     return this.http.get(`${this.relativeLink}/descricao?descricao=${descricao}`)
   }
 
+  public buscaFiltro(parameters?:any){
+    return this.http.get(`${this.relativeLink}/busca?${parameters}`) as Observable<Array<MaoDeObra>>;
+  }
+
 }
