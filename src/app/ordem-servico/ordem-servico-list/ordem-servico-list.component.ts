@@ -55,13 +55,14 @@ export class OrdemServicoListComponent implements OnInit {
       { label: 'CPF / CNPJ', property: 'cpfCnpj' },
       { label: 'DDD', property: 'ddd' },
       { label: 'Telefone', property: 'telefone' },
-      { label: 'Veiculo', property: 'idVeiculo.modelo' },
+      { label: 'Veiculo', property: 'idVeiculo' },
+      { label: 'Placa', property: 'placa' },
       { label: 'Data Saída', property: 'saida', type: 'date', format: 'dd/MM/yyyy' },
       { label: 'Observações', property: 'observacoes' },
       { label: 'Total Mão de Obra', property: 'totalOsMaoDeObra', type: 'currency', format: 'BRL' },
       { label: 'Total Peças', property: 'totalOsPecas', type: 'currency', format: 'BRL' },
       { label: 'Total Serviço', property: 'totalServico', type: 'currency', format: 'BRL' },
-      { label: 'Responsável', property: 'idUsuario.userName' },
+      { label: 'Responsável', property: 'idUsuario' },
     ],
     items: []
   }
@@ -95,7 +96,25 @@ export class OrdemServicoListComponent implements OnInit {
     this.loading = true;
     this.osService
       .findAll().subscribe((data) => {
-        this.table.items = data;
+        this.table.items = data.map((item) => {
+          return {
+            id: item.id,
+            isFinalizado: item.isFinalizado,
+            entrada: item.entrada,
+            nomeCliente: item.nomeCliente,
+            cpfCnpj: item.cpfCnpj,
+            ddd: item.ddd,
+            telefone: item.telefone,
+            idVeiculo: `${item.idVeiculo.marca} - ${item.idVeiculo.modelo}`,
+            placa: item.placa,
+            saida: item.saida,
+            observacoes: item.observacoes,
+            totalOsMaoDeObra: item.totalOsMaoDeObra,
+            totalOsPecas: item.totalOsPecas,
+            totalServico: item.totalServico,
+            idUsuario: item.idUsuario.userName
+          }
+        });
         this.loading = false;
       },
         (error: HttpErrorResponse) => {

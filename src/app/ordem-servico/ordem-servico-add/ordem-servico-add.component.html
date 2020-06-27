@@ -2,9 +2,6 @@
 
     <po-divider p-label="Dados Cliente"></po-divider>
 
-{{osAddForm.value | json}}
-{{selects.usuarios | json}}
-
     <form [formGroup]="osAddForm" class="po-row">
         <po-input class="po-sm-6 po-md-3 po-lg-3" p-label="Nome Cliente" formControlName="nomeCliente"></po-input>
         <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Tipo Pessoa" [p-options]="selects.tipoPessoa" formControlName="tipoPessoa"></po-select>
@@ -12,7 +9,7 @@
         <po-input class="po-sm-6 po-md-3 po-lg-1" p-label="DDD" p-mask="99" formControlName="ddd"></po-input>
         <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Telefone" p-mask="99999?-9999" formControlName="telefone"></po-input>
         <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Veículo" [p-options]="selects.veiculos" formControlName="idVeiculo"></po-select>
-        <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Responsável" [p-options]="selects.usuarios" formControlName="idUsuario" p-readonly="true"></po-select>
+        <po-input class="po-sm-6 po-md-3 po-lg-3" p-label="Placa" p-maxlength="7" p-minlength="7" formControlName="placa"></po-input>
         <po-textarea class="po-sm-12 po-md-12 po-lg-12" p-label="Observações" formControlName="observacoes"></po-textarea>
     </form>
 

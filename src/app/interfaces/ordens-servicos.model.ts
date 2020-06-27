@@ -13,9 +13,10 @@ export interface OrdensServicos {
     telefone: string,
     observacoes: string,
     idVeiculo: Veiculo | null,
-    idOsMaoDeObra: OsMaoDeObra | null,
+    placa: string,
+    idOsMaoDeObra: Array<OsMaoDeObra> | null,
     totalOsMaoDeObra: number,
-    idOsPecas: OsPecas | null,
+    idOsPecas: Array<OsPecas> | null,
     totalOsPecas: number,
     totalServico: number,
     idUsuario: Users | null,
@@ -33,5 +34,6 @@ export interface OrdensServicosAdd {
     }
     idUsuario: {
         id: number
-    }
+    },
+    placa: string
 }

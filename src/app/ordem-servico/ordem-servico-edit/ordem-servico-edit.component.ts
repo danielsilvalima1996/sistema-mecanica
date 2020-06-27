@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
+import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService, PoTableColumn, PoTableAction } from '@po-ui/ng-components';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
@@ -7,6 +7,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MaoObraService } from 'src/app/services/mao-obra/mao-obra.service';
 import { VeiculoService } from 'src/app/services/veiculo/veiculo.service';
 import { OrdensServicos } from 'src/app/interfaces/ordens-servicos.model';
+import { OsMaoDeObraEnvio, OsMaoDeObra } from 'src/app/interfaces/os-mao-de-obra';
+import { OsMaoObraService } from 'src/app/services/os-mao-obra/os-mao-obra.service';
+import { OsPecasService } from 'src/app/services/os-pecas/os-pecas.service';
+import { PecasService } from 'src/app/services/pecas/pecas.service';
+import { OsPecasEnvio } from 'src/app/interfaces/os-pecas';
 
 @Component({
   selector: 'app-ordem-servico-edit',
@@ -17,11 +22,7 @@ export class OrdemServicoEditComponent implements OnInit {
 
   public page: PoPageDefault = {
     title: 'Nova OS',
-    actions: [
-      { label: 'Atualizar', action: () => { this.alterar() }, disabled: true },
-      { label: 'Finalizar Serviço', action: () => { this.finalizarServico() }, type: 'danger' },
-      { label: 'Voltar', action: () => { this.dialogVoltar() } }
-    ]
+    actions: []
   }
 
   private id: number;
@@ -31,20 +32,26 @@ export class OrdemServicoEditComponent implements OnInit {
   public tableMao = {
     columns: <Array<PoTableColumn>>[
       { label: 'Id', property: 'id' },
-      { label: 'Qtd', property: 'qtd' },
+      { label: 'Quantidade', property: 'quantidade' },
       { label: 'Valor Unitário', property: 'valorUnitario', type: 'currency', format: 'BRL' },
       { label: '', property: 'total', type: 'currency', format: 'BRL' }
     ],
-    items: []
+    items: <Array<any>>[],
+    actions: <Array<PoTableAction>>[
+      { label: 'Remover', icon: 'po-icon po-icon-close', action: this.removeMaoObra.bind(this) }
+    ]
   }
   public tablePeca = {
     columns: <Array<PoTableColumn>>[
       { label: 'Id', property: 'id' },
-      { label: 'Qtd', property: 'qtd' },
+      { label: 'Quantidade', property: 'quantidade' },
       { label: 'Valor Unitário', property: 'valorUnitario', type: 'currency', format: 'BRL' },
       { label: '', property: 'total', type: 'currency', format: 'BRL' }
     ],
-    items: []
+    items: [],
+    actions: <Array<PoTableAction>>[
+      { label: 'Remover', icon: 'po-icon po-icon-close', action: this.removePecas.bind(this) }
+    ]
   }
 
 
@@ -78,22 +85,38 @@ export class OrdemServicoEditComponent implements OnInit {
     private route: ActivatedRoute,
     private osService: OrdensServicosService,
     private maoObraService: MaoObraService,
-    private veiculoService: VeiculoService
+    private veiculoService: VeiculoService,
+    private osMaoObraService: OsMaoObraService,
+    private osPecasService: OsPecasService,
+    private pecasService: PecasService
   ) { }
 
   ngOnInit(): void {
     this.getId();
     this.listarMaoDeObra();
+    this.listarPecas();
     this.listarVeiculos();
     this.findById(this.id);
+
     if (this.router.url.indexOf('edit') != -1) {
       this.tipoRelatorio = 'edit';
       this.page.title = `Editar OS ${this.id}`;
+      this.page.actions = [
+        { label: 'Atualizar', action: () => { this.alterar() }, disabled: true },
+        { label: 'Finalizar Serviço', action: () => { this.finalizarServico() }, type: 'danger' },
+        {
+          label: 'Voltar', action: () => this.dialogVoltar()
+        }
+      ]
     } else {
       this.tipoRelatorio = 'view';
       this.page.title = `Visualizar OS ${this.id}`;
-      // this.page.actions[0].disabled = true;
-      this.page.actions[1].disabled = true;
+      this.page.actions = [
+        { label: 'Imprimir OS', action: () => this.imprimirOs() },
+        {
+          label: 'Voltar', action: () => this.router.navigate(['ordem-servico'])
+        }
+      ]
     }
 
     this.osAddForm = this.fb.group({
@@ -106,6 +129,7 @@ export class OrdemServicoEditComponent implements OnInit {
       telefone: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
       observacoes: ['', []],
       idVeiculo: ['', []],
+      placa: ['', []],
       idOsMaoDeObra: ['', []],
       totalMaoDeObra: ['', []],
       idOsPecas: ['', []],
@@ -134,12 +158,12 @@ export class OrdemServicoEditComponent implements OnInit {
       })
 
     this.maoObraForm = this.fb.group({
-      qtd: ['', [Validators.required]],
+      quantidade: ['', [Validators.required]],
       idMaoDeObra: ['', [Validators.required]]
     })
 
     this.pecasForm = this.fb.group({
-      qtd: ['', [Validators.required]],
+      quantidade: ['', [Validators.required]],
       idPecas: ['', [Validators.required]]
     })
 
@@ -156,25 +180,43 @@ export class OrdemServicoEditComponent implements OnInit {
   }
 
   public addMaoObra(event) {
-    let obj = {
-      idMaoDeObra: event['id'],
-      idOrdensServico: this.id,
-      qtd: event['qtd']
+    this.loading = true;
+    let obj: OsMaoDeObraEnvio = {
+      idMaoDeObra: {
+        id: event['idMaoDeObra']
+      },
+      quantidade: event['quantidade']
     }
-    console.log(obj);
-    this.tableMao.items.push({ id: null, descricao: event['id'], qtd: obj.qtd, valorUnitario: 10, total: 100 })
-    this.maoObraForm.reset();
+    this.osMaoObraService
+      .createOsMaoDeObra(obj, this.id)
+      .subscribe((data) => {
+        this.maoObraForm.reset();
+        this.findById(this.id);
+      },
+        (error: HttpErrorResponse) => {
+          this.notificationService.error(error.message);
+          this.loading = false;
+        })
   }
 
   public addPeca(event) {
-    let obj = {
-      idOrdensServico: this.id,
-      idPecas: event['id'],
-      qtd: event['qtd']
+    this.loading = true;
+    let obj: OsPecasEnvio = {
+      idPecas: {
+        id: event['idPecas']
+      },
+      quantidade: event['quantidade']
     }
-    console.log(obj);
-    this.tablePeca.items.push({ id: null, descricao: event['id'], qtd: obj.qtd, valorUnitario: 10, total: 100 })
-    this.pecasForm.reset();
+    this.osPecasService
+      .createOsPecas(obj, this.id)
+      .subscribe((data) => {
+        this.maoObraForm.reset();
+        this.findById(this.id);
+      },
+        (error: HttpErrorResponse) => {
+          this.notificationService.error(error.message);
+          this.loading = false;
+        })
   }
 
   private dialogVoltar() {
@@ -185,11 +227,39 @@ export class OrdemServicoEditComponent implements OnInit {
     })
   }
 
+  private removeMaoObra(event) {
+    this.loading = true;
+    let obj = this.osGet.idOsMaoDeObra.find(item => item.id == event['id'])
+    this.osMaoObraService
+      .deleteOsMaoDeObra(obj, this.id)
+      .subscribe((_) => {
+        this.findById(this.id);
+      },
+        (error: HttpErrorResponse) => {
+          this.notificationService.error(error.message);
+          this.loading = false;
+        })
+  }
+
+  private removePecas(event) {
+    this.loading = true;
+    let obj = this.osGet.idOsPecas.find(item => item.id == event['id'])
+    this.osPecasService
+      .deleteOsPecas(obj, this.id)
+      .subscribe((_) => {
+        this.findById(this.id);
+      },
+        (error: HttpErrorResponse) => {
+          this.notificationService.error(error.message);
+          this.loading = false;
+        })
+  }
+
   private alterar() {
     this.loading = true;
-    this.osGet.ddd = this.controls['ddd'].value,
-      this.osGet.telefone = this.controls['telefone'].value,
-      this.osGet.observacoes = this.controls['observacoes'].value
+    this.osGet.ddd = this.controls['ddd'].value;
+    this.osGet.telefone = this.controls['telefone'].value;
+    this.osGet.observacoes = this.controls['observacoes'].value;
 
     this.osService.alterOs(this.osGet)
       .subscribe((data) => {
@@ -219,6 +289,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.controls['telefone'].setValue(data.telefone);
         this.controls['observacoes'].setValue(data.observacoes);
         this.controls['idVeiculo'].setValue(data.idVeiculo.id ? data.idVeiculo.id : null);
+        this.controls['placa'].setValue(data.placa);
         this.controls['idOsMaoDeObra'].setValue(data.idOsMaoDeObra);
         this.controls['totalMaoDeObra'].setValue(data.totalOsMaoDeObra);
         this.controls['idOsPecas'].setValue(data.idOsPecas);
@@ -226,6 +297,24 @@ export class OrdemServicoEditComponent implements OnInit {
         this.controls['totalServico'].setValue(data.totalServico);
         this.controls['idUsuario'].setValue(data.idUsuario.userName ? data.idUsuario.userName : '');
         this.controls['isFinalizado'].setValue(data.isFinalizado);
+
+        this.tableMao.items = data.idOsMaoDeObra.map((item) => {
+          return {
+            id: item.id,
+            quantidade: item.quantidade,
+            valorUnitario: item.idMaoDeObra.valorUnitario,
+            total: item.total
+          }
+        });
+
+        this.tablePeca.items = data.idOsPecas.map((item) => {
+          return {
+            id: item.id,
+            quantidade: item.quantidade,
+            valorUnitario: item.idPecas.valorUnitario,
+            total: item.total,
+          }
+        })
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
@@ -240,12 +329,27 @@ export class OrdemServicoEditComponent implements OnInit {
     this.maoObraService.findAll()
       .subscribe((data) => {
         data.map((item) => {
-          this.selects.maoDeObra.push({ label: item.descricao, value: item.id })
+          this.selects.maoDeObra.push({ label: `${item.descricao} - R$ ${item.valorUnitario}`, value: item.id })
         })
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
-          console.log('Error carregar mão de obra: ', error.error);
+          console.log('Error carregar mão de obra: ', error.message);
+          this.loading = false;
+        })
+  }
+
+  private listarPecas() {
+    this.loading = false;
+    this.pecasService.findAll()
+      .subscribe((data) => {
+        data.map((item) => {
+          this.selects.pecas.push({ label: `${item.descricao} - R$ ${item.valorUnitario}`, value: item.id })
+        })
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          console.log('Error carregar peças: ', error.message);
           this.loading = false;
         })
   }
@@ -280,6 +384,10 @@ export class OrdemServicoEditComponent implements OnInit {
           this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
           this.loading = false;
         })
+  }
+
+  private imprimirOs() {
+    this.notificationService.information('implementar depois')
   }
 
 }

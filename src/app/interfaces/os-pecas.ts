@@ -3,9 +3,14 @@ import { Pecas } from './pecas'
 
 export interface OsPecas {
     id: number,
-    quantidade: number,
     total: number,
-    idOrdemServico: OrdensServicos,
-    idPecas: Array<Pecas>,
-    valorUnitario: number
+    idPecas: Pecas,
+    quantidade: number
+}
+
+export interface OsPecasEnvio {
+    idPecas: {
+        id: number
+    },
+    quantidade: number
 }

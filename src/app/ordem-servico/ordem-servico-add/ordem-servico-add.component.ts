@@ -67,7 +67,8 @@ export class OrdemServicoAddComponent implements OnInit {
       observacoes: ['', []],
       idVeiculo: ['', [Validators.required]],
       idUsuario: ['', []],
-      tipoPessoa: ['f', [Validators.required]]
+      tipoPessoa: ['f', [Validators.required]],
+      placa: ['', Validators.required, Validators.minLength(7), Validators.maxLength(7), Validators.pattern("^[A-Za-z0-9]*\\d+[A-Za-z0-9]*$")]
     })
 
     this.loginService.getUserInformation$.subscribe((data) => {
@@ -117,10 +118,9 @@ export class OrdemServicoAddComponent implements OnInit {
       },
       idUsuario: {
         id: this.controls['idUsuario'].value
-      }
-
+      },
+      placa: this.controls['placa'].value
     }
-    console.log(os, 'id usuario chumbado');
 
     this.osService.createOs(os)
       .subscribe((data) => {
@@ -130,7 +130,7 @@ export class OrdemServicoAddComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           this.notificationService.error('Error ao salvar OS');
-          console.log('Error OS: ', error.error);
+          console.log('Error OS: ', error.message);
           this.loading = false;
         })
 

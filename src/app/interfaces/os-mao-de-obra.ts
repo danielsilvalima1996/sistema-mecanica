@@ -5,7 +5,12 @@ export interface OsMaoDeObra {
     id: number,
     quantidade: number,
     total: number,
-    idOrdemServico: OrdensServicos,
-    idMaoDeObra: MaoDeObra,
-    valorUnitario: number,
+    idMaoDeObra: MaoDeObra
+}
+
+export interface OsMaoDeObraEnvio {
+    idMaoDeObra: {
+        id: number
+    },
+    quantidade: number
 }
