@@ -33,4 +33,8 @@ export class UsuariosService {
     return this.http.put(`${this.relativeLink}`, users) as Observable<Users>;
   }
 
+  public buscaFiltro(parameters?:any){
+    return this.http.get(`${this.relativeLink}/busca?${parameters}`) as Observable<Array<Users>>;
+  }
+
 }

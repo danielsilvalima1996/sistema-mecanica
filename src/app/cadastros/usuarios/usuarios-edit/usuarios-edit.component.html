@@ -3,11 +3,11 @@
     <form [formGroup]="usuariosForm">
 
         <div class="po-row">
-            <po-input class="po-md-1" [p-readonly]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
+            <po-input class="po-md-1" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id"></po-input>
             <po-input class="po-md-3" [p-readonly]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="userName"></po-input>
             <po-email class="po-md-3" [p-readonly]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
-            <po-password class="po-md-3" [p-readonly]="disabledFields" formControlName="password"  p-label="Senha"></po-password>
-            <po-select class="po-md-2" [p-readonly]="disabledFields" p-label="Ativo" p-required="true" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-password class="po-md-3" [p-readonly]="disabledFields" p-error-pattern="A senha deve possuir pelo menos de 6 caracteres e no máximo 12 " formControlName="password"  p-label="Senha"></po-password>
+            <po-select class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
         </div>
     </form>
 

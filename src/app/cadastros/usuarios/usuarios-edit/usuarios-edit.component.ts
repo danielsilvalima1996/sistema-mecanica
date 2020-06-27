@@ -23,23 +23,23 @@ export class UsuariosEditComponent implements OnInit {
   usuariosForm: FormGroup = this.fb.group({
     id: ['', []],
     email: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
     userName: ['', [Validators.required]],
-    avatar:['',[]],
-    active: ['', [Validators.required]]
+    active: [true, []]
   })
 
 
   selects = {
-    ativoOptions: <Array<PoSelectOption>>[
-      { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: 'false' }]
+    ativoOptions: <Array<any>>[
+      { label: 'Ativo', value: true },
+      { label: 'Inativo', value: false }]
   }
 
   public disabledId: boolean = false;
   public disabledFields: boolean = false;
   public loading: boolean;
   public id: any;
+  public tipoTela: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -53,6 +53,7 @@ export class UsuariosEditComponent implements OnInit {
   ngOnInit(): void {
     if (this.router.url.indexOf('add') != -1) {
       this.page.title = 'Adicionar Usuário';
+      this.tipoTela = 'add';
       this.page.breadcrumb.items = [
         { label: 'Home' },
         { label: 'Cadastros' },
@@ -63,12 +64,10 @@ export class UsuariosEditComponent implements OnInit {
           { label: 'Salvar',disabled: true, action: () => { this.cadastrarUsuario(this.usuariosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.usuariosForm.valueChanges.subscribe((_) => {
-          this.page.actions[0].disabled = this.usuariosForm.invalid;
-        });
         this.disabledId = true;
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Usuário';
+      this.tipoTela = 'edit';
       this.page.breadcrumb.items = [
         { label: 'Home' },
         { label: 'Cadastros' },
@@ -83,12 +82,10 @@ export class UsuariosEditComponent implements OnInit {
           this.id = paramMap.get('id');
         })
         this.getDetailById(this.id);
-        this.usuariosForm.valueChanges.subscribe((_) => {
-          this.page.actions[0].disabled = this.usuariosForm.invalid;
-        });
         this.disabledId = true;
     } else {
       this.page.title = 'Visualizar Usuário';
+      this.tipoTela = 'view';
       this.disabledFields = true;
       this.page.breadcrumb.items = [
         { label: 'Home' },
@@ -104,6 +101,12 @@ export class UsuariosEditComponent implements OnInit {
           this.id = paramMap.get('id');
         })
         this.getDetailById(this.id);
+    };
+
+    if(this.tipoTela != 'view'){
+      this.usuariosForm.valueChanges.subscribe((_) => {
+        this.page.actions[0].disabled = this.usuariosForm.invalid;
+      });
     }
   }
 

@@ -3,7 +3,7 @@
     <form [formGroup]="maoObraForm">
 
         <div class="po-row">
-            <po-input class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id" p-required="true" formControlName="id"></po-input>
+            <po-input class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id"></po-input>
             <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
             <po-decimal
             class="po-md-2"
