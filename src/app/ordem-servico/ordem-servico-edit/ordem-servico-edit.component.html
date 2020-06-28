@@ -3,6 +3,7 @@
     <po-divider p-label="Cabeçalho"></po-divider>
 
     <form [formGroup]="osAddForm" class="po-row">
+        <po-tag class="po-sm-6 po-md-3 po-lg-2"  [p-color]="tag.color" p-icon="true" [p-label]="tag.label" [p-type]="tag.type" [p-value]="tag.value"></po-tag>
         <po-input class="po-sm-6 po-md-3 po-lg-3" p-label="Nome Cliente" p-readonly="true" p-clean formControlName="nomeCliente"></po-input>
         <po-datepicker class="po-sm-6 po-md-3 po-lg-2" p-label="Data Entrada" formControlName="entrada" p-readonly="true"></po-datepicker>
         <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Tipo Pessoa" [p-options]="selects.tipoPessoa" [p-readonly]="tipoRelatorio == 'view'" formControlName="tipoPessoa"></po-select>

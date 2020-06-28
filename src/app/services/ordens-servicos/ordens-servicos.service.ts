@@ -13,8 +13,8 @@ export class OrdensServicosService {
 
   constructor(private http: HttpClient) { }
 
-  public findAll(): Observable<Array<OrdensServicos>> {
-    return this.http.get(`${this.relativeLink}/all`) as Observable<Array<OrdensServicos>>;
+  public findAll(parameters: any): Observable<Array<OrdensServicos>> {
+    return this.http.get(`${this.relativeLink}/all?${parameters}`) as Observable<Array<OrdensServicos>>;
   }
 
   public findById(id: number): Observable<OrdensServicos> {
@@ -29,7 +29,11 @@ export class OrdensServicosService {
     return this.http.put(`${this.relativeLink}`, os) as Observable<OrdensServicos>;
   }
 
-  public finalizarOs(os: OrdensServicos): Observable<OrdensServicos> {
-    return this.http.put(`${this.relativeLink}/finalizar`, os) as Observable<OrdensServicos>;
+  public finalizarOs(id: number): Observable<OrdensServicos> {
+    return this.http.put(`${this.relativeLink}/finalizar/${id}`, null) as Observable<OrdensServicos>;
+  }
+
+  public cancelarOs(id: number): Observable<OrdensServicos> {
+    return this.http.put(`${this.relativeLink}/cancelar/${id}`, null) as Observable<OrdensServicos>;
   }
 }

@@ -33,6 +33,9 @@ export class VeiculoService {
     return this.http.get(`${this.relativeLink}/buscar-por-filtros?${parameters}`) as Observable<Array<Veiculo>>;
   }
 
+  public findByActive(): Observable<Array<Veiculo>> {
+    return this.http.get(`${this.relativeLink}/buscar-veiculos-ativos`) as Observable<Array<Veiculo>>;
+  }
 
 }
 

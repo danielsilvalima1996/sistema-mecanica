@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService, PoTableColumn, PoTableAction } from '@po-ui/ng-components';
+import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService, PoTableColumn, PoTableAction, PoTagType } from '@po-ui/ng-components';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
@@ -77,6 +77,13 @@ export class OrdemServicoEditComponent implements OnInit {
 
   public labelPessoa: string = 'CPF';
 
+  public tag = {
+    color: '',
+    label: 'Status',
+    type: <PoTagType>'',
+    value: '',
+  }
+
   constructor(
     private fb: FormBuilder,
     private dialog: PoDialogService,
@@ -103,10 +110,9 @@ export class OrdemServicoEditComponent implements OnInit {
       this.page.title = `Editar OS ${this.id}`;
       this.page.actions = [
         { label: 'Atualizar', action: () => { this.alterar() }, disabled: true },
-        { label: 'Finalizar Serviço', action: () => { this.finalizarServico() }, type: 'danger' },
-        {
-          label: 'Voltar', action: () => this.dialogVoltar()
-        }
+        { label: 'Voltar', action: () => this.dialogVoltar() },
+        { label: 'Finalizar Serviço', action: () => { this.finalizarServico() } },
+        { label: 'Cancelar Serviço', action: () => { this.cancelarServico() }, type: 'danger', separator: true }
       ]
     } else {
       this.tipoRelatorio = 'view';
@@ -268,7 +274,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
-          console.log('Error ao atualizar OS ' + this.osGet.id, error.error);
+          console.log('Error ao atualizar OS ' + this.osGet.id, error.message);
           this.notificationService.success('Error ao atualizar OS ' + this.osGet.id);
           this.loading = false;
         })
@@ -298,6 +304,20 @@ export class OrdemServicoEditComponent implements OnInit {
         this.controls['idUsuario'].setValue(data.idUsuario.userName ? data.idUsuario.userName : '');
         this.controls['isFinalizado'].setValue(data.isFinalizado);
 
+        if (data.isFinalizado == 0) {
+          this.tag.color = 'color-08';
+          this.tag.type = PoTagType.Warning;
+          this.tag.value = 'Em Andamento';
+        } else if (data.isFinalizado == 1) {
+          this.tag.color = 'color-11';
+          this.tag.type = PoTagType.Success;
+          this.tag.value = 'Finalizado';
+        } else {
+          this.tag.color = 'color-07';
+          this.tag.type = PoTagType.Danger;
+          this.tag.value = 'Cancelado';
+        }
+
         this.tableMao.items = data.idOsMaoDeObra.map((item) => {
           return {
             id: item.id,
@@ -318,7 +338,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
-          console.log('Error ao carregar: ', error.error);
+          console.log('Error ao carregar: ', error.message);
           this.notificationService.error('Error ao carregar OS ' + id);
           this.loading = false;
         })
@@ -356,7 +376,7 @@ export class OrdemServicoEditComponent implements OnInit {
 
   private listarVeiculos() {
     this.loading = true;
-    this.veiculoService.findAll()
+    this.veiculoService.findByActive()
       .subscribe((data) => {
         data.map((item) => {
           this.selects.veiculos.push({ label: `${item.marca} - ${item.modelo}`, value: item.id });
@@ -364,7 +384,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
-          console.log('Error veiculos: ', error.error);
+          console.log('Error veiculos: ', error.message);
           this.notificationService.error('Error ao listar veiculos.');
           this.loading = false;
         })
@@ -372,15 +392,29 @@ export class OrdemServicoEditComponent implements OnInit {
 
   private finalizarServico() {
     this.loading = true;
-    this.osGet.isFinalizado = true;
-    this.osService.alterOs(this.osGet)
+    this.osService.finalizarOs(this.osGet.id)
       .subscribe((data) => {
-        this.notificationService.success('OS ' + this.osGet.id + ' atualizada com sucesso!');
+        this.notificationService.success('OS ' + this.osGet.id + ' finalizada com sucesso!');
         this.router.navigate(['/ordem-servico/view', data.id]);
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
-          console.log('Error ao carregar: ', error.error);
+          console.log('Error ao carregar: ', error.message);
+          this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
+          this.loading = false;
+        })
+  }
+
+  private cancelarServico() {
+    this.loading = true;
+    this.osService.cancelarOs(this.osGet.id)
+      .subscribe((data) => {
+        this.notificationService.success('OS ' + this.osGet.id + ' cancelada com sucesso!');
+        this.router.navigate(['/ordem-servico/view', data.id]);
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          console.log('Error ao carregar: ', error.message);
           this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
           this.loading = false;
         })

@@ -4,8 +4,8 @@ import { PoMenuItem, PoDialogService, PoNotificationService, PoToolbarProfile, P
 import { LoginService } from './services/authentication/login/login.service';
 import { Router } from '@angular/router';
 import { Users } from './interfaces/users.model';
-const { cpf } = require('cpf-cnpj-validator');
-const { cnpj } = require('cpf-cnpj-validator');
+// const { cpf } = require('cpf-cnpj-validator');
+// const { cnpj } = require('cpf-cnpj-validator');
 
 @Component({
   selector: 'app-root',
@@ -60,16 +60,16 @@ export class AppComponent {
 
       /* Exemplo Validador  https://github.com/carvalhoviniciusluiz/cpf-cnpj-validator */
 
-      let testeCpf = '44961407801'
+      // let testeCpf = '44961407801'
 
-      let e = cpf.isValid(testeCpf);
-      console.log("CPF",e);
+      // let e = cpf.isValid(testeCpf);
+      // console.log("CPF",e);
   
   
-      let testeCnpj = '17534128000138'
+      // let testeCnpj = '17534128000138'
   
-      let f = cnpj.isValid(testeCnpj);
-      console.log("CNPJ",f);
+      // let f = cnpj.isValid(testeCnpj);
+      // console.log("CNPJ",f);
       
   }
 

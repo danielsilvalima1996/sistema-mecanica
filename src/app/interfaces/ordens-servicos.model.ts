@@ -20,7 +20,7 @@ export interface OrdensServicos {
     totalOsPecas: number,
     totalServico: number,
     idUsuario: Users | null,
-    isFinalizado: boolean
+    isFinalizado: number
 }
 
 export interface OrdensServicosAdd {
