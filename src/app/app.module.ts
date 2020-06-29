@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +9,7 @@ import { LoginModule } from './login/login.module';
 import { OrdemServicoModule } from './ordem-servico/ordem-servico.module';
 import { InterceptorService } from './authentication/interceptor/interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
     PoModule,
     LoginModule,
     OrdemServicoModule,
+    DashboardModule,
     RouterModule.forRoot([])
   ],
   providers: [

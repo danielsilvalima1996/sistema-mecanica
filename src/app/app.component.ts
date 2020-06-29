@@ -28,6 +28,7 @@ export class AppComponent {
   ]
 
   menus: Array<PoMenuItem> = [
+    {label: 'Dashboard', icon: 'po-icon po-icon-home', shortLabel: 'Dashboard', link: '/dashboard'},
     {
       label: 'Cadastros', icon: 'po-icon po-icon-edit', shortLabel: 'Cadastros', subItems: [
         { label: 'Mão de Obra', icon: 'po-icon po-icon-menu', shortLabel: '', link: '/cadastro/mao-obra' },

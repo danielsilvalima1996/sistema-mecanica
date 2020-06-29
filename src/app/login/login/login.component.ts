@@ -25,14 +25,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.criarFormulario();
     this.getIsLogged();
-    console.log("ok")
   }
   
 
    getIsLogged() {
      this.loginService.getIsLogged$.subscribe((data) => {
        if (data) {
-         this.router.navigate(['/ordem-servico']);
+         this.router.navigate(['/dashboard']);
        }
      })
    }
