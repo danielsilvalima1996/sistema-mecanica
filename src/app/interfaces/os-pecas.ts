@@ -3,6 +3,7 @@ import { Pecas } from './pecas'
 
 export interface OsPecas {
     id: number,
+    valorUnitario: number,
     total: number,
     idPecas: Pecas,
     quantidade: number

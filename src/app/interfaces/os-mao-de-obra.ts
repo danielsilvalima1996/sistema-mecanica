@@ -4,6 +4,7 @@ import { MaoDeObra } from './mao-de-obra';
 export interface OsMaoDeObra {
     id: number,
     quantidade: number,
+    valorUnitario: number,
     total: number,
     idMaoDeObra: MaoDeObra
 }

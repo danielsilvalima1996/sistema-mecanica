@@ -32,6 +32,7 @@ export class OrdemServicoEditComponent implements OnInit {
   public tableMao = {
     columns: <Array<PoTableColumn>>[
       { label: 'Id', property: 'id' },
+      { label: 'Descrição', property: 'descricao' },
       { label: 'Quantidade', property: 'quantidade' },
       { label: 'Valor Unitário', property: 'valorUnitario', type: 'currency', format: 'BRL' },
       { label: '', property: 'total', type: 'currency', format: 'BRL' }
@@ -44,6 +45,7 @@ export class OrdemServicoEditComponent implements OnInit {
   public tablePeca = {
     columns: <Array<PoTableColumn>>[
       { label: 'Id', property: 'id' },
+      { label: 'Descrição', property: 'descricao' },
       { label: 'Quantidade', property: 'quantidade' },
       { label: 'Valor Unitário', property: 'valorUnitario', type: 'currency', format: 'BRL' },
       { label: '', property: 'total', type: 'currency', format: 'BRL' }
@@ -321,8 +323,9 @@ export class OrdemServicoEditComponent implements OnInit {
         this.tableMao.items = data.idOsMaoDeObra.map((item) => {
           return {
             id: item.id,
+            descricao: item.idMaoDeObra.descricao,
             quantidade: item.quantidade,
-            valorUnitario: item.idMaoDeObra.valorUnitario,
+            valorUnitario: item.valorUnitario,
             total: item.total
           }
         });
@@ -330,8 +333,9 @@ export class OrdemServicoEditComponent implements OnInit {
         this.tablePeca.items = data.idOsPecas.map((item) => {
           return {
             id: item.id,
+            descricao: item.idPecas.descricao,
             quantidade: item.quantidade,
-            valorUnitario: item.idPecas.valorUnitario,
+            valorUnitario: item.valorUnitario,
             total: item.total,
           }
         })
