@@ -198,6 +198,7 @@ export class OrdemServicoEditComponent implements OnInit {
     this.osMaoObraService
       .createOsMaoDeObra(obj, this.id)
       .subscribe((data) => {
+        this.notificationService.success(`Mão de obra adicionada com sucesso!`);
         this.maoObraForm.reset();
         this.findById(this.id);
       },
@@ -218,6 +219,7 @@ export class OrdemServicoEditComponent implements OnInit {
     this.osPecasService
       .createOsPecas(obj, this.id)
       .subscribe((data) => {
+        this.notificationService.success(`Peça adicionada com sucesso!`);
         this.maoObraForm.reset();
         this.findById(this.id);
       },
@@ -241,6 +243,7 @@ export class OrdemServicoEditComponent implements OnInit {
     this.osMaoObraService
       .deleteOsMaoDeObra(obj, this.id)
       .subscribe((_) => {
+        this.notificationService.success(`Mão de obra ${obj.idMaoDeObra.descricao} removida com sucesso!`);
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {
@@ -255,6 +258,7 @@ export class OrdemServicoEditComponent implements OnInit {
     this.osPecasService
       .deleteOsPecas(obj, this.id)
       .subscribe((_) => {
+        this.notificationService.success(`Peça ${obj.idPecas.descricao} removida com sucesso!`);
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {
