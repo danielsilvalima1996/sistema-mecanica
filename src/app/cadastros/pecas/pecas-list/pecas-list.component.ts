@@ -48,7 +48,14 @@ export class PecasListComponent implements OnInit {
     marcaPeca: ['', []],
     descricaoPeca: ['', []],
     modeloPeca: ['', []],
+    active:['',[]]
   })
+
+  selects = {
+    ativoOptions: <Array<any>>[
+      { label: 'Ativo', value: true },
+      { label: 'Inativo', value: false }]
+  }
 
   private itemSelecionado: string = '';
   public loading: boolean;
@@ -116,6 +123,7 @@ export class PecasListComponent implements OnInit {
       descricaoPeca: this.controls.descricaoPeca.value,
       marcaPeca: this.controls.marcaPeca.value,
       modeloPeca: this.controls.modeloPeca.value,
+      active:this.controls.active.value
     }
     this.pecasService
       .buscaFiltro(this.utilService.getParameters(obj)).

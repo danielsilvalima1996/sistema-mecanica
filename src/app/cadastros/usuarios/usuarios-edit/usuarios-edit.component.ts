@@ -25,7 +25,7 @@ export class UsuariosEditComponent implements OnInit {
     email: ['', [Validators.required]],
     password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
     userName: ['', [Validators.required]],
-    active: [true, []]
+    active: [true, [Validators.required]]
   })
 
 

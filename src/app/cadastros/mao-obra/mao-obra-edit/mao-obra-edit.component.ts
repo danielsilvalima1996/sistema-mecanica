@@ -24,7 +24,7 @@ export class MaoObraEditComponent implements OnInit {
     id: ['', []],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
-    active: ['', []]
+    active: [true, [Validators.required]]
   })
 
 
