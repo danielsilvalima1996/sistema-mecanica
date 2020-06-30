@@ -133,7 +133,7 @@ export class MaoObraEditComponent implements OnInit {
           this.loading = false;
         },
           (error: any) => {
-            this.notificationService.error('Erro ao salvar mão de obra!');
+            // //this.notificationService.error('Erro ao salvar mão de obra!');
             this.loading = false;
           })
     }
@@ -154,7 +154,7 @@ export class MaoObraEditComponent implements OnInit {
           this.loading = false;
         },
           (error: any) => {
-            this.notificationService.error('Erro ao salvar mão de obra!');
+            // //this.notificationService.error('Erro ao salvar mão de obra!');
             this.loading = false;
           })
     }

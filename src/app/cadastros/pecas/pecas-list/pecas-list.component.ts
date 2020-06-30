@@ -87,7 +87,7 @@ export class PecasListComponent implements OnInit {
     (error: HttpErrorResponse) => {
       console.log(error.error);
       this.loading = false;
-      this.notificationService.error('Error ao obter dados');
+      // //this.notificationService.error('Error ao obter dados');
     })
   }
 
@@ -127,7 +127,7 @@ export class PecasListComponent implements OnInit {
         console.log(error.error);
         this.table.items = [];
         this.loading = false;
-        this.notificationService.error('Error ao obter dados');
+        //this.notificationService.error('Error ao obter dados');
       })
   }
 

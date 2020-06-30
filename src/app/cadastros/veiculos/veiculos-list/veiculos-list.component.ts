@@ -91,7 +91,7 @@ export class VeiculosListComponent implements OnInit {
         (error: HttpErrorResponse) => {
           console.log(error.error);
           this.loading = false;
-          this.notificationService.error('Error ao obter dados');
+          //this.notificationService.error('Error ao obter dados');
         })
   }
 
@@ -131,7 +131,7 @@ export class VeiculosListComponent implements OnInit {
         console.log(error.error);
         this.table.items = [];
         this.loading = false;
-        this.notificationService.error('Error ao obter dados');
+        //this.notificationService.error('Error ao obter dados');
       })
   }
 

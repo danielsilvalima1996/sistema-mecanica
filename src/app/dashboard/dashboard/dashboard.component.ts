@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           this.loading = false;
-          this.notificationService.error('Error ao carregar dados.')
+          //this.notificationService.error('Error ao carregar dados.')
         })
   }
 

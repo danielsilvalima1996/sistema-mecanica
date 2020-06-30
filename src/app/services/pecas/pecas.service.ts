@@ -33,5 +33,8 @@ export class PecasService {
     return this.http.get(`${this.relativeLink}/buscar-peca-por-filtros?${parameters}`) as Observable<Array<Pecas>>;
   }
 
+  public findAllByActive(): Observable<Array<Pecas>> {
+    return this.http.get(`${this.relativeLink}/listar-pecas-ativas`) as Observable<Array<Pecas>>;
+  }
 
 }

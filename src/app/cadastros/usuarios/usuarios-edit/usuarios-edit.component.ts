@@ -133,7 +133,7 @@ export class UsuariosEditComponent implements OnInit {
           this.loading = false;
         },
           (error: any) => {
-            this.notificationService.error('Erro ao salvar usuário!');
+            //this.notificationService.error('Erro ao salvar usuário!');
             this.loading = false;
           })
     }
@@ -155,7 +155,7 @@ export class UsuariosEditComponent implements OnInit {
           this.loading = false;
         },
           (error: any) => {
-            this.notificationService.error('Erro ao salvar usuário!');
+            //this.notificationService.error('Erro ao salvar usuário!');
             this.loading = false;
           })
     }

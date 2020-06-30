@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/services/authentication/login/login.servic
 import { Router } from '@angular/router';
 import { LoginRetorno } from 'src/app/interfaces/login.model';
 import { Users } from 'src/app/interfaces/users.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -69,31 +70,10 @@ export class LoginComponent implements OnInit {
         this.loginService.setIsLogged$(true);
         this.loading = false;
         console.log("logado")
-      }, (error) => {
-        this.tratarErro(error);
-        this.loginService.setIsLogged$(false);
-        this.notificationService.error('Acesso Negado!');
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
         this.loading = false;
       });
   }
 
-  tratarErro(error) {
-
-    this.loading = false;
-    this.isSubmited = false;
-
-    if (error.status == 404) {
-      this.notificationService.error('Email não cadastrado!');
-      return;
-
-    } else if (error.status == 401) {
-      this.notificationService.error('Senha Inválida!');
-      return;
-
-    } else {
-      console.log("Erro nao esperado ao logar: " + error);
-      this.notificationService.error('Ocorreu um erro não esperado. Por favor contate o suporte.');
-    }
-
-  }
 }

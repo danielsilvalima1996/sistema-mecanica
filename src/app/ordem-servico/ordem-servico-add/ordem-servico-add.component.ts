@@ -129,7 +129,7 @@ export class OrdemServicoAddComponent implements OnInit {
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
-          this.notificationService.error('Error ao salvar OS');
+          //this.notificationService.error('Error ao salvar OS');
           console.log('Error OS: ', error.message);
           this.loading = false;
         })
@@ -144,7 +144,7 @@ export class OrdemServicoAddComponent implements OnInit {
     },
       (error: HttpErrorResponse) => {
         console.log('Error veiculos: ', error.error);
-        this.notificationService.error('Error ao listar veiculos.')
+        //this.notificationService.error('Error ao listar veiculos.')
       })
   }
 
@@ -156,7 +156,7 @@ export class OrdemServicoAddComponent implements OnInit {
     },
       (error: HttpErrorResponse) => {
         console.log('Error veiculos: ', error.error);
-        this.notificationService.error('Error ao listar usuários.')
+        //this.notificationService.error('Error ao listar usuários.')
       })
   }
 

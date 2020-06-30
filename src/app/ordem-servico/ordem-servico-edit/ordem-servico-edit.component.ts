@@ -203,7 +203,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {
-          this.notificationService.error(error.message);
+          //this.notificationService.error(error.message);
           this.loading = false;
         })
   }
@@ -224,7 +224,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {
-          this.notificationService.error(error.message);
+          //this.notificationService.error(error.message);
           this.loading = false;
         })
   }
@@ -247,7 +247,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {
-          this.notificationService.error(error.message);
+          //this.notificationService.error(error.message);
           this.loading = false;
         })
   }
@@ -262,7 +262,7 @@ export class OrdemServicoEditComponent implements OnInit {
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {
-          this.notificationService.error(error.message);
+          //this.notificationService.error(error.message);
           this.loading = false;
         })
   }
@@ -347,14 +347,15 @@ export class OrdemServicoEditComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           console.log('Error ao carregar: ', error.message);
-          this.notificationService.error('Error ao carregar OS ' + id);
+          //this.notificationService.error('Error ao carregar OS ' + id);
           this.loading = false;
         })
   }
 
   private listarMaoDeObra() {
     this.loading = false;
-    this.maoObraService.findAll()
+    this.maoObraService
+      .findAllByActive(true)
       .subscribe((data) => {
         data.map((item) => {
           this.selects.maoDeObra.push({ label: `${item.descricao} - R$ ${item.valorUnitario}`, value: item.id })
@@ -369,7 +370,7 @@ export class OrdemServicoEditComponent implements OnInit {
 
   private listarPecas() {
     this.loading = false;
-    this.pecasService.findAll()
+    this.pecasService.findAllByActive()
       .subscribe((data) => {
         data.map((item) => {
           this.selects.pecas.push({ label: `${item.descricao} - R$ ${item.valorUnitario}`, value: item.id })
@@ -393,7 +394,7 @@ export class OrdemServicoEditComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           console.log('Error veiculos: ', error.message);
-          this.notificationService.error('Error ao listar veiculos.');
+          //this.notificationService.error('Error ao listar veiculos.');
           this.loading = false;
         })
   }
@@ -408,7 +409,7 @@ export class OrdemServicoEditComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           console.log('Error ao carregar: ', error.message);
-          this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
+          //this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
           this.loading = false;
         })
   }
@@ -423,7 +424,7 @@ export class OrdemServicoEditComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           console.log('Error ao carregar: ', error.message);
-          this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
+          //this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
           this.loading = false;
         })
   }

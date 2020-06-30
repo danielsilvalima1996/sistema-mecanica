@@ -151,7 +151,7 @@ export class OrdemServicoListComponent implements OnInit {
         (error: HttpErrorResponse) => {
           console.log(error.error);
           this.loading = false;
-          this.notificationService.error('Error ao obter dados');
+          //this.notificationService.error('Error ao obter dados');
         })
   }
 
@@ -182,7 +182,7 @@ export class OrdemServicoListComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           console.log('Error veiculos: ', error.message);
-          this.notificationService.error('Error ao listar veiculos.');
+          //this.notificationService.error('Error ao listar veiculos.');
           this.loading = false;
         })
   }
@@ -198,7 +198,7 @@ export class OrdemServicoListComponent implements OnInit {
       },
         (error: HttpErrorResponse) => {
           console.log('Error usuarios: ', error.message);
-          this.notificationService.error('Error ao listar usuários.');
+          //this.notificationService.error('Error ao listar usuários.');
           this.loading = false;
         })
   }

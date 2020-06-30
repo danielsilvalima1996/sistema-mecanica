@@ -129,7 +129,7 @@ export class UsuariosListComponent implements OnInit {
         console.log(error.error);
         this.table.items = [];
         this.loading = false;
-        this.notificationService.error(error.error['message']);
+        //this.notificationService.error(error.error['message']);
       })
   }
 
