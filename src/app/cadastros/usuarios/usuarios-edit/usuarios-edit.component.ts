@@ -20,13 +20,7 @@ export class UsuariosEditComponent implements OnInit {
     actions: []
   }
 
-  usuariosForm: FormGroup = this.fb.group({
-    id: ['', []],
-    email: ['', [Validators.required]],
-    password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
-    userName: ['', [Validators.required]],
-    active: [true, [Validators.required]]
-  })
+  usuariosForm: FormGroup 
 
 
   selects = {
@@ -65,6 +59,15 @@ export class UsuariosEditComponent implements OnInit {
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
         this.disabledId = true;
+
+        this.usuariosForm = this.fb.group({
+          id: ['', []],
+          email: ['', [Validators.required]],
+          password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
+          userName: ['', [Validators.required]],
+          active: [true, [Validators.required]]
+        })
+
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Usuário';
       this.tipoTela = 'edit';
@@ -83,6 +86,13 @@ export class UsuariosEditComponent implements OnInit {
         })
         this.getDetailById(this.id);
         this.disabledId = true;
+        this.usuariosForm = this.fb.group({
+          id: ['', []],
+          email: ['', [Validators.required]],
+          password: ['', []],
+          userName: ['', [Validators.required]],
+          active: [true, [Validators.required]]
+        })
     } else {
       this.page.title = 'Visualizar Usuário';
       this.tipoTela = 'view';
@@ -97,6 +107,15 @@ export class UsuariosEditComponent implements OnInit {
           { label: 'Salvar', disabled: true },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
+
+        this.usuariosForm = this.fb.group({
+          id: ['', []],
+          email: ['', [Validators.required]],
+          password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
+          userName: ['', [Validators.required]],
+          active: [true, [Validators.required]]
+        })
+
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
           this.id = paramMap.get('id');
         })
