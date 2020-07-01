@@ -7,4 +7,16 @@ export interface DadosDashboard {
     totalOSAndamento: number,
     totalOSFinalizada: number,
     totalOSCancelada: number,
+    quantidadeMao: number,
+    quantidadeMaoAtiva: number,
+    quantidadeMaoInativa: number,
+    quantidadePeca: number,
+    quantidadePecaAtiva: number,
+    quantidadePecaInativa: number,
+    quantidadeVeiculo: number,
+    quantidadeVeiculoAtiva: number,
+    quantidadeVeiculoInativa: number,
+    quantidadeUser: number,
+    quantidadeUserAtiva: number,
+    quantidadeUserInativa: number
 }
