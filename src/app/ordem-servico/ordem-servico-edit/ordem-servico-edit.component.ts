@@ -220,7 +220,7 @@ export class OrdemServicoEditComponent implements OnInit {
       .createOsPecas(obj, this.id)
       .subscribe((data) => {
         this.notificationService.success(`Peça adicionada com sucesso!`);
-        this.maoObraForm.reset();
+        this.pecasForm.reset();
         this.findById(this.id);
       },
         (error: HttpErrorResponse) => {

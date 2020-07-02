@@ -1,90 +1,107 @@
 <po-page-default>
 
-    <!-- <po-container> -->
+    <po-container>
 
-        <po-divider p-label="Ordens de Serviços - OS"></po-divider>
+        <div class="po-row">
 
-        <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS">
-            <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOS | currency: 'BRL' }}</div>
-            <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOS}}</div>
-        </po-widget>
+            <po-divider class="po-sm-12 po-md-12 po-lg-12" p-label="Ordens de Serviços - OS"></po-divider>
 
-        <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS Andamentos">
-            <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSAndamento | currency: 'BRL' }}</div>
-            <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSAndamento}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS">
+                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOS | currency: 'BRL' }}</div>
+                <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOS}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS Finalizadas">
-            <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSFinalizada | currency: 'BRL' }}</div>
-            <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSFinalizada}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS Andamentos">
+                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSAndamento | currency: 'BRL' }}</div>
+                <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSAndamento}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS Canceladas">
-            <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSCancelada | currency: 'BRL' }}</div>
-            <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSCancelada}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS Finalizadas">
+                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSFinalizada | currency: 'BRL' }}</div>
+                <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSFinalizada}}</div>
+            </po-widget>
 
-        <po-divider p-label="Mão de Obras"></po-divider>
+            <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total de OS Canceladas">
+                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSCancelada | currency: 'BRL' }}</div>
+                <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSCancelada}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Mão de Obras">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeMao}}</div>
-        </po-widget>
+        </div>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Mão de Obras Ativas">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeMaoAtiva}}</div>
-        </po-widget>
+        <div class="po-row">
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Mão de Obras Inativas">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeMaoInativa}}</div>
-        </po-widget>
+            <po-divider class="po-sm-12 po-md-12 po-lg-12" p-label="Mão de Obras"></po-divider>
 
-        <po-divider p-label="Peças"></po-divider>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Mão de Obras">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeMao}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Peças">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadePeca}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Mão de Obras Ativas">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeMaoAtiva}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Peças Ativas">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadePecaAtiva}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Mão de Obras Inativas">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeMaoInativa}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Peças Inativas">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadePecaInativa}}</div>
-        </po-widget>
+        </div>
+        <div class="po-row">
 
-        <po-divider p-label="Veículos"></po-divider>
+            <po-divider class="po-sm-12 po-md-12 po-lg-12" p-label="Peças"></po-divider>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Veículos">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeVeiculo}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Peças">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadePeca}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Veículos Ativos">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeVeiculoAtiva}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Peças Ativas">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadePecaAtiva}}</div>
+            </po-widget>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Veículos Inativos">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeVeiculoInativa}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Peças Inativas">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadePecaInativa}}</div>
+            </po-widget>
 
-        <po-divider p-label="Usuários"></po-divider>
+        </div>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Usuários">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeUser}}</div>
-        </po-widget>
+        <div class="po-row">
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Usuários Ativos">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeUserAtiva}}</div>
-        </po-widget>
+            <po-divider class="po-sm-12 po-md-12 po-lg-12" p-label="Veículos"></po-divider>
 
-        <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Usuários Inativos">
-            <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeUserInativa}}</div>
-        </po-widget>
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Veículos">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeVeiculo}}</div>
+            </po-widget>
 
-    <!-- </po-container> -->
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Veículos Ativos">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeVeiculoAtiva}}</div>
+            </po-widget>
 
-    <po-loading-overlay *ngIf="loading"
-        p-screen-lock="true"
-        p-text="Carregando">
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Veículos Inativos">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeVeiculoInativa}}</div>
+            </po-widget>
+
+        </div>
+
+        <div class="po-row">
+
+            <po-divider class="po-sm-12 po-md-12 po-lg-12" p-label="Usuários"></po-divider>
+
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Usuários">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeUser}}</div>
+            </po-widget>
+
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Usuários Ativos">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeUserAtiva}}</div>
+            </po-widget>
+
+            <po-widget class="po-sm-12 po-md-4 po-lg-4 po-mb-1" p-title="Total de Usuários Inativos">
+                <div class="po-font-subtitle po-text-center">Quantidade: {{dados.quantidadeUserInativa}}</div>
+            </po-widget>
+
+        </div>
+
+    </po-container>
+
+    <po-loading-overlay *ngIf="loading" p-screen-lock="true" p-text="Carregando">
     </po-loading-overlay>
 
 </po-page-default>

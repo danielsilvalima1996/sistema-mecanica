@@ -28,7 +28,13 @@ export class DashboardComponent implements OnInit {
     this.dashboardService
       .dadosDashboard()
       .subscribe((data) => {
-        this.dados = data;
+        Object.keys(data).map((item) => {
+          console.log(data, item);
+          if (data[item] == null) {
+            data[item] = 0;
+          }
+        })
+        this.dados = data
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
