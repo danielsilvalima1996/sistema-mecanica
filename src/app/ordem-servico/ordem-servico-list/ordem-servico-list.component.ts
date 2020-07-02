@@ -46,39 +46,40 @@ export class OrdemServicoListComponent implements OnInit {
 
   public table = {
     columns: <Array<PoTableColumn>>[
-      { label: 'OS', property: 'id' },
+      { label: 'OS', property: 'id', width: '75px' },
       {
-        label: 'Status', property: 'isFinalizado', type: 'label', labels: [
+        label: 'Status', property: 'isFinalizado', type: 'label', width: '100px', labels: [
           { value: 0, color: 'color-08', label: 'Andamento', tooltip: 'Serviço em Andamento' },
           { value: 1, color: 'color-11', label: 'Finalizado', tooltip: 'Serviço Finalizado' },
           { value: 2, color: 'color-07', label: 'Cancelado', tooltip: 'Serviço Cancelado' }
         ]
       },
-      { label: 'Data Entrada', property: 'entrada', type: 'date', format: 'dd/MM/yyyy' },
-      { label: 'Nome Cliente', property: 'nomeCliente' },
-      { label: 'CPF / CNPJ', property: 'cpfCnpj' },
-      { label: 'DDD', property: 'ddd' },
-      { label: 'Telefone', property: 'telefone' },
-      { label: 'Veiculo', property: 'idVeiculo' },
-      { label: 'Placa', property: 'placa' },
-      { label: 'Data Saída', property: 'saida', type: 'date', format: 'dd/MM/yyyy' },
-      { label: 'Observações', property: 'observacoes' },
-      { label: 'Total Mão de Obra', property: 'totalOsMaoDeObra', type: 'currency', format: 'BRL' },
-      { label: 'Total Peças', property: 'totalOsPecas', type: 'currency', format: 'BRL' },
-      { label: 'Total Serviço', property: 'totalServico', type: 'currency', format: 'BRL' },
-      { label: 'Responsável', property: 'idUsuario' },
+      { label: 'Entrada', property: 'entrada', type: 'date', format: 'dd/MM/yyyy', width: '100px' },
+      { label: 'Nome Cliente', property: 'nomeCliente', width: '150px' },
+      { label: 'CPF / CNPJ', property: 'cpfCnpj', width: '150px' },
+      { label: 'DDD', property: 'ddd', width: '100px' },
+      { label: 'Telefone', property: 'telefone', width: '100px' },
+      { label: 'Veiculo', property: 'idVeiculo', width: '150px' },
+      { label: 'Placa', property: 'placa', width: '100px' },
+      { label: 'Saída', property: 'saida', type: 'date', format: 'dd/MM/yyyy', width: '100px' },
+      { label: 'Observações', property: 'observacoes', width: '150px' },
+      { label: 'Total Mão de Obra', property: 'totalOsMaoDeObra', type: 'currency', format: 'BRL', width: '140px' },
+      { label: 'Total Peças', property: 'totalOsPecas', type: 'currency', format: 'BRL', width: '140px' },
+      { label: 'Total Serviço', property: 'totalServico', type: 'currency', format: 'BRL', width: '140px' },
+      { label: 'Responsável', property: 'idUsuario', width: '120px' },
     ],
-    items: []
+    items: [],
+    height: 200
   }
 
   public loading: boolean;
 
   public selects = {
     veiculos: <Array<PoSelectOption>>[
-      {label: 'Todos', value: ''}
+      { label: 'Todos', value: '' }
     ],
     usuarios: <Array<PoSelectOption>>[
-      {label: 'Todos', value: ''}
+      { label: 'Todos', value: '' }
     ],
     status: <Array<PoSelectOption>>[
       { label: 'Em Andamento', value: 0 },
@@ -100,6 +101,8 @@ export class OrdemServicoListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.table.height = this.utilService.calcularHeight(innerHeight, 0.55);
+
     this.osForm = this.fb.group({
       id: ['', []],
       nomeCliente: ['', []],
@@ -123,6 +126,7 @@ export class OrdemServicoListComponent implements OnInit {
   }
 
   public buscar(form?) {
+    this.table.items = [];
     this.loading = true;
     this.osService
       .findAll(this.utilService.getParameters(form))
@@ -133,9 +137,9 @@ export class OrdemServicoListComponent implements OnInit {
             isFinalizado: item.isFinalizado,
             entrada: item.entrada,
             nomeCliente: item.nomeCliente,
-            cpfCnpj: item.cpfCnpj,
+            cpfCnpj: this.utilService.formatarCnpjCpf(item.cpfCnpj),
             ddd: item.ddd,
-            telefone: item.telefone,
+            telefone: this.utilService.mascaraDeTelefone(item.telefone),
             idVeiculo: `${item.idVeiculo.marca} - ${item.idVeiculo.modelo}`,
             placa: item.placa,
             saida: item.saida,

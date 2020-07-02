@@ -15,11 +15,13 @@
     <po-table 
         p-single-select
         p-selectable
+        p-sort="true"
         p-striped="true"
         [p-columns]="table.columns" 
         [p-items]="table.items"
         (p-selected)="selected($event)"
-        (p-unselected)="unSelected($event)"></po-table>
+        (p-unselected)="unSelected($event)"
+        [p-height]="table.height"></po-table>
 
     <po-loading-overlay *ngIf="loading"
         p-screen-lock="true"
