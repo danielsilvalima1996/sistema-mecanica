@@ -11,11 +11,8 @@
                 p-label="Valor Unitário" p-required [p-readonly]="disabledFields" p-thousand-maxlength="13">
             </po-decimal>
 
-            <po-switch [p-disabled]="disabledFields" formControlName="active" p-label="Ativo" p-label-off="Ativo"
-                p-label-on="Inativo"> </po-switch>
-
-            <po-select class="po-md-2" [p-readonly]="disabledFields" p-label="Ativo" formControlName="active"
-                [p-options]="selects.ativoOptions"></po-select>
+            <po-switch [p-disabled]="disabledFields" formControlName="active" p-label="Ativo" p-label-off="Inativo"
+                p-label-on="Ativo"> </po-switch>
         </div>
     </form>
 

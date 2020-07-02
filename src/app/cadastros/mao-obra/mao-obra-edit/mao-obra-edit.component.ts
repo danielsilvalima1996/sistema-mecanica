@@ -27,13 +27,6 @@ export class MaoObraEditComponent implements OnInit {
     active: [true, [Validators.required]]
   })
 
-
-  selects = {
-    ativoOptions: <Array<any>>[
-      { label: 'Ativo', value: true },
-      { label: 'Inativo', value: false }]
-  }
-
   public disabledId: boolean = false;
   public disabledFields: boolean = false;
   private id: string = '';

@@ -22,13 +22,6 @@ export class UsuariosEditComponent implements OnInit {
 
   usuariosForm: FormGroup 
 
-
-  selects = {
-    ativoOptions: <Array<any>>[
-      { label: 'Ativo', value: true },
-      { label: 'Inativo', value: false }]
-  }
-
   public disabledId: boolean = false;
   public disabledFields: boolean = false;
   public loading: boolean;
@@ -91,7 +84,7 @@ export class UsuariosEditComponent implements OnInit {
           email: ['', [Validators.required]],
           password: ['', []],
           userName: ['', [Validators.required]],
-          active: [true, [Validators.required]]
+          active: [, [Validators.required]]
         })
     } else {
       this.page.title = 'Visualizar Usuário';
@@ -110,10 +103,10 @@ export class UsuariosEditComponent implements OnInit {
 
         this.usuariosForm = this.fb.group({
           id: ['', []],
-          email: ['', [Validators.required]],
-          password: ['', [Validators.required,Validators.minLength(6),Validators.maxLength(12)]],
-          userName: ['', [Validators.required]],
-          active: [true, [Validators.required]]
+          email: ['', []],
+          password: ['', []],
+          userName: ['', []],
+          active: [, []]
         })
 
         this.route.paramMap.subscribe((paramMap: ParamMap) => {

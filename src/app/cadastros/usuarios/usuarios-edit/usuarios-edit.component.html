@@ -7,7 +7,7 @@
             <po-input class="po-md-3" [p-readonly]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="userName"></po-input>
             <po-email class="po-md-3" [p-readonly]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
             <po-password class="po-md-3" [p-readonly]="disabledFields" p-error-pattern="A senha deve possuir pelo menos de 6 caracteres e no máximo 12 " formControlName="password"  p-label="Senha"></po-password>
-            <po-select class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-switch [p-disabled]="disabledFields || disabledId" formControlName="active" p-label="Ativo" p-label-off="Inativo" p-label-on="Ativo"> </po-switch>
         </div>
 
         <div *ngIf="tipoTela != 'add' " class="po-row">
@@ -15,7 +15,7 @@
             <po-input class="po-md-3" [p-readonly]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="userName"></po-input>
             <po-email class="po-md-3" [p-readonly]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
             <po-password class="po-md-3" [p-readonly]="disabledFields" p-error-pattern="A senha deve possuir pelo menos de 6 caracteres e no máximo 12 " formControlName="password"  p-label="Senha"></po-password>
-            <po-select class="po-md-2" [p-readonly]="disabledFields" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-switch [p-disabled]="disabledFields" formControlName="active" p-label="Ativo" p-label-off="Inativo" p-label-on="Ativo"> </po-switch>
         </div>
     </form>
 

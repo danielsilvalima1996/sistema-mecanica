@@ -27,17 +27,8 @@ export class PecasEditComponent implements OnInit {
     modelo: ['', [Validators.required]],
     descricao: ['', [Validators.required]],
     valorUnitario: ['', [Validators.required]],
-    active: [, [Validators.required]]
+    active: [true, [Validators.required]]
   })
-
-
-  selects = {
-    ativoOptions: <Array<PoSelectOption>>[
-      { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: 'false' }]
-  }
-
-
 
   public disabledId: boolean = false;
   public disabledFields: boolean = false;

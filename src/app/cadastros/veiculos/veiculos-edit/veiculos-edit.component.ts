@@ -26,17 +26,8 @@ export class VeiculosEditComponent implements OnInit {
     modelo: ['', [Validators.required]],
     ano: ['', [Validators.required]],
     tipoCombustivel: ['', [Validators.required]],
-    active: ['', [Validators.required]]
+    active: [true, [Validators.required]]
   })
-
-
-  selects = {
-    ativoOptions: <Array<PoSelectOption>>[
-      { label: 'Ativo', value: 'true' },
-      { label: 'Inativo', value: 'false' }]
-  }
-
-
 
   public loading: boolean
   public disabledId: boolean = false;
