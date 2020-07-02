@@ -3,27 +3,24 @@
     <form [formGroup]="maoObraForm">
 
         <div class="po-row">
-            <po-input class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id"></po-input>
-            <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Descrição" p-required="true" formControlName="descricao"></po-input>
-            <po-decimal
-            class="po-md-2"
-            formControlName="valorUnitario"
-            p-decimals-length="2"
-            p-icon="po-icon-finance"
-            p-label="Valor Unitário"
-            p-required
-            [p-readonly]="disabledFields"
-            p-thousand-maxlength="13"
-          >
-          </po-decimal>
-            <po-select class="po-md-2" [p-readonly]="disabledFields" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
+            <po-input class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id">
+            </po-input>
+            <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Descrição" p-required="true"
+                formControlName="descricao"></po-input>
+            <po-decimal class="po-md-2" formControlName="valorUnitario" p-decimals-length="2" p-icon="po-icon-finance"
+                p-label="Valor Unitário" p-required [p-readonly]="disabledFields" p-thousand-maxlength="13">
+            </po-decimal>
+
+            <po-switch [p-disabled]="disabledFields" formControlName="active" p-label="Ativo" p-label-off="Ativo"
+                p-label-on="Inativo"> </po-switch>
+
+            <po-select class="po-md-2" [p-readonly]="disabledFields" p-label="Ativo" formControlName="active"
+                [p-options]="selects.ativoOptions"></po-select>
         </div>
     </form>
 
-    <po-loading-overlay *ngIf="loading"
-    p-screen-lock="true"
-    p-text="Carregando">
-</po-loading-overlay>
+    <po-loading-overlay *ngIf="loading" p-screen-lock="true" p-text="Carregando">
+    </po-loading-overlay>
 
 
 </po-page-default>
