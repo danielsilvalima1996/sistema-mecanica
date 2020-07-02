@@ -64,7 +64,7 @@ export class OrdemServicoAddComponent implements OnInit {
       cpfCnpj: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
       ddd: ['', [Validators.required, Validators.maxLength(2), Validators.minLength(2)]],
       telefone: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
-      observacoes: ['', []],
+      observacoes: [''],
       idVeiculo: ['', [Validators.required]],
       idUsuario: ['', []],
       tipoPessoa: ['f', [Validators.required]],
@@ -137,7 +137,7 @@ export class OrdemServicoAddComponent implements OnInit {
   }
 
   private listarVeiculos() {
-    this.veiculoService.findAll().subscribe((data) => {
+    this.veiculoService.findByActive().subscribe((data) => {
       data.map((item) => {
         this.selects.veiculos.push({ label: `${item.marca} - ${item.modelo}`, value: item.id });
       })

@@ -373,7 +373,7 @@ export class OrdemServicoEditComponent implements OnInit {
     this.pecasService.findAllByActive()
       .subscribe((data) => {
         data.map((item) => {
-          this.selects.pecas.push({ label: `${item.descricao} - R$ ${item.valorUnitario}`, value: item.id })
+          this.selects.pecas.push({ label: `${item.marca} - ${item.descricao} - R$ ${item.valorUnitario}`, value: item.id })
         })
         this.loading = false;
       },
