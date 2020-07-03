@@ -9,6 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { OrdensServicosService } from 'src/app/services/ordens-servicos/ordens-servicos.service';
 import { LoginService } from 'src/app/services/authentication/login/login.service';
 import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
+const { cpf } = require('cpf-cnpj-validator');
+const { cnpj } = require('cpf-cnpj-validator');
 
 @Component({
   selector: 'app-ordem-servico-add',
@@ -43,6 +45,7 @@ export class OrdemServicoAddComponent implements OnInit {
   public loading: boolean = false;
 
   public labelPessoa: string = 'CPF';
+  public helpPessoa: string = ''
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +71,7 @@ export class OrdemServicoAddComponent implements OnInit {
       idVeiculo: ['', [Validators.required]],
       idUsuario: ['', []],
       tipoPessoa: ['f', [Validators.required]],
-      placa: ['', Validators.required, Validators.minLength(7), Validators.maxLength(7), Validators.pattern("^[A-Za-z0-9]*\\d+[A-Za-z0-9]*$")]
+      placa: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(7), Validators.pattern("^[A-Za-z0-9]*\\d+[A-Za-z0-9]*$")]]
     })
 
     this.loginService.getUserInformation$.subscribe((data) => {
@@ -90,6 +93,30 @@ export class OrdemServicoAddComponent implements OnInit {
           this.mask = '999.999.999-99';
         }
       })
+
+    // this.controls['cpfCnpj'].valueChanges
+    //   .subscribe((data) => {
+    //     if (data.length === 11) {
+    //       let result = cpf.isValid(data);
+    //       if (result === false && this.controls['tipoPessoa'].value === 'f') {
+    //         this.page.actions[0].disabled = true;
+    //         this.helpPessoa = 'Insira um CPF válido'
+    //       } else if (result === true && this.controls['tipoPessoa'].value === 'f') {
+    //         this.page.actions[0].disabled = false;
+    //         this.helpPessoa = ''
+    //       }
+    //     } else if (data.length === 14) {
+    //       let result = cnpj.isValid(data);
+    //       if (result === false && this.controls['tipoPessoa'].value === 'j') {
+    //         this.page.actions[0].disabled = true;
+    //         this.helpPessoa = 'Insira um CNPJ válido'
+    //       } else if (result === true && this.controls['tipoPessoa'].value === 'j') {
+    //         this.page.actions[0].disabled = false;
+    //         this.helpPessoa = ''
+    //       }
+    //     }
+
+    //   })
 
   }
 
