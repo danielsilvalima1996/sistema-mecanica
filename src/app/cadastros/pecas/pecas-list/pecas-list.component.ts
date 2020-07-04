@@ -31,7 +31,7 @@ export class PecasListComponent implements OnInit {
 
   table = {
     columns: <PoTableColumn[]>[
-      { property: 'id', label: 'ID', width: '10%' },
+      { property: 'id', label: 'Código', width: '10%' },
       { property: 'marca', label: 'Marca', width: '15%' },
       { property: 'modelo', label: 'Modelo', width: '20%' },
       { property: 'descricao', label: 'Descrição', width: '30%' },
@@ -48,13 +48,15 @@ export class PecasListComponent implements OnInit {
     marcaPeca: ['', []],
     descricaoPeca: ['', []],
     modeloPeca: ['', []],
-    active:['',[]]
+    active: ['', []]
   })
 
   selects = {
     ativoOptions: <Array<any>>[
       { label: 'Ativo', value: true },
-      { label: 'Inativo', value: false }]
+      { label: 'Inativo', value: false },
+      { label: 'Todos', value: '' }
+    ]
   }
 
   private itemSelecionado: string = '';
@@ -88,14 +90,14 @@ export class PecasListComponent implements OnInit {
   getPecas() {
     this.loading = true;
     this.pecasService.findAll()
-    .subscribe((data)=>{
-      this.table.items = data;
-    },
-    (error: HttpErrorResponse) => {
-      console.log(error.error);
-      this.loading = false;
-      // //this.notificationService.error('Error ao obter dados');
-    })
+      .subscribe((data) => {
+        this.table.items = data;
+      },
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.loading = false;
+          // //this.notificationService.error('Error ao obter dados');
+        })
   }
 
   private editarPeca() {
@@ -123,7 +125,7 @@ export class PecasListComponent implements OnInit {
       descricaoPeca: this.controls.descricaoPeca.value,
       marcaPeca: this.controls.marcaPeca.value,
       modeloPeca: this.controls.modeloPeca.value,
-      active:this.controls.active.value
+      active: this.controls.active.value
     }
     this.pecasService
       .buscaFiltro(this.utilService.getParameters(obj)).
@@ -131,12 +133,12 @@ export class PecasListComponent implements OnInit {
         this.table.items = data
         this.loading = false;
       },
-      (error: HttpErrorResponse) => {
-        console.log(error.error);
-        this.table.items = [];
-        this.loading = false;
-        //this.notificationService.error('Error ao obter dados');
-      })
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.table.items = [];
+          this.loading = false;
+          //this.notificationService.error('Error ao obter dados');
+        })
   }
 
 }

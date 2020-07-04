@@ -4,6 +4,7 @@ import { Router, ParamMap, ActivatedRoute } from '@angular/router';
 import { PoDialogService, PoSelectOption, PoPageDefault, PoBreadcrumb, PoBreadcrumbItem, PoNotificationService } from '@po-ui/ng-components';
 import { MaoObraService } from 'src/app/services/mao-obra/mao-obra.service';
 import { MaoDeObra } from 'src/app/interfaces/mao-de-obra';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-mao-obra-edit',
@@ -30,7 +31,9 @@ export class MaoObraEditComponent implements OnInit {
   public disabledId: boolean = false;
   public disabledFields: boolean = false;
   private id: string = '';
-  public loading: boolean
+  public loading: boolean;
+
+  public tipoTela: string;
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +46,7 @@ export class MaoObraEditComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.router.url.indexOf('add') != -1) {
+      this.tipoTela = 'add';
       this.page.title = 'Adicionar Mão de Obra';
       this.disabledId = true;
       this.page.breadcrumb.items = [
@@ -62,6 +66,7 @@ export class MaoObraEditComponent implements OnInit {
         this.page.actions[0].disabled = this.maoObraForm.invalid;
       });
     } else if (this.router.url.indexOf('edit') != -1) {
+      this.tipoTela = 'edit';
       this.page.title = 'Editar Mão de Obra';
       this.disabledId = true;
       this.page.breadcrumb.items = [
@@ -83,6 +88,7 @@ export class MaoObraEditComponent implements OnInit {
         this.page.actions[0].disabled = this.maoObraForm.invalid;
       });
     } else {
+      this.tipoTela = 'view';
       this.page.title = 'Visualizar Mão de Obra';
       this.disabledId = true;
       this.disabledFields = true;
@@ -94,7 +100,7 @@ export class MaoObraEditComponent implements OnInit {
       ],
         this.page.actions = [
           { label: 'Salvar', disabled: true },
-          { label: 'Cancelar', action: () => { this.dialogVoltar() } }
+          { label: 'Cancelar', action: () => this.router.navigate(['cadastro/mao-obra/']) }
         ];
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         this.id = paramMap.get('id');
@@ -104,11 +110,18 @@ export class MaoObraEditComponent implements OnInit {
   }
 
   getDetailById(id) {
+    this.loading = true;
     this.maoObraService
       .findById(id)
       .subscribe((data) => {
-        this.maoObraForm.setValue(data)
-      })
+        this.loading = false;
+        this.maoObraForm.setValue(data);
+      },
+        (error: HttpErrorResponse) => {
+          this.notificationService.error(`Mão de obra ${id} não encontrada`);
+          this.router.navigate(['cadastro/mao-obra'])
+          this.loading = false;
+        })
   }
 
   alterMaoObra(maoObra: MaoDeObra) {

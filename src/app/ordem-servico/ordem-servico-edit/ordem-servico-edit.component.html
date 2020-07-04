@@ -23,7 +23,7 @@
         <po-divider p-label="Mão de Obra"></po-divider>
         <form [formGroup]="maoObraForm" class="po-row" *ngIf="tipoRelatorio != 'view'">
             <po-select class="po-sm-6 po-md-4 po-lg-4" p-label="Mão De Obra" [p-options]="selects.maoDeObra" formControlName="idMaoDeObra"></po-select>
-            <po-number class="po-sm-6 po-md-4 po-lg-4" p-label="Qtd Mão De Obra" formControlName="quantidade" p-clean></po-number>
+            <po-decimal class="po-sm-6 po-md-4 po-lg-4" p-label="Quantidade" formControlName="quantidade" p-clean p-decimals-length="0"></po-decimal>
             <po-button class="po-sm-12 po-md-4 po-lg-4 po-mt-4" p-label="Adicionar" p-icon="po-icon po-icon-ok" [p-disabled]="maoObraForm.invalid" (click)="addMaoObra(maoObraForm.value)"></po-button>
 
         </form>
@@ -40,7 +40,7 @@
         <po-divider p-label="Peças"></po-divider>
         <form [formGroup]="pecasForm" class="po-row" *ngIf="tipoRelatorio != 'view'">
             <po-select class="po-sm-6 po-md-4 po-lg-4" p-label="Peças" [p-options]="selects.pecas" formControlName="idPecas"></po-select>
-            <po-number class="po-sm-6 po-md-4 po-lg-4" p-label="Qtd Mão De Obra" formControlName="quantidade" p-clean></po-number>
+            <po-decimal class="po-sm-6 po-md-4 po-lg-4" p-label="Quantidade" formControlName="quantidade" p-clean p-decimals-length="0"></po-decimal>
             <po-button class="po-sm-12 po-md-4 po-lg-4 po-mt-4" p-label="Adicionar" p-icon="po-icon po-icon-ok" [p-disabled]="pecasForm.invalid" (click)="addPeca(pecasForm.value)"></po-button>
         </form>
         <po-table

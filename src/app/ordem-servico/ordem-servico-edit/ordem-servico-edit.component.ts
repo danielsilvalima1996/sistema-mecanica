@@ -291,64 +291,71 @@ export class OrdemServicoEditComponent implements OnInit {
     this.loading = true;
     this.osService.findById(id)
       .subscribe((data) => {
-        this.osGet = data;
-        this.controls['id'].setValue(data.id);
-        this.controls['entrada'].setValue(new Date(data.entrada));
-        this.controls['saida'].setValue(new Date(data.saida));
-        this.controls['nomeCliente'].setValue(data.nomeCliente);
-        this.controls['cpfCnpj'].setValue(data.cpfCnpj);
-        this.controls['ddd'].setValue(data.ddd);
-        this.controls['telefone'].setValue(data.telefone);
-        this.controls['observacoes'].setValue(data.observacoes);
-        this.controls['idVeiculo'].setValue(data.idVeiculo.id ? data.idVeiculo.id : null);
-        this.controls['placa'].setValue(data.placa);
-        this.controls['idOsMaoDeObra'].setValue(data.idOsMaoDeObra);
-        this.controls['totalMaoDeObra'].setValue(data.totalOsMaoDeObra);
-        this.controls['idOsPecas'].setValue(data.idOsPecas);
-        this.controls['totalPecas'].setValue(data.totalOsPecas);
-        this.controls['totalServico'].setValue(data.totalServico);
-        this.controls['idUsuario'].setValue(data.idUsuario.userName ? data.idUsuario.userName : '');
-        this.controls['isFinalizado'].setValue(data.isFinalizado);
-
-        if (data.isFinalizado == 0) {
-          this.tag.color = 'color-08';
-          this.tag.type = PoTagType.Warning;
-          this.tag.value = 'Em Andamento';
-        } else if (data.isFinalizado == 1) {
-          this.tag.color = 'color-11';
-          this.tag.type = PoTagType.Success;
-          this.tag.value = 'Finalizado';
+        if (data.isFinalizado != 0 && this.tipoRelatorio == 'edit') {
+          this.notificationService.error(`Não é possível editar uma OS ${data.isFinalizado == 1 ? 'em andamento' : 'cancelada'}`);
+          this.router.navigate(['ordem-servico/view', data.id]);
         } else {
-          this.tag.color = 'color-07';
-          this.tag.type = PoTagType.Danger;
-          this.tag.value = 'Cancelado';
+          this.osGet = data;
+          this.controls['id'].setValue(data.id);
+          this.controls['entrada'].setValue(new Date(data.entrada));
+          this.controls['saida'].setValue(new Date(data.saida));
+          this.controls['nomeCliente'].setValue(data.nomeCliente);
+          this.controls['cpfCnpj'].setValue(data.cpfCnpj);
+          this.controls['ddd'].setValue(data.ddd);
+          this.controls['telefone'].setValue(data.telefone);
+          this.controls['observacoes'].setValue(data.observacoes);
+          this.controls['idVeiculo'].setValue(data.idVeiculo.id ? data.idVeiculo.id : null);
+          this.controls['placa'].setValue(data.placa);
+          this.controls['idOsMaoDeObra'].setValue(data.idOsMaoDeObra);
+          this.controls['totalMaoDeObra'].setValue(data.totalOsMaoDeObra);
+          this.controls['idOsPecas'].setValue(data.idOsPecas);
+          this.controls['totalPecas'].setValue(data.totalOsPecas);
+          this.controls['totalServico'].setValue(data.totalServico);
+          this.controls['idUsuario'].setValue(data.idUsuario.userName ? data.idUsuario.userName : '');
+          this.controls['isFinalizado'].setValue(data.isFinalizado);
+
+          if (data.isFinalizado == 0) {
+            this.tag.color = 'color-08';
+            this.tag.type = PoTagType.Warning;
+            this.tag.value = 'Em Andamento';
+          } else if (data.isFinalizado == 1) {
+            this.tag.color = 'color-11';
+            this.tag.type = PoTagType.Success;
+            this.tag.value = 'Finalizado';
+          } else {
+            this.tag.color = 'color-07';
+            this.tag.type = PoTagType.Danger;
+            this.tag.value = 'Cancelado';
+          }
+
+          this.tableMao.items = data.idOsMaoDeObra.map((item) => {
+            return {
+              id: item.id,
+              descricao: item.idMaoDeObra.descricao,
+              quantidade: item.quantidade,
+              valorUnitario: item.valorUnitario,
+              total: item.total
+            }
+          });
+
+          this.tablePeca.items = data.idOsPecas.map((item) => {
+            return {
+              id: item.id,
+              descricao: item.idPecas.descricao,
+              quantidade: item.quantidade,
+              valorUnitario: item.valorUnitario,
+              total: item.total,
+            }
+
+          })
         }
-
-        this.tableMao.items = data.idOsMaoDeObra.map((item) => {
-          return {
-            id: item.id,
-            descricao: item.idMaoDeObra.descricao,
-            quantidade: item.quantidade,
-            valorUnitario: item.valorUnitario,
-            total: item.total
-          }
-        });
-
-        this.tablePeca.items = data.idOsPecas.map((item) => {
-          return {
-            id: item.id,
-            descricao: item.idPecas.descricao,
-            quantidade: item.quantidade,
-            valorUnitario: item.valorUnitario,
-            total: item.total,
-          }
-        })
         this.loading = false;
       },
         (error: HttpErrorResponse) => {
           console.log('Error ao carregar: ', error.message);
           //this.notificationService.error('Error ao carregar OS ' + id);
           this.loading = false;
+          this.router.navigate(['ordem-servico']);
         })
   }
 

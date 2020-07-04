@@ -3,10 +3,10 @@
     <form (keyup.enter)="getFiltro()" [formGroup]="pecasForm">
 
         <div class="po-row">
-            <po-input class="po-md-2" p-label='Codigo' p-clean="true" formControlName="idPeca"></po-input>
+            <po-decimal class="po-md-2" p-label='Código' p-clean="true" p-decimals-length="0" formControlName="idPeca"></po-decimal>
             <po-input class="po-md-2" p-label='Marca' p-clean="true" formControlName="marcaPeca"></po-input>
-            <po-input class="po-md-2" p-label='Descrição' p-clean="true" formControlName="descricaoPeca"> </po-input>
             <po-input class="po-md-2" p-label='Modelo' p-clean="true" formControlName="modeloPeca"> </po-input>
+            <po-input class="po-md-2" p-label='Descrição' p-clean="true" formControlName="descricaoPeca"> </po-input>
             <po-select class="po-md-2" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
             <po-button class="po-md-2 po-mt-4" p-label="Buscar" p-icon="po-icon-search" (click)="getFiltro()"></po-button>
     

@@ -3,7 +3,7 @@
     <form [formGroup]="pecasForm">
 
         <div class="po-row">
-            <po-input class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id"
+            <po-input *ngIf="tipoTela != 'add'" class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Código"
                 formControlName="id"></po-input>
             <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Marca" p-required="true"
                 formControlName="marca"></po-input>

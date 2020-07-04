@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import { PecasService } from 'src/app/services/pecas/pecas.service';
 import { Pecas } from 'src/app/interfaces/pecas';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-pecas-edit',
@@ -22,7 +23,7 @@ export class PecasEditComponent implements OnInit {
   }
 
   pecasForm: FormGroup = this.fb.group({
-    id:['',[]],
+    id: ['', []],
     marca: ['', [Validators.required]],
     modelo: ['', [Validators.required]],
     descricao: ['', [Validators.required]],
@@ -34,6 +35,8 @@ export class PecasEditComponent implements OnInit {
   public disabledFields: boolean = false;
   public loading: boolean;
   public id: any;
+
+  public tipoTela: string;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +50,7 @@ export class PecasEditComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.router.url.indexOf('add') != -1) {
+      this.tipoTela = 'add';
       this.page.title = 'Adicionar Peça';
       this.page.breadcrumb.items = [
         { label: 'Home' },
@@ -55,14 +59,15 @@ export class PecasEditComponent implements OnInit {
         { label: 'Adicionar Peça' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled:true, action: () => {this.cadastrarPecas(this.pecasForm.value)} },
+          { label: 'Salvar', disabled: true, action: () => { this.cadastrarPecas(this.pecasForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.pecasForm.valueChanges.subscribe((_) => {
-          this.page.actions[0].disabled = this.pecasForm.invalid;
-        })
-        this.disabledId = true;
+      this.pecasForm.valueChanges.subscribe((_) => {
+        this.page.actions[0].disabled = this.pecasForm.invalid;
+      })
+      this.disabledId = true;
     } else if (this.router.url.indexOf('edit') != -1) {
+      this.tipoTela = 'edit';
       this.page.title = 'Editar Peça';
       this.page.breadcrumb.items = [
         { label: 'Home' },
@@ -71,18 +76,19 @@ export class PecasEditComponent implements OnInit {
         { label: 'Editar Peça' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled:true, action: () => { this.alterPeca() } },
+          { label: 'Salvar', disabled: true, action: () => { this.alterPeca() } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-          this.id = paramMap.get('id');
-        });
-        this.getDetailById(this.id);
-        this.pecasForm.valueChanges.subscribe((_) => {
-          this.page.actions[0].disabled = this.pecasForm.invalid;
-        })
-        this.disabledId = true;
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        this.id = paramMap.get('id');
+      });
+      this.getDetailById(this.id);
+      this.pecasForm.valueChanges.subscribe((_) => {
+        this.page.actions[0].disabled = this.pecasForm.invalid;
+      })
+      this.disabledId = true;
     } else {
+      this.tipoTela = 'view';
       this.page.title = 'Visualizar Peça';
       this.disabledFields = true;
       this.page.breadcrumb.items = [
@@ -93,12 +99,12 @@ export class PecasEditComponent implements OnInit {
       ],
         this.page.actions = [
           { label: 'Salvar', disabled: true },
-          { label: 'Cancelar', action: () => { this.dialogVoltar() } }
+          { label: 'Cancelar', action: () => this.router.navigate(['cadastro/pecas']) }
         ];
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-          this.id = paramMap.get('id');
-        })
-        this.getDetailById(this.id);
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        this.id = paramMap.get('id');
+      })
+      this.getDetailById(this.id);
     }
   }
 
@@ -108,13 +114,18 @@ export class PecasEditComponent implements OnInit {
 
 
   getDetailById(id) {
+    this.loading = true;
     this.pecasService
       .findById(id)
       .subscribe((data) => {
-        console.log(data);
-        
-        this.pecasForm.setValue(data)
-      })
+        this.loading = false;
+        this.pecasForm.setValue(data);
+      },
+        (error: HttpErrorResponse) => {
+          this.router.navigate(['cadatro/pecas']);
+          this.notificationService.error(`Peça ${id} não encontrada`);
+          this.loading = false;
+        })
   }
 
   alterPeca(parameters?: any) {

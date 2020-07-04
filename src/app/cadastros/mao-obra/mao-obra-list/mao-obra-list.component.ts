@@ -31,7 +31,7 @@ export class MaoObraListComponent implements OnInit {
 
   table = {
     columns: <PoTableColumn[]>[
-      { property: 'id', label: 'ID', width: '10%' },
+      { property: 'id', label: 'Código', width: '10%' },
       { property: 'descricao', label: 'Descrição', width: '30%' },
       { property: 'valorUnitario', label: 'Valor Unitário', width: '15%', type: 'currency', format: 'BRL' },
       { property: 'active', label: 'Ativo', width: '10%', type: 'boolean' }
@@ -42,15 +42,17 @@ export class MaoObraListComponent implements OnInit {
   }
 
   maoObraForm: FormGroup = this.fb.group({
-    id: ['',[]],
+    id: ['', []],
     descricao: ['', []],
-    active:['']
+    active: ['']
   })
 
   selects = {
     ativoOptions: <Array<any>>[
       { label: 'Ativo', value: true },
-      { label: 'Inativo', value: false }]
+      { label: 'Inativo', value: false },
+      { label: 'Todos', value: '' }
+    ]
   }
 
   private itemSelecionado: string = '';
@@ -118,7 +120,7 @@ export class MaoObraListComponent implements OnInit {
     let obj = {
       id: this.controls.id.value,
       descricao: this.controls.descricao.value,
-      active:this.controls.active.value
+      active: this.controls.active.value
     }
     this.maoObraService
       .buscaFiltro(this.utilService.getParameters(obj)).
@@ -126,12 +128,12 @@ export class MaoObraListComponent implements OnInit {
         this.table.items = data
         this.loading = false;
       },
-      (error: HttpErrorResponse) => {
-        console.log(error.error);
-        this.table.items = [];
-        this.loading = false;
-        // //this.notificationService.error(error.error['message']);
-      })
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.table.items = [];
+          this.loading = false;
+          // //this.notificationService.error(error.error['message']);
+        })
   }
 
 
