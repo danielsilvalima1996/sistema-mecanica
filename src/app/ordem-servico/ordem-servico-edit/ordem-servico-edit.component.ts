@@ -120,7 +120,6 @@ export class OrdemServicoEditComponent implements OnInit {
       this.tipoRelatorio = 'view';
       this.page.title = `Visualizar OS ${this.id}`;
       this.page.actions = [
-        { label: 'Imprimir OS', action: () => this.imprimirOs() },
         {
           label: 'Voltar', action: () => this.router.navigate(['ordem-servico'])
         }
@@ -434,10 +433,6 @@ export class OrdemServicoEditComponent implements OnInit {
           //this.notificationService.error('Error ao carregar OS ' + this.osGet.id);
           this.loading = false;
         })
-  }
-
-  private imprimirOs() {
-    this.notificationService.information('implementar depois')
   }
 
 }
