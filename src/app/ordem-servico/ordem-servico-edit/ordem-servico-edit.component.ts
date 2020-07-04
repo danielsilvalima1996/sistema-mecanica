@@ -124,6 +124,8 @@ export class OrdemServicoEditComponent implements OnInit {
           label: 'Voltar', action: () => this.router.navigate(['ordem-servico'])
         }
       ]
+      this.tableMao.actions = [];
+      this.tablePeca.actions = [];
     }
 
     this.osAddForm = this.fb.group({
