@@ -31,7 +31,7 @@ export class VeiculosListComponent implements OnInit {
 
   table = {
     columns: <PoTableColumn[]>[
-      { property: 'id', label: 'Codigo', width: '10%' },
+      { property: 'id', label: 'Código', width: '10%' },
       { property: 'marca', label: 'Marca', width: '20%' },
       { property: 'modelo', label: 'Modelo', width: '20%' },
       { property: 'ano', label: 'Ano Veículo', width: '15%' },
@@ -47,9 +47,17 @@ export class VeiculosListComponent implements OnInit {
     id: ['', []],
     marca: ['', []],
     modelo: ['', []],
-    ano: ['', []]
+    ano: ['', []],
+    active: ['', []]
   })
 
+  public selects = {
+    ativoOptions: <Array<any>>[
+      { label: 'Ativo', value: true },
+      { label: 'Inativo', value: false },
+      { label: 'Todos', value: '' }
+    ]
+  }
 
   private itemSelecionado: string = '';
   public loading: boolean
@@ -91,7 +99,7 @@ export class VeiculosListComponent implements OnInit {
         (error: HttpErrorResponse) => {
           console.log(error.error);
           this.loading = false;
-          //this.notificationService.error('Error ao obter dados');
+          this.notificationService.error('Não há dados');
         })
   }
 
@@ -122,17 +130,17 @@ export class VeiculosListComponent implements OnInit {
       modeloVeiculo: this.controls.modelo.value,
     }
     this.veiculosService
-      .buscaFiltro(this.utilService.getParameters(obj)).
-      subscribe((data) => {
+      .buscaFiltro(this.utilService.getParameters(obj))
+      .subscribe((data) => {
         this.table.items = data
         this.loading = false;
       },
-      (error: HttpErrorResponse) => {
-        console.log(error.error);
-        this.table.items = [];
-        this.loading = false;
-        //this.notificationService.error('Error ao obter dados');
-      })
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.table.items = [];
+          this.loading = false;
+          this.notificationService.error('Não há dados');
+        })
   }
 
 

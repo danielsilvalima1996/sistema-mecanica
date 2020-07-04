@@ -4,6 +4,7 @@ import { Router, ParamMap, ActivatedRoute } from '@angular/router';
 import { PoDialogService, PoSelectOption, PoBreadcrumb, PoBreadcrumbItem, PoPageDefault, PoNotificationService } from '@po-ui/ng-components';
 import { VeiculoService } from 'src/app/services/veiculo/veiculo.service';
 import { Veiculo } from 'src/app/interfaces/veiculo.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-veiculos-edit',
@@ -34,6 +35,8 @@ export class VeiculosEditComponent implements OnInit {
   public disabledFields: boolean = false;
   private id: any;
 
+  public tipoTela: string;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -45,6 +48,7 @@ export class VeiculosEditComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.router.url.indexOf('add') != -1) {
+      this.tipoTela = 'add';
       this.page.title = 'Adicionar Veículo';
       this.page.breadcrumb.items = [
         { label: 'Home' },
@@ -53,7 +57,7 @@ export class VeiculosEditComponent implements OnInit {
         { label: 'Adicionar Veículo' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled:true, action: () => { this.cadastrarVeiculo(this.veiculosForm.value) } },
+          { label: 'Salvar', disabled: true, action: () => { this.cadastrarVeiculo(this.veiculosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
       this.disabledId = true;
@@ -61,6 +65,7 @@ export class VeiculosEditComponent implements OnInit {
         this.page.actions[0].disabled = this.veiculosForm.invalid;
       });
     } else if (this.router.url.indexOf('edit') != -1) {
+      this.tipoTela = 'edit';
       this.page.title = 'Editar Veículo';
       this.page.breadcrumb.items = [
         { label: 'Home' },
@@ -69,12 +74,12 @@ export class VeiculosEditComponent implements OnInit {
         { label: 'Editar Veículo' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled:true, action: () => { this.alterVeiculo() } },
+          { label: 'Salvar', disabled: true, action: () => { this.alterVeiculo() } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.veiculosForm.valueChanges.subscribe((_) => {
-          this.page.actions[0].disabled = this.veiculosForm.invalid;
-        });
+      this.veiculosForm.valueChanges.subscribe((_) => {
+        this.page.actions[0].disabled = this.veiculosForm.invalid;
+      });
       this.disabledId = true;
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         this.id = paramMap.get('id');
@@ -82,6 +87,7 @@ export class VeiculosEditComponent implements OnInit {
       this.getDetailById(this.id);
 
     } else {
+      this.tipoTela = 'view';
       this.page.title = 'Visualizar Veículo';
       this.disabledFields = true;
       this.page.breadcrumb.items = [
@@ -92,7 +98,7 @@ export class VeiculosEditComponent implements OnInit {
       ],
         this.page.actions = [
           { label: 'Salvar', disabled: true },
-          { label: 'Cancelar', action: () => { this.dialogVoltar() } }
+          { label: 'Cancelar', action: () => this.router.navigate(['cadastro/veiculos']) }
         ]
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         this.id = paramMap.get('id');
@@ -106,12 +112,18 @@ export class VeiculosEditComponent implements OnInit {
   }
 
   getDetailById(id) {
+    this.loading = true;
     this.veiculosService
       .findById(id)
       .subscribe((data) => {
-        console.log(data);
-        this.veiculosForm.setValue(data)
-      })
+        this.veiculosForm.setValue(data);
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          this.router.navigate(['cadastro/veiculos']);
+          this.notificationService.error(`Veículo ${id} não encontrado`);
+          this.loading = false;
+        })
   }
 
   alterVeiculo(parameters?: any) {

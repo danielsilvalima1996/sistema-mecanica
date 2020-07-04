@@ -3,7 +3,7 @@
     <form (keyup.enter)="getFiltro()" [formGroup]="usuariosForm">
 
         <div class="po-row">
-            <po-input class="po-md-2" p-label='Código' p-clean="true" formControlName="id"></po-input>
+            <po-decimal class="po-md-2" p-label='Código' p-clean="true" p-decimals-length="0" formControlName="id"></po-decimal>
             <po-input class="po-md-2" p-label='E-mail' p-clean="true" formControlName="email"></po-input>
             <po-input class="po-md-2" p-label='Nome de Usuário' p-clean="true" formControlName="userName"></po-input>
             <po-select class="po-md-2" p-label="Ativo" formControlName="active" [p-options]="selects.ativoOptions" ></po-select>
