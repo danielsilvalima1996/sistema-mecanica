@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService } from '@po-ui/ng-components';
+import { PoPageDefault, PoSelectOption, PoDialogService, PoNotificationService, PoNotification } from '@po-ui/ng-components';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -71,7 +71,8 @@ export class OrdemServicoAddComponent implements OnInit {
       idVeiculo: ['', [Validators.required]],
       idUsuario: ['', []],
       tipoPessoa: ['f', [Validators.required]],
-      placa: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(7), Validators.pattern("^[A-Za-z0-9]*\\d+[A-Za-z0-9]*$")]]
+      placa: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(7), Validators.pattern("^[A-Za-z0-9]*\\d+[A-Za-z0-9]*$")]],
+      isValid: [false, [Validators.required]]
     })
 
     this.loginService.getUserInformation$.subscribe((data) => {
@@ -79,8 +80,12 @@ export class OrdemServicoAddComponent implements OnInit {
     })
 
     this.osAddForm.valueChanges
-      .subscribe((_) => {
-        this.page.actions[0].disabled = this.osAddForm.invalid;
+      .subscribe((data) => {
+        if (data['isValid'] === false) {
+          this.page.actions[0].disabled = true;
+        } else {
+          this.page.actions[0].disabled = this.osAddForm.invalid;
+        }
       })
 
     this.controls['tipoPessoa'].valueChanges
@@ -94,29 +99,48 @@ export class OrdemServicoAddComponent implements OnInit {
         }
       })
 
-    // this.controls['cpfCnpj'].valueChanges
-    //   .subscribe((data) => {
-    //     if (data.length === 11) {
-    //       let result = cpf.isValid(data);
-    //       if (result === false && this.controls['tipoPessoa'].value === 'f') {
-    //         this.page.actions[0].disabled = true;
-    //         this.helpPessoa = 'Insira um CPF válido'
-    //       } else if (result === true && this.controls['tipoPessoa'].value === 'f') {
-    //         this.page.actions[0].disabled = false;
-    //         this.helpPessoa = ''
-    //       }
-    //     } else if (data.length === 14) {
-    //       let result = cnpj.isValid(data);
-    //       if (result === false && this.controls['tipoPessoa'].value === 'j') {
-    //         this.page.actions[0].disabled = true;
-    //         this.helpPessoa = 'Insira um CNPJ válido'
-    //       } else if (result === true && this.controls['tipoPessoa'].value === 'j') {
-    //         this.page.actions[0].disabled = false;
-    //         this.helpPessoa = ''
-    //       }
-    //     }
+    this.controls['cpfCnpj'].valueChanges
+      .subscribe((data) => {
+        let pessoaFisica = this.controls['tipoPessoa'].value === 'f'
+        let pessoaJuridica = this.controls['tipoPessoa'].value === 'j'
 
-    //   })
+        if (data.length === 11 && pessoaFisica) {
+          let result = cpf.isValid(data);
+
+          const poNotification: PoNotification = {
+            message: pessoaFisica && result === false ? 'Insira um CPF válido' : 'CPF válido',
+            duration: 2000
+          }
+          if (result === false) {
+            this.page.actions[0].disabled = true;
+            this.controls['isValid'].setValue(false);
+            this.notificationService.warning(poNotification);
+          } else if (result === true) {
+            this.page.actions[0].disabled = false;
+            this.controls['isValid'].setValue(true);
+            this.notificationService.success(poNotification);
+          } else {
+            this.controls['isValid'].setValue(false);
+          }
+        } else if (data.length === 14 && pessoaJuridica) {
+          let result = cnpj.isValid(data);
+          const poNotification: PoNotification = {
+            message: pessoaJuridica && result === false ? 'Insira um CNPJ válido' : 'CNPJ válido',
+            duration: 2000
+          }
+          if (result === false) {
+            this.page.actions[0].disabled = true;
+            this.controls['isValid'].setValue(false);
+            this.notificationService.warning(poNotification);
+          } else if (result === true) {
+            this.page.actions[0].disabled = false;
+            this.controls['isValid'].setValue(true);
+            this.notificationService.success(poNotification);
+          }
+        } else {
+          this.controls['isValid'].setValue(false);
+        }
+      })
 
   }
 
