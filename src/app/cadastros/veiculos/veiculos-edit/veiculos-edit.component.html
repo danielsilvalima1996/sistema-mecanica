@@ -3,7 +3,7 @@
     <form [formGroup]="veiculosForm">
 
         <div class="po-row">
-            <po-input *ngIf="tipoTela != 'add'" class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id"></po-input>
+            <po-input *ngIf="tipoTela != 'add'" class="po-md-2" [p-readonly]="disabledFields || disabledId" p-label="Código" formControlName="id"></po-input>
             <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Marca" p-required="true" formControlName="marca"></po-input>
             <po-input class="po-md-2" [p-readonly]="disabledFields" p-label="Modelo" p-required="true" formControlName="modelo"></po-input>
             <po-number class="po-md-2" p-min="1885" p-maxlength="4" p-minlength="4" [p-readonly]="disabledFields" p-label="Ano Veículo" p-required="true"formControlName="ano" p-clean></po-number>

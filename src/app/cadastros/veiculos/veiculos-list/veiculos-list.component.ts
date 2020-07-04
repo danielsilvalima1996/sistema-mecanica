@@ -128,6 +128,7 @@ export class VeiculosListComponent implements OnInit {
       anoVeiculo: this.controls.ano.value,
       marcaVeiculo: this.controls.marca.value,
       modeloVeiculo: this.controls.modelo.value,
+      activeVeiculo: this.controls.active.value
     }
     this.veiculosService
       .buscaFiltro(this.utilService.getParameters(obj))
