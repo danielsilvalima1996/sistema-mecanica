@@ -5,7 +5,7 @@
     <form [formGroup]="osAddForm" class="po-row">
         <po-input class="po-sm-6 po-md-3 po-lg-3" p-label="Nome Cliente" formControlName="nomeCliente"></po-input>
         <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Tipo Pessoa" [p-options]="selects.tipoPessoa" formControlName="tipoPessoa"></po-select>
-        <po-input class="po-sm-6 po-md-3 po-lg-2" [p-label]="labelPessoa" [p-mask]="mask" p-clean formControlName="cpfCnpj"></po-input>
+        <po-input class="po-sm-6 po-md-3 po-lg-2" [p-label]="labelPessoa" [p-mask]="mask" p-clean formControlName="cpfCnpj" p-error-pattern="CPF/CNPJ Inválido."></po-input>
         <po-input class="po-sm-6 po-md-3 po-lg-1" p-label="DDD" p-mask="99" formControlName="ddd"></po-input>
         <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Telefone" p-mask="99999?-9999" formControlName="telefone"></po-input>
         <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Veículo" [p-options]="selects.veiculos" formControlName="idVeiculo"></po-select>
