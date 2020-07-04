@@ -1,9 +1,9 @@
 <po-page-default [p-title]="page.title" [p-actions]="page.actions">
 
-    <form [formGroup]="osForm" class="po-row">
+    <form [formGroup]="osForm" class="po-row" (keyup.enter)="buscar(osForm.value)">
         <po-input class="po-sm-6 po-md-2 po-lg-1" p-label="OS" formControlName="id"></po-input>
         <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Nome Cliente" formControlName="nomeCliente"></po-input>
-        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="CPF / CNPJ" formControlName="cpfCnpj"></po-input>
+        <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="CPF / CNPJ" formControlName="cpfCnpj" p-mask="99999999999999???"></po-input>
         <po-input class="po-sm-6 po-md-3 po-lg-3" p-label="Observações" formControlName="observacoes"></po-input>
         <po-select class="po-sm-6 po-md-3 po-lg-2" p-label="Veiculo" [p-options]="selects.veiculos" formControlName="idVeiculo"></po-select>
         <po-input class="po-sm-6 po-md-3 po-lg-2" p-label="Placa" p-maxlength="7" formControlName="placa"></po-input>

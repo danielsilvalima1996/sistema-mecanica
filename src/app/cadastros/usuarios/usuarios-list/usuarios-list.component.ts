@@ -46,13 +46,15 @@ export class UsuariosListComponent implements OnInit {
     id: ['', []],
     email: ['', []],
     userName: ['', []],
-    active:['',[]]
+    active: ['', []]
   })
 
   selects = {
     ativoOptions: <Array<any>>[
       { label: 'Ativo', value: true },
-      { label: 'Inativo', value: false }]
+      { label: 'Inativo', value: false },
+      { label: 'Todos', value: '' }
+    ]
   }
 
   private itemSelecionado: string = '';
@@ -117,7 +119,7 @@ export class UsuariosListComponent implements OnInit {
       id: this.controls.id.value,
       email: this.controls.email.value,
       userName: this.controls.userName.value,
-      active:this.controls.active.value
+      active: this.controls.active.value
     }
     this.usuariosService
       .buscaFiltro(this.utilService.getParameters(obj)).
@@ -125,12 +127,12 @@ export class UsuariosListComponent implements OnInit {
         this.table.items = data
         this.loading = false;
       },
-      (error: HttpErrorResponse) => {
-        console.log(error.error);
-        this.table.items = [];
-        this.loading = false;
-        //this.notificationService.error(error.error['message']);
-      })
+        (error: HttpErrorResponse) => {
+          console.log(error.error);
+          this.table.items = [];
+          this.loading = false;
+          //this.notificationService.error(error.error['message']);
+        })
   }
 
 

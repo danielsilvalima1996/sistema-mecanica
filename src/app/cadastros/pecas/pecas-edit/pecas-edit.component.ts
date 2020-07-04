@@ -121,8 +121,8 @@ export class PecasEditComponent implements OnInit {
         this.loading = false;
         this.pecasForm.setValue(data);
       },
-        (error: HttpErrorResponse) => {
-          this.router.navigate(['cadatro/pecas']);
+        (error: HttpErrorResponse) => {         
+          this.router.navigate(['cadastro/pecas']);
           this.notificationService.error(`Peça ${id} não encontrada`);
           this.loading = false;
         })
