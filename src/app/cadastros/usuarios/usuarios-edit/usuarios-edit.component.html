@@ -3,7 +3,6 @@
     <form [formGroup]="usuariosForm">
 
         <div *ngIf="tipoTela == 'add' " class="po-row">
-            <po-input class="po-md-1" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id"></po-input>
             <po-input class="po-md-3" [p-readonly]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="userName"></po-input>
             <po-email class="po-md-3" [p-readonly]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
             <po-password class="po-md-3" [p-readonly]="disabledFields" p-error-pattern="A senha deve possuir pelo menos de 6 caracteres e no máximo 12 " formControlName="password"  p-label="Senha"></po-password>
@@ -11,7 +10,7 @@
         </div>
 
         <div *ngIf="tipoTela != 'add' " class="po-row">
-            <po-input class="po-md-1" [p-readonly]="disabledFields || disabledId" p-label="Id" formControlName="id"></po-input>
+            <po-input class="po-md-1" [p-readonly]="disabledFields || disabledId" p-label="Código" formControlName="id"></po-input>
             <po-input class="po-md-3" [p-readonly]="disabledFields" p-label="Nome Completo" p-required="true" formControlName="userName"></po-input>
             <po-email class="po-md-3" [p-readonly]="disabledFields" formControlName="email" p-label="E-mail"></po-email>
             <po-password class="po-md-3" [p-readonly]="disabledFields" p-error-pattern="A senha deve possuir pelo menos de 6 caracteres e no máximo 12 " formControlName="password"  p-label="Senha"></po-password>

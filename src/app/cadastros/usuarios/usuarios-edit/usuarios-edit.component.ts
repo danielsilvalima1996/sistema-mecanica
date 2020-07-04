@@ -4,6 +4,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router, ParamMap, ActivatedRoute } from '@angular/router';
 import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
 import { Users } from 'src/app/interfaces/users.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-usuarios-edit',
@@ -22,9 +23,9 @@ export class UsuariosEditComponent implements OnInit {
 
   usuariosForm: FormGroup = this.fb.group({
     id: ['', []],
-    avatar:['',[]],
+    avatar: ['', []],
     email: ['', [Validators.required]],
-    password: ['',[]],
+    password: ['', []],
     userName: ['', [Validators.required]],
     active: [true, [Validators.required]]
   })
@@ -55,11 +56,11 @@ export class UsuariosEditComponent implements OnInit {
         { label: 'Adicionar Usuário' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled: true, action: () => { this.cadastrarUsuario(this.usuariosForm.value) } },
+          { label: 'Salvar', disabled: true, action: () => { this.cadastrarUsuario(this.usuariosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.controls.password.setValidators([Validators.required,Validators.minLength(6),Validators.maxLength(12)]);
-        this.disabledId = true;
+      this.controls.password.setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(12)]);
+      this.disabledId = true;
     } else if (this.router.url.indexOf('edit') != -1) {
       this.page.title = 'Editar Usuário';
       this.tipoTela = 'edit';
@@ -70,14 +71,14 @@ export class UsuariosEditComponent implements OnInit {
         { label: 'Editar Usuário' }
       ],
         this.page.actions = [
-          { label: 'Salvar',disabled: true, action: () => { this.alterUsuario(this.usuariosForm.value) } },
+          { label: 'Salvar', disabled: true, action: () => { this.alterUsuario(this.usuariosForm.value) } },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-          this.id = paramMap.get('id');
-        })
-        this.getDetailById(this.id);
-        this.disabledId = true;
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        this.id = paramMap.get('id');
+      })
+      this.getDetailById(this.id);
+      this.disabledId = true;
     } else {
       this.page.title = 'Visualizar Usuário';
       this.tipoTela = 'view';
@@ -92,13 +93,13 @@ export class UsuariosEditComponent implements OnInit {
           { label: 'Salvar', disabled: true },
           { label: 'Cancelar', action: () => { this.dialogVoltar() } }
         ];
-        this.route.paramMap.subscribe((paramMap: ParamMap) => {
-          this.id = paramMap.get('id');
-        })
-        this.getDetailById(this.id);
+      this.route.paramMap.subscribe((paramMap: ParamMap) => {
+        this.id = paramMap.get('id');
+      })
+      this.getDetailById(this.id);
     };
 
-    if(this.tipoTela != 'view'){
+    if (this.tipoTela != 'view') {
       this.usuariosForm.valueChanges.subscribe((_) => {
         this.page.actions[0].disabled = this.usuariosForm.invalid;
       });
@@ -111,13 +112,17 @@ export class UsuariosEditComponent implements OnInit {
 
 
   getDetailById(id) {
+    this.loading = true;
     this.usuariosService
       .findById(id)
       .subscribe((data) => {
-        console.log(data);
-        
-        this.usuariosForm.setValue(data)
-      })
+        this.usuariosForm.setValue(data);
+        this.loading = false;
+      },
+        (error: HttpErrorResponse) => {
+          this.router.navigate(['cadastro/usuarios']);
+          this.loading = false;
+        })
   }
 
   alterUsuario(usuario: Users) {
