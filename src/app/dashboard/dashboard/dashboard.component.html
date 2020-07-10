@@ -1,4 +1,4 @@
-<po-page-default>
+<po-page-default [p-actions]="page.actions">
 
     <div class="po-row">
         <po-container class="po-sm-12 po-md-12 po-lg-12 po-mb-2">
@@ -6,23 +6,23 @@
             <po-divider class="po-sm-12 po-md-12 po-lg-12" p-label="Ordens de Serviços - OS"></po-divider>
 
             <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Total">
-                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOS | currency: 'BRL' }}</div>
+                <div *ngIf="ocultarValue == true " class="po-font-subtitle po-text-center">Valor: {{dados.totalOS | currency: 'BRL' }}</div>
                 <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOS}}</div>
             </po-widget>
 
             <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Em Andamentos">
-                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSAndamento | currency: 'BRL' }}</div>
+                <div *ngIf="ocultarValue == true " class="po-font-subtitle po-text-center">Valor: {{dados.totalOSAndamento | currency: 'BRL' }}</div>
                 <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSAndamento}}</div>
             </po-widget>
 
             <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Finalizadas">
-                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSFinalizada | currency: 'BRL' }}</div>
+                <div *ngIf="ocultarValue == true " class="po-font-subtitle po-text-center">Valor: {{dados.totalOSFinalizada | currency: 'BRL' }}</div>
                 <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSFinalizada}}
                 </div>
             </po-widget>
 
             <po-widget class="po-sm-12 po-md-3 po-lg-3 po-mb-1" p-title="Canceladas">
-                <div class="po-font-subtitle po-text-center">Valor: {{dados.totalOSCancelada | currency: 'BRL' }}</div>
+                <div *ngIf="ocultarValue == true " class="po-font-subtitle po-text-center">Valor: {{dados.totalOSCancelada | currency: 'BRL' }}</div>
                 <div class="po-text-center sample-container-dashboard">Quantidade: {{dados.quantidadeOSCancelada}}</div>
             </po-widget>
 

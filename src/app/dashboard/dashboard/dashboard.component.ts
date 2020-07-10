@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DadosDashboard } from 'src/app/interfaces/dados-dashboard.model';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { PoNotificationService } from '@po-ui/ng-components';
+import { PoNotificationService, PoPageDefault } from '@po-ui/ng-components';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,8 +11,25 @@ import { PoNotificationService } from '@po-ui/ng-components';
 })
 export class DashboardComponent implements OnInit {
 
+  public page: PoPageDefault = {
+    actions: [
+      {
+        label: 'Exibir Valores', action: () => {
+          this.ocultarValue = !this.ocultarValue;
+          if (this.ocultarValue == true) {
+            this.page.actions[0].label = 'Ocultar Valores';
+          } else {
+            this.page.actions[0].label = 'Exibir Valores';
+          }
+        }
+      }
+    ]
+  }
+
+
   public dados: DadosDashboard;
   public loading: boolean;
+  public ocultarValue: boolean = false
 
   constructor(
     private dashboardService: DashboardService,
