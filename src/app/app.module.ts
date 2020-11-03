@@ -10,7 +10,7 @@ import { OrdemServicoModule } from './ordem-servico/ordem-servico.module';
 import { InterceptorService } from './authentication/interceptor/interceptor.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { registerLocaleData } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 registerLocaleData(localePt);
 
@@ -38,6 +38,10 @@ registerLocaleData(localePt);
       provide: LOCALE_ID,
       useValue: 'pt'
     },
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    }
   ],
   bootstrap: [AppComponent]
 })
