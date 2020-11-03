@@ -68,6 +68,8 @@ export class AppComponent {
           avatar: data.avatar
         }
         this.profile = profile;
+        console.log(this.profile);
+        
       })
   }
 

@@ -55,7 +55,7 @@ export class OrdemServicoListComponent implements OnInit {
         ]
       },
       { label: 'Entrada', property: 'entrada', type: 'date', format: 'dd/MM/yyyy', width: '100px' },
-      { label: 'Nome Cliente', property: 'nomeCliente', width: '150px' },
+      { label: 'Nome Cliente', property: 'nomeCliente', width: '200px' },
       { label: 'CPF / CNPJ', property: 'cpfCnpj', width: '150px' },
       { label: 'DDD', property: 'ddd', width: '100px' },
       { label: 'Telefone', property: 'telefone', width: '100px' },
