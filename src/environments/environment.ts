@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:8081/api'
+  api: 'https://apirest-mecanica.herokuapp.com/api'
 };
 
 /*
